@@ -1,8 +1,78 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+/**
+ * api v1(nasho_learn)
+ */
+
+function handle_builder_response($data, $message, $status_code = 200)
+{
+    if ($status_code != 200) {
+        // error response
+        $res = array('statusCode' => $status_code, 'message' => $message);
+    } else {
+        // success response
+        $res = array('statusCode' => $status_code, 'message' => $message, 'data' => $data);
+    }
+
+    return response()->json($res, $status_code);
+}
+
+//mapping data user and token base on user
+function handle_mapping_user_by_token($user, $token)
+{
+    return array(
+        'id' => $user->id,
+        'name' => $user->name,
+        'email' => $user->email,
+        'token' => $token,
+    );
+}
+
+function set_personal_access_client($id_user)
+{
+
+    $user = User::find($id_user);
+    if (handle_validate_existing_user($user)) {
+        $token = handle_token_data_by_user($user);
+        $data = handle_mapping_user_by_token($user, $token);
+        return handle_builder_response($data, 'berhasil get token by user');
+    }
+
+    return handle_builder_response($user, 'user invalid for generate token', 422);
+}
+
+function handle_validate_existing_user($user)
+{
+    if (!empty($user)) {
+        return true;
+    }
+    return false;
+}
+
+function handle_token_data_by_user($user)
+{
+    return $user->createToken('nasho_learn')->accessToken;
+}
+
+function get_personal_access_client($id_user)
+{
+    try {
+        return set_personal_access_client($id_user);
+    } catch (\Exception $errors) {
+        return handle_builder_response($errors, $errors->getMessage(), 500);
+    }
+}
+
+Route::prefix('v1')->group(function () {
+    Route::get('test', function (Request $request) {
+        return get_personal_access_client($request->input('id'));
+    });
+});
