@@ -12,6 +12,7 @@ Route::get('/user', function (Request $request) {
  * api v1(nasho_learn)
  */
 
+//handler for build response success or error response
 function handle_builder_response($data, $message, $status_code = 200)
 {
     if ($status_code != 200) {
@@ -36,6 +37,7 @@ function handle_mapping_user_by_token($user, $token)
     );
 }
 
+//setter for set personal access token for user
 function set_personal_access_client($id_user)
 {
 
@@ -49,6 +51,7 @@ function set_personal_access_client($id_user)
     return handle_builder_response($user, 'user invalid for generate token', 422);
 }
 
+//validate if user any data or not
 function handle_validate_existing_user($user)
 {
     if (!empty($user)) {
@@ -57,11 +60,13 @@ function handle_validate_existing_user($user)
     return false;
 }
 
+//generate token for user
 function handle_token_data_by_user($user)
 {
     return $user->createToken('nasho_learn')->accessToken;
 }
 
+// get token from set access token
 function get_personal_access_client($id_user)
 {
     try {
