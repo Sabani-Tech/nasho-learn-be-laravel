@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: dockerfile_stagging
     ports:
-      - 8080:80
+      - 8081:80
     networks:
       - internal
     volumes:
@@ -22,7 +22,7 @@ services:
       - ./application/:/var/www/html/
       - ./logs/php.log:/var/log/fpm-php.www.log
     container_name: php
-    expose:
+    ports:
       - 9000:80
   mysql:
     container_name: dbnasho
