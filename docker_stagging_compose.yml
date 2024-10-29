@@ -1,0 +1,52 @@
+version: '1'
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: dockerfile_stagging
+    ports:
+      - 8080:80
+    networks:
+      - internal
+    volumes:
+      - ./application/:/var/www/html/
+      - ./logs/nginx:/var/log/nginx/
+    container_name: nginx
+  php:
+    build:
+      context: .
+      dockerfile: dockerfile_stagging
+    networks:
+      - internal
+    volumes:
+      - ./application/:/var/www/html/
+      - ./logs/php.log:/var/log/fpm-php.www.log
+    container_name: php
+    expose:
+      - 9000:80
+  mysql:
+    container_name: dbnasho
+    restart: always
+    image: mysql:latest
+    platform: linux/x86_64
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: mVHzAFTNPc95z@KW
+      MYSQL_USER: nasho_learn
+      MYSQL_PASS: mVHzAFTNPc95z@KW
+      MYSQL_DATABASE: nasho_learn
+    volumes:
+      - ./db-data:/var/lib/mysql
+    networks:
+      - internal
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - 9091:80
+    environment:
+      PMA_HOST: dbnasho
+networks:
+  internal:
+    driver: bridge
+    
