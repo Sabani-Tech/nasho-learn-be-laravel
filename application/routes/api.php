@@ -89,4 +89,5 @@ Route::prefix('v1')->group(function () {
             Route::get('profile', [UserAuthController::class, 'profile'])->name('user.auth.profile');
         });
     });
+    Route::prefix('admin')->group(function () {});
 });
