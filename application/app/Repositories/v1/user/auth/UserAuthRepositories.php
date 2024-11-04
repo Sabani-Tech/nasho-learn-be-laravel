@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserAuthRepositories extends Controller
 {
-    private function handle_where_exists_by_username_or_password($type, $user, $req)
+    private function handle_where_exists_by_username_or_email($type, $user, $req)
     {
         return $user->where($type, $req)->first();
     }
@@ -32,9 +32,9 @@ class UserAuthRepositories extends Controller
     public function login($login, $user)
     {
         if ($this->handle_exists_user_by_username($login, $user)) {
-            $user_req = $this->handle_where_exists_by_username_or_password('username', $user, $login['umail']);
+            $user_req = $this->handle_where_exists_by_username_or_email('username', $user, $login['umail']);
         } else if ($this->handle_exists_user_by_email($login, $user)) {
-            $user_req = $this->handle_where_exists_by_username_or_password('email', $user, $login['umail']);
+            $user_req = $this->handle_where_exists_by_username_or_email('email', $user, $login['umail']);
         } else {
             return $this->error_response('Email/username salah');
         }
@@ -48,7 +48,7 @@ class UserAuthRepositories extends Controller
 
     private function handle_exists_user_by_username($req_login, $user): bool
     {
-        if ($this->handle_where_exists_by_username_or_password('username', $user, $req_login['umail'])) {
+        if ($this->handle_where_exists_by_username_or_email('username', $user, $req_login['umail'])) {
             return true;
         }
         return false;
@@ -56,7 +56,7 @@ class UserAuthRepositories extends Controller
 
     private function handle_exists_user_by_email($req_login, $user): bool
     {
-        if ($this->handle_where_exists_by_username_or_password('email', $user, $req_login['umail'])) {
+        if ($this->handle_where_exists_by_username_or_email('email', $user, $req_login['umail'])) {
             return true;
         }
         return false;
