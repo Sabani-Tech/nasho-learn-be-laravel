@@ -19,7 +19,7 @@ class UserMiddleware
     {
         //roleID 1 karena untuk user dan platform user adalah mobile
         if (Auth::guard()->user()->role_id != 1) {
-            return response()->json(['statusCode' => 401, 'message' => 'anda bukan admin']);
+            return response()->json(['statusCode' => 401, 'message' => 'anda bukan user'], 422);
         }
 
         if (!empty($request->header('X-PLATFORM-NASHO')) && !empty($request->header('X-VERSION-NASHO')) && !empty($request->header('X-CLIENT-KEY-NASHO'))) {

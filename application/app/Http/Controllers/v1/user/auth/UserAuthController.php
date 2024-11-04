@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class UserAuthController extends Controller
 {
-    //construct injection (inject repositories ke dalam construct)
+    //construct injection (inject repositories users ke dalam construct)
     public function __construct(
         private UserAuthRepositories $user_repositories,
         private User $user,

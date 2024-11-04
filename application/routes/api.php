@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\v1\admin\auth\AdminAuthController;
 use App\Http\Controllers\v1\user\auth\UserAuthController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -89,5 +90,15 @@ Route::prefix('v1')->group(function () {
             Route::get('profile', [UserAuthController::class, 'profile'])->name('user.auth.profile');
         });
     });
-    Route::prefix('admin')->group(function () {});
+    Route::prefix('admin')->group(function () {
+        Route::prefix('auth')->group(function () {
+            Route::post('login', [AdminAuthController::class, 'login'])->name('admin.auth.login');
+            Route::middleware(['auth:api', 'admin_middleware'])->group(function () {
+                Route::post('logout', [AdminAuthController::class, 'logout'])->name('admin.auth.logout');
+            });
+        });
+        Route::middleware(['auth:api', 'admin_middleware'])->group(function () {
+            Route::get('profile', [AdminAuthController::class, 'profile'])->name('admin.auth.profile');
+        });
+    });
 });
