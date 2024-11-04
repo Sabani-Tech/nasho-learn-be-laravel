@@ -20,10 +20,25 @@ class AdminAuthRepositories extends Controller
         }
 
         if ($this->handle_exists_user_by_password($login, $user_req)) {
-            return $this->success_response($this->handle_mapping_user_login($user_req), 'Berhasil Login');
+            if (!$this->handle_validate_role_after_do_login($user_req)) {
+                return $this->error_response('Anda bukan admin');
+            }
+
+            if ($this->handle_validate_role_after_do_login($user_req)) {
+                return $this->success_response($this->handle_mapping_user_login($user_req), 'Berhasil Login');
+            }
         } else {
             return $this->error_response('password salah');
         }
+    }
+
+    private function handle_validate_role_after_do_login($user_req): bool
+    {
+        if ($user_req->role_id != 2) {
+            return false;
+        }
+
+        return true;
     }
 
     private function handle_where_exists_by_username_or_email($type, $user, $req)
