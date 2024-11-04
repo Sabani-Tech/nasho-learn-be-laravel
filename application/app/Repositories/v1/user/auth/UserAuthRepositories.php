@@ -2,8 +2,8 @@
 
 namespace App\Repositories\v1\user\auth;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -16,6 +16,7 @@ class UserAuthRepositories extends Controller
 
     private function handle_mapping_user_login($user_req): array
     {
+        $token_create = $user_req->createToken('nasholearn');
         return array(
             'name' => $user_req->nama_lengkap,
             'username' => $user_req->username,
@@ -23,7 +24,8 @@ class UserAuthRepositories extends Controller
             'role' => DB::table('role')
                 ->where('id', $user_req->role_id)
                 ->first(),
-            'token' => $user_req->createToken('nasholearn')->accessToken, //generate token session untuk user
+            'token' => $token_create->accessToken, //generate token session untuk user
+            'expired_at' => Carbon::parse($token_create->token->expires_at)->format('M d y H:i:s'),
         );
     }
 
