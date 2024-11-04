@@ -7,9 +7,6 @@ use App\Http\Requests\v1\user\auth\LoginRequest;
 use App\Http\Requests\v1\user\auth\RegisterRequest;
 use App\Models\User;
 use App\Repositories\v1\user\auth\UserAuthRepositories;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class UserAuthController extends Controller
 {
