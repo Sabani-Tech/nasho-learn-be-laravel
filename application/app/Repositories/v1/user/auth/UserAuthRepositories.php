@@ -72,14 +72,8 @@ class UserAuthRepositories extends Controller
 
     public function register($validate_register, $user)
     {
-        $validate = array(
-            'nama_lengkap' => $validate_register['nama_lengkap'],
-            'email' => $validate_register['email'],
-            'username' => $validate_register['username'],
-            'password' => Hash::make($validate_register['password']),
-            'role_id' => 1, //role default user is (1)
-        );
-
-        return $user->create($validate);
+        $validate_register['password'] = Hash::make($validate_register['password']);
+        $validate_register['role_id'] = 1; //role default user is (1)
+        return $user->create($validate_register);
     }
 }
