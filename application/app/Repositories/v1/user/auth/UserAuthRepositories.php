@@ -83,4 +83,9 @@ class UserAuthRepositories extends Controller
         $token->delete();
         return $token;
     }
+
+    public function profile($profile)
+    {
+        return $profile->user();
+    }
 }

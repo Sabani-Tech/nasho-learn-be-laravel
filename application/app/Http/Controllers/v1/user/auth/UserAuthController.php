@@ -8,14 +8,13 @@ use App\Http\Requests\v1\user\auth\RegisterRequest;
 use App\Models\User;
 use App\Repositories\v1\user\auth\UserAuthRepositories;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UserAuthController extends Controller
 {
     //construct injection (inject repositories ke dalam construct)
     public function __construct(
         private UserAuthRepositories $user_repositories,
-        private User $user
+        private User $user,
     ) {}
 
     public function login(LoginRequest $request)
@@ -48,5 +47,10 @@ class UserAuthController extends Controller
         }
 
         return $validate;
+    }
+
+    public function profile()
+    {
+        return $this->success_response($this->user_repositories->profile($this->user), 'Berhasil get profile');
     }
 }
