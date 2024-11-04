@@ -1,12 +1,10 @@
 <?php
 
+use App\Http\Controllers\v1\admin\auth\AdminAuthController;
+use App\Http\Controllers\v1\user\auth\UserAuthController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
 /**
  * api v1(nasho_learn)
@@ -79,5 +77,28 @@ function get_personal_access_client($id_user)
 Route::prefix('v1')->group(function () {
     Route::get('test', function (Request $request) {
         return get_personal_access_client($request->input('id'));
+    });
+    Route::prefix('user')->group(function () {
+        Route::prefix('auth')->group(function () {
+            Route::post('register', [UserAuthController::class, 'register'])->name('user.auth.register');
+            Route::post('login', [UserAuthController::class, 'login'])->name('user.auth.login');
+            Route::middleware(['auth:api', 'user_middleware'])->group(function () {
+                Route::post('logout', [UserAuthController::class, 'logout'])->name('user.auth.logout');
+            });
+        });
+        Route::middleware(['auth:api', 'user_middleware'])->group(function () {
+            Route::get('profile', [UserAuthController::class, 'profile'])->name('user.auth.profile');
+        });
+    });
+    Route::prefix('admin')->group(function () {
+        Route::prefix('auth')->group(function () {
+            Route::post('login', [AdminAuthController::class, 'login'])->name('admin.auth.login');
+            Route::middleware(['auth:api', 'admin_middleware'])->group(function () {
+                Route::post('logout', [AdminAuthController::class, 'logout'])->name('admin.auth.logout');
+            });
+        });
+        Route::middleware(['auth:api', 'admin_middleware'])->group(function () {
+            Route::get('profile', [AdminAuthController::class, 'profile'])->name('admin.auth.profile');
+        });
     });
 });
