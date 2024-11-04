@@ -19,7 +19,10 @@ class UserAuthController extends Controller
         private User $user
     ) {}
 
-    public function login(LoginRequest $request) {}
+    public function login(LoginRequest $request)
+    {
+        return $this->handle_validate_auth_childs('login', $request);
+    }
 
     public function register(RegisterRequest $request)
     {
@@ -32,6 +35,7 @@ class UserAuthController extends Controller
     {
         if ($type == 'login') {
             $validate = $request->validated();
+            $validate = $this->user_repositories->login($validate, $this->user);
         }
 
         if ($type == 'register') {

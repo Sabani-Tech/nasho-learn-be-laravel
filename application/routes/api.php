@@ -80,6 +80,12 @@ Route::prefix('v1')->group(function () {
     Route::prefix('user')->group(function () {
         Route::prefix('auth')->group(function () {
             Route::post('register', [UserAuthController::class, 'register'])->name('user.auth.register');
+            Route::post('login', [UserAuthController::class, 'login'])->name('user.auth.login');
+        });
+        Route::middleware('auth:api')->group(function () {
+            Route::get('/test-middleware', function (Request $request) {
+                return 'berhasil middleware';
+            });
         });
     });
 });
