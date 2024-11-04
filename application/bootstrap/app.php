@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Middleware\RolesMiddleware;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\UserMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Application;
 use Illuminate\Auth\AuthenticationException;
@@ -15,7 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->appendToGroup('roles', RolesMiddleware::class);
+        $middleware->appendToGroup('admin_middleware', AdminMiddleware::class);
+        $middleware->appendToGroup('user_middleware', UserMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (AuthenticationException $e, Request $request) {
