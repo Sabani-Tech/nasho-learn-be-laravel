@@ -84,7 +84,7 @@ Route::prefix('v1')->group(function () {
         });
         Route::middleware('auth:api')->group(function () {
             Route::get('/test-middleware', function (Request $request) {
-                return 'berhasil middleware';
+                return $request->user();
             });
         });
     });

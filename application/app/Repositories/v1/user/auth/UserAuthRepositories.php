@@ -77,7 +77,7 @@ class UserAuthRepositories extends Controller
             'email' => $validate_register['email'],
             'username' => $validate_register['username'],
             'password' => Hash::make($validate_register['password']),
-            'role_id' => 'a39652d4-9a5e-11ef-924d-8b0b95c9329f',
+            'role_id' => 1, //role default user is (1)
         );
 
         return $user->create($validate);
