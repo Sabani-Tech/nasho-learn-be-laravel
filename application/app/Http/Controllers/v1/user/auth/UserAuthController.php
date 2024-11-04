@@ -7,6 +7,8 @@ use App\Http\Requests\v1\user\auth\LoginRequest;
 use App\Http\Requests\v1\user\auth\RegisterRequest;
 use App\Models\User;
 use App\Repositories\v1\user\auth\UserAuthRepositories;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserAuthController extends Controller
 {
@@ -26,7 +28,10 @@ class UserAuthController extends Controller
         return $this->handle_validate_auth_childs('register', $request);
     }
 
-    public function logout() {}
+    public function logout(Request $request)
+    {
+        return $this->success_response($this->user_repositories->logout($request), 'Berhasil logout');
+    }
 
     private function handle_validate_auth_childs($type, $request)
     {

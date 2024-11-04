@@ -42,7 +42,7 @@ class UserAuthRepositories extends Controller
         if ($this->handle_exists_user_by_password($login, $user_req)) {
             return $this->success_response($this->handle_mapping_user_login($user_req), 'Berhasil Login');
         } else {
-            return $this->error_response('password salah salah');
+            return $this->error_response('password salah');
         }
     }
 
@@ -75,5 +75,12 @@ class UserAuthRepositories extends Controller
         $validate_register['password'] = Hash::make($validate_register['password']);
         $validate_register['role_id'] = 1; //role default user is (1)
         return $user->create($validate_register);
+    }
+
+    public function logout($user_session)
+    {
+        $token = $user_session->user()->token();
+        $token->delete();
+        return $token;
     }
 }
