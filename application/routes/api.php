@@ -1,12 +1,9 @@
 <?php
 
+use App\Http\Controllers\v1\user\auth\UserAuthController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
 /**
  * api v1(nasho_learn)
@@ -79,5 +76,10 @@ function get_personal_access_client($id_user)
 Route::prefix('v1')->group(function () {
     Route::get('test', function (Request $request) {
         return get_personal_access_client($request->input('id'));
+    });
+    Route::prefix('user')->group(function () {
+        Route::prefix('auth')->group(function () {
+            Route::post('register', [UserAuthController::class, 'register'])->name('user.auth.register');
+        });
     });
 });
