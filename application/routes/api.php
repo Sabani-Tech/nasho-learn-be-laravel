@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\v1\admin\auth\AdminAuthController;
+use App\Http\Controllers\v1\admin\master_data\KategoriMateriController;
 use App\Http\Controllers\v1\admin\master_data\MateriController;
 use App\Http\Controllers\v1\user\auth\UserAuthController;
 use App\Models\User;
@@ -102,6 +103,7 @@ Route::prefix('v1')->group(function () {
             Route::get('profile', [AdminAuthController::class, 'profile'])->name('admin.auth.profile');
             Route::prefix('master-data')->group(function () {
                 Route::resource('materi', MateriController::class);
+                Route::resource('kategori-materi', KategoriMateriController::class);
             });
         });
     });
