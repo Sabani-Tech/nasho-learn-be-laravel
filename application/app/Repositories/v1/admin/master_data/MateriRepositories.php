@@ -23,7 +23,18 @@ class MateriRepositories extends Controller
             $limit = $request->limit;
         }
 
-        return $this->model->paginate($limit ?? 10);
+        return $this->model
+            ->when($request->judul, function ($query) use ($request) {
+                $query->where('judul', 'like', "%{$request->judul}%");
+            })
+            ->when($request->phase, function ($query) use ($request) {
+                $query->where('phase', $request->phase);
+            })
+            ->when($request->id, function ($query) use ($request) {
+                $query->where('id', $request->id);
+            })
+            ->orderBy('id', $request->typeSort ?? 'asc')
+            ->paginate($limit ?? 10);
     }
 
     public function show($uid_materi)
