@@ -45,4 +45,19 @@ class MateriRepositories extends Controller
             return $this->error_response($e->getMessage(), '500', $e, \env('APP_ENV'));
         }
     }
+
+    public function update($materi, $uid_materi)
+    {
+        try {
+            $this->start_transaction;
+            $materi['created_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
+            $materi['updated_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
+            $this->model->where('id', $uid_materi)->update($materi);
+            $this->commit_transaction;
+            return $this->success_response($materi, 'Berhasil update materi');
+        } catch (\Exception $e) {
+            $this->rollback_transaction;
+            return $this->error_response($e->getMessage(), '500', $e, \env('APP_ENV'));
+        }
+    }
 }

@@ -40,9 +40,11 @@ class MateriController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(MateriRequest $materiRequest, string $id)
     {
-        //
+        $materi = $materiRequest->validated();
+        $materi = $this->materiRepositories->update($materiRequest->safe()->only(['phase', 'judul', 'isi', 'created_at', 'updated_at']), $id);
+        return $materi;
     }
 
     /**
