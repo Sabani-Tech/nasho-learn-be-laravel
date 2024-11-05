@@ -34,7 +34,7 @@ class MateriController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return $this->materiRepositories->show($id);
     }
 
     /**

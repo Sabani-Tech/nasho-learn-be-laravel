@@ -26,6 +26,11 @@ class MateriRepositories extends Controller
         return $this->model->paginate($limit ?? 10);
     }
 
+    public function show($uid_materi)
+    {
+        return $this->success_response($this->model->find($uid_materi), 'Berhasil detail materi');
+    }
+
     public function store($materi)
     {
         try {
