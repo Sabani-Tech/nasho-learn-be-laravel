@@ -52,6 +52,6 @@ class MateriController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return $this->materiRepositories->delete($id);
     }
 }
