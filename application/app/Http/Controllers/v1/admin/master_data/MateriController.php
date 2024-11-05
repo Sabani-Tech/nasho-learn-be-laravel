@@ -15,9 +15,9 @@ class MateriController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return $this->materiRepositories->index($request);
     }
     /**
      * Store a newly created resource in storage.
@@ -25,7 +25,7 @@ class MateriController extends Controller
     public function store(MateriRequest $materiRequest)
     {
         $materi = $materiRequest->validated();
-        $materi = $this->materiRepositories->store($materiRequest->safe()->only(['phase', 'judul', 'isi']));
+        $materi = $this->materiRepositories->store($materiRequest->safe()->only(['phase', 'judul', 'isi', 'created_at', 'updated_at']));
         return $materi;
     }
 
