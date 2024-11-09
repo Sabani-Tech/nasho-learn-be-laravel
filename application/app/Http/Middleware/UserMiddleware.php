@@ -24,11 +24,19 @@ class UserMiddleware
 
         if (!empty($request->header('X-PLATFORM-NASHO')) && !empty($request->header('X-VERSION-NASHO')) && !empty($request->header('X-CLIENT-KEY-NASHO'))) {
             if (
+                !DB::table('request_header')
+                    ->where('platform', $request->header('X-PLATFORM-NASHO'))
+                    ->first()
+            ) {
+                return response()->json(['statusCode' => 401, 'message' => 'platform not exists'], 401);
+            }
+
+            if (
                 DB::table('request_header')
                 ->where('platform', $request->header('X-PLATFORM-NASHO'))
                 ->first()->platform != 'mobile'
             ) {
-                return response()->json(['statusCode' => 401, 'message' => 'platform ini bukan untuk web'], 401);
+                return response()->json(['statusCode' => 401, 'message' => 'wrong platform'], 401);
             }
 
             if (
