@@ -19,7 +19,7 @@ class AdminMiddleware
     {
         //roleID 2 karena untuk admin dan platform admin adalah web
         if (Auth::guard()->user()->role_id != 2) {
-            return response()->json(['statusCode' => 401, 'message' => 'anda bukan admin'], 422);
+            return response()->json(['statusCode' => 401, 'message' => 'anda bukan admin'], 401);
         }
 
         if (!empty($request->header('X-PLATFORM-NASHO')) && !empty($request->header('X-VERSION-NASHO')) && !empty($request->header('X-CLIENT-KEY-NASHO'))) {
@@ -28,7 +28,7 @@ class AdminMiddleware
                 ->where('platform', $request->header('X-PLATFORM-NASHO'))
                 ->first()->platform != 'web'
             ) {
-                return response()->json(['statusCode' => 401, 'message' => 'platform ini bukan untuk web']);
+                return response()->json(['statusCode' => 401, 'message' => 'platform ini bukan untuk web'], 401);
             }
 
             if (
@@ -38,7 +38,7 @@ class AdminMiddleware
                         ['version', '=', $request->header('X-VERSION-NASHO')]
                     ])->first()
             ) {
-                return response()->json(['statusCode' => 401, 'message' => 'version platform tidak sesuai']);
+                return response()->json(['statusCode' => 401, 'message' => 'version platform tidak sesuai'], 401);
             }
 
             if (
@@ -49,7 +49,7 @@ class AdminMiddleware
                         ['client_key', '=', $request->header('X-CLIENT-KEY-NASHO')]
                     ])->first()
             ) {
-                return response()->json(['statusCode' => 401, 'message' => 'client key dari platform dan version tidak sesuai']);
+                return response()->json(['statusCode' => 401, 'message' => 'client key dari platform dan version tidak sesuai'], 401);
             }
             return $next($request);
         } else {
