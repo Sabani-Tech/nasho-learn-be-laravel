@@ -4,16 +4,25 @@ namespace App\Http\Controllers;
 
 abstract class Controller
 {
-    protected function success_response($data, string $message, int $status_code = 200)
+    protected function success_response($data, string $message, int $status_code = 200, bool $error = false)
     {
-        return response()->json(['statusCode' => $status_code, 'message' => $message, 'data' => $data], $status_code);
+        return response()->json(
+            [
+                'error' => $error,
+                'statusCode' => $status_code,
+                'message' => $message,
+                'data' => $data
+            ],
+            $status_code
+        );
     }
 
-    protected function error_response(string $message, int $status_code = 422, $debug = "{}", $env_mode = "{}")
+    protected function error_response(string $message, int $status_code = 422, bool $error = true, $debug = "{}", $env_mode = "{}")
     {
         //selain error uncorrectable proses maka tampilkan mode debug
         if ($status_code != 422) {
             $error_res = array(
+                'error' => $error,
                 'statusCode' => $status_code,
                 'message' => $message,
                 'debug' => $debug,
@@ -21,6 +30,7 @@ abstract class Controller
             );
         } else {
             $error_res = array(
+                'error' => $error,
                 'statusCode' => $status_code,
                 'message' => $message
             );
