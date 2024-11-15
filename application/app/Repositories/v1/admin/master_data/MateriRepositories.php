@@ -59,7 +59,7 @@ class MateriRepositories extends Controller
             return $this->success_response($materi, 'Berhasil tambah materi');
         } catch (\Exception $e) {
             $this->rollback_transaction;
-            return $this->error_response($e->getMessage(), '500', $e, \env('APP_ENV'));
+            return $this->error_response($e->getMessage(), '500', true, $e, \env('APP_ENV'));
         }
     }
 
@@ -82,7 +82,7 @@ class MateriRepositories extends Controller
             }
         } catch (\Exception $e) {
             $this->rollback_transaction;
-            return $this->error_response($e->getMessage(), '500', $e, \env('APP_ENV'));
+            return $this->error_response($e->getMessage(), '500', true, $e, \env('APP_ENV'));
         }
     }
 
@@ -103,7 +103,7 @@ class MateriRepositories extends Controller
             }
         } catch (\Exception $e) {
             $this->rollback_transaction;
-            return $this->error_response($e->getMessage(), '500', $e, \env('APP_ENV'));
+            return $this->error_response($e->getMessage(), '500', true, $e, \env('APP_ENV'));
         }
     }
 
