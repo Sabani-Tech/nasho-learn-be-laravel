@@ -22,7 +22,7 @@ class MateriRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phase' => 'required|integer',
+            'embed' => 'required|string',
             'judul' => 'required|string',
             'isi' => 'required|string',
         ];

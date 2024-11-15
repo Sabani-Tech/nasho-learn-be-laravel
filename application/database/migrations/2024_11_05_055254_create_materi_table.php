@@ -16,9 +16,10 @@ return new class extends Migration
             $table->uuid('id')
                 ->primary()
                 ->default(DB::raw('(UUID())'));
-            $table->integer('phase');
+            $table->string('embed');
             $table->string('judul');
             $table->text('isi');
+            $table->uuid('kategori_materi_id');
             $table->timestamps();
         });
     }
