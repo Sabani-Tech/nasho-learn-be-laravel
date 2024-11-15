@@ -8,10 +8,15 @@ use Illuminate\Support\Facades\DB;
 
 class MateriRepositories extends Controller
 {
-    private $model, $start_transaction, $commit_transaction, $rollback_transaction;
+    private $model,
+        $category_materi,
+        $start_transaction,
+        $commit_transaction,
+        $rollback_transaction;
     public function __construct()
     {
         $this->model = DB::table('materi');
+        $this->category_materi = DB::table('kategori_materi');
         $this->start_transaction = DB::beginTransaction();
         $this->commit_transaction = DB::commit();
         $this->rollback_transaction = DB::commit();
@@ -27,8 +32,8 @@ class MateriRepositories extends Controller
             ->when($request->judul, function ($query) use ($request) {
                 $query->where('judul', 'like', "%{$request->judul}%");
             })
-            ->when($request->phase, function ($query) use ($request) {
-                $query->where('phase', $request->phase);
+            ->when($request->embed, function ($query) use ($request) {
+                $query->where('embed', $request->embed);
             })
             ->when($request->id, function ($query) use ($request) {
                 $query->where('id', $request->id);
@@ -54,6 +59,10 @@ class MateriRepositories extends Controller
             $this->start_transaction;
             $materi['created_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
             $materi['updated_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
+            if (!$this->validate_category_materi_by_id($materi)) {
+                return $this->error_response('Category not found', 422);
+            }
+
             $this->model->insert($materi);
             $this->commit_transaction;
             return $this->success_response($materi, 'Berhasil tambah materi');
@@ -69,6 +78,9 @@ class MateriRepositories extends Controller
             $this->start_transaction;
             $materi['created_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
             $materi['updated_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
+            if (!$this->validate_category_materi_by_id($materi)) {
+                return $this->error_response('Category not found', 422);
+            }
 
             $update_materi = $this->validate_exists_materi_by_id_childs($uid_materi);
             if (!$update_materi) {
@@ -117,11 +129,25 @@ class MateriRepositories extends Controller
         return $this->model->find($uid_materi);
     }
 
+    private function where_exists_category_materi_by_id($kategori)
+    {
+        return $this->category_materi->find($kategori['kategori_materi_id']);
+    }
+
     private function validate_exists_materi_by_id_childs($uid_materi): bool
     {
         if ($this->where_exists_materi_by_id_childs($uid_materi)) {
             return true;
         }
         return false;
+    }
+
+    // handler validate category materi by ID
+    private function validate_category_materi_by_id($kategori): bool
+    {
+        if (!$this->where_exists_category_materi_by_id($kategori)) {
+            return false;
+        }
+        return true;
     }
 }
