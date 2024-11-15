@@ -25,6 +25,7 @@ class MateriRequest extends FormRequest
             'embed' => 'required|string',
             'judul' => 'required|string',
             'kategori_materi_id' => 'string',
+            'permalink' => 'string',
             'isi' => 'required|string',
         ];
     }

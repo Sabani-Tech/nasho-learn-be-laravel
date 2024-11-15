@@ -59,6 +59,7 @@ class MateriRepositories extends Controller
             $this->start_transaction;
             $materi['created_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
             $materi['updated_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
+            $materi['permalink'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $materi['judul'])));
             if (!$this->validate_category_materi_by_id($materi)) {
                 return $this->error_response('Category not found', 422);
             }
@@ -78,6 +79,7 @@ class MateriRepositories extends Controller
             $this->start_transaction;
             $materi['created_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
             $materi['updated_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
+            $materi['permalink'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $materi['judul'])));
             if (!$this->validate_category_materi_by_id($materi)) {
                 return $this->error_response('Category not found', 422);
             }

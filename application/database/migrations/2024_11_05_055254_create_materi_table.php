@@ -18,6 +18,7 @@ return new class extends Migration
                 ->default(DB::raw('(UUID())'));
             $table->string('embed');
             $table->string('judul');
+            $table->string('permalink');
             $table->text('isi');
             $table->uuid('kategori_materi_id');
             $table->timestamps();
