@@ -29,6 +29,7 @@ class MateriRepositories extends Controller
         }
 
         return $this->model
+            ->join('kategori_materi', 'materi.kategori_materi_id', '=', 'kategori_materi.id')
             ->when($request->judul, function ($query) use ($request) {
                 $query->where('judul', 'like', "%{$request->judul}%");
             })
@@ -38,7 +39,7 @@ class MateriRepositories extends Controller
             ->when($request->id, function ($query) use ($request) {
                 $query->where('id', $request->id);
             })
-            ->orderBy('id', $request->typeSort ?? 'asc')
+            ->orderBy('kategori_materi.id', $request->typeSort ?? 'asc')
             ->paginate($limit ?? 10);
     }
 
