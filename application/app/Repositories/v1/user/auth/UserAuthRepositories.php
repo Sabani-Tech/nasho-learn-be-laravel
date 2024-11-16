@@ -96,9 +96,11 @@ class UserAuthRepositories extends Controller
         if (!$validate_strings_input) {
             $submit = $this->handle_map_register_by_username($register);
         }
+
         if ($validate_strings_input) {
             $submit = $this->handle_map_register_by_email($register);
         }
+
         return $user->create($submit);
     }
 
