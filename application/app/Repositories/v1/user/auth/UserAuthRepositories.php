@@ -103,7 +103,7 @@ class UserAuthRepositories extends Controller
             if ($validate_strings_input) {
                 $submit = $this->handle_map_register_by_email($register);
             }
-            return $user->create($submit);
+            return $this->success_response($user->create($submit), 'Successfully Register');
         }
 
         if ($validate_existing_email) {
@@ -154,7 +154,7 @@ class UserAuthRepositories extends Controller
 
     private function handle_validate_existing_email(array $register, $user): bool
     {
-        if ($user->where('email', $register['umail'])) {
+        if ($user->where('email', $register['umail'])->first()) {
             return true;
         }
         return false;
