@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
 
 class UserAuthRepositories extends Controller
 {
@@ -85,11 +87,21 @@ class UserAuthRepositories extends Controller
         return false;
     }
 
-    public function register($validate_register, $user)
+    public function register($register, $user)
     {
-        $validate_register['password'] = Hash::make($validate_register['password']);
-        $validate_register['role_id'] = 1; //role default user is (1)
-        return $user->create($validate_register);
+        $register['password'] = Hash::make($register['password']);
+        $register['role_id'] = 1; //role default user is (1)
+
+        $validate_strings_input = $this->handle_validate_strings_inputs($register);
+        if (!$validate_strings_input) {
+            $submit = $this->handle_map_register_by_username($register);
+        }
+
+        if ($validate_strings_input) {
+            $submit = $this->handle_map_register_by_email($register);
+        }
+
+        return $user->create($submit);
     }
 
     public function logout($user_session)
@@ -102,5 +114,34 @@ class UserAuthRepositories extends Controller
     public function profile($profile)
     {
         return $profile->user();
+    }
+
+    private function handle_map_register_by_username(array $register): array
+    {
+        return array(
+            'nama_lengkap' => $register['nama_lengkap'],
+            'password' => $register['password'],
+            'role_id' => $register['role_id'],
+            'username' => $register['umail'],
+            'created_at' => date('Y-m-d H:i:s'),
+        );
+    }
+    private function handle_map_register_by_email(array $register): array
+    {
+        return array(
+            'nama_lengkap' => $register['nama_lengkap'],
+            'password' => $register['password'],
+            'role_id' => $register['role_id'],
+            'email' => $register['umail'],
+            'created_at' => date('Y-m-d H:i:s'),
+        );
+    }
+
+    private function handle_validate_strings_inputs(array $register): bool
+    {
+        if (Str::contains($register['umail'], '@')) {
+            return true; //email
+        }
+        return false; //username
     }
 }

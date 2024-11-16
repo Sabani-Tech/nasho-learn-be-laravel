@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\v1\admin\auth\AdminAuthController;
+use App\Http\Controllers\v1\admin\master_data\AboutController;
+use App\Http\Controllers\v1\admin\master_data\KategoriMateriController;
+use App\Http\Controllers\v1\admin\master_data\MateriController;
+use App\Http\Controllers\v1\admin\master_data\UserManagementController;
 use App\Http\Controllers\v1\user\auth\UserAuthController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -99,6 +103,12 @@ Route::prefix('v1')->group(function () {
         });
         Route::middleware(['auth:api', 'admin_middleware'])->group(function () {
             Route::get('profile', [AdminAuthController::class, 'profile'])->name('admin.auth.profile');
+            Route::prefix('master-data')->group(function () {
+                Route::resource('materi', MateriController::class);
+                Route::resource('kategori-materi', KategoriMateriController::class);
+                Route::resource('about', AboutController::class);
+                Route::resource('user', UserManagementController::class);
+            });
         });
     });
 });
