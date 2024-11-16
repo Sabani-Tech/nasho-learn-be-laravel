@@ -15,8 +15,8 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('nama_lengkap', 128);
-            $table->string('email', 128);
-            $table->string('username', 128);
+            $table->string('email', 128)->nullable();
+            $table->string('username', 128)->nullable();
             $table->string('password', 128);
             $table->foreignId('role_id')->references('id')->on('role')->onDelete('cascade'); //relation ke table roles
             $table->rememberToken();

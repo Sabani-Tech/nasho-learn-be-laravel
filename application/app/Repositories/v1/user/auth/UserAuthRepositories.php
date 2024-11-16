@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
 
 class UserAuthRepositories extends Controller
 {
@@ -16,19 +18,19 @@ class UserAuthRepositories extends Controller
         } else if ($this->handle_exists_user_by_email($login, $user)) {
             $user_req = $this->handle_where_exists_by_username_or_email('email', $user, $login['umail']);
         } else {
-            return $this->error_response('Email/username salah');
+            return $this->error_response('Wrong Email');
         }
 
         if ($this->handle_exists_user_by_password($login, $user_req)) {
             if (!$this->handle_validate_role_after_do_login($user_req)) {
-                return $this->error_response('anda bukan user');
+                return $this->error_response('You not user');
             }
 
             if ($this->handle_validate_role_after_do_login($user_req)) {
-                return $this->success_response($this->handle_mapping_user_login($user_req), 'Berhasil Login');
+                return $this->success_response($this->handle_mapping_user_login($user_req), 'Success Login');
             }
         } else {
-            return $this->error_response('password salah');
+            return $this->error_response('Wrong Password');
         }
     }
 
@@ -85,11 +87,28 @@ class UserAuthRepositories extends Controller
         return false;
     }
 
-    public function register($validate_register, $user)
+    public function register($register, $user)
     {
-        $validate_register['password'] = Hash::make($validate_register['password']);
-        $validate_register['role_id'] = 1; //role default user is (1)
-        return $user->create($validate_register);
+        $register['password'] = Hash::make($register['password']);
+        $register['role_id'] = 1; //role default user is (1)
+
+        $validate_existing_email = $this->handle_validate_existing_email($register, $user);
+        if (!$validate_existing_email) {
+
+            $validate_strings_input = $this->handle_validate_strings_inputs($register);
+            if (!$validate_strings_input) {
+                $submit = $this->handle_map_register_by_username($register);
+            }
+
+            if ($validate_strings_input) {
+                $submit = $this->handle_map_register_by_email($register);
+            }
+            return $user->create($submit);
+        }
+
+        if ($validate_existing_email) {
+            return $this->error_response('Email has been already', 422);
+        }
     }
 
     public function logout($user_session)
@@ -102,5 +121,42 @@ class UserAuthRepositories extends Controller
     public function profile($profile)
     {
         return $profile->user();
+    }
+
+    private function handle_map_register_by_username(array $register): array
+    {
+        return array(
+            'nama_lengkap' => $register['nama_lengkap'],
+            'password' => $register['password'],
+            'role_id' => $register['role_id'],
+            'username' => $register['umail'],
+            'created_at' => date('Y-m-d H:i:s'),
+        );
+    }
+    private function handle_map_register_by_email(array $register): array
+    {
+        return array(
+            'nama_lengkap' => $register['nama_lengkap'],
+            'password' => $register['password'],
+            'role_id' => $register['role_id'],
+            'email' => $register['umail'],
+            'created_at' => date('Y-m-d H:i:s'),
+        );
+    }
+
+    private function handle_validate_strings_inputs(array $register): bool
+    {
+        if (Str::contains($register['umail'], '@')) {
+            return true; //email
+        }
+        return false; //username
+    }
+
+    private function handle_validate_existing_email(array $register, $user): bool
+    {
+        if ($user->where('email', $register['umail'])) {
+            return true;
+        }
+        return false;
     }
 }

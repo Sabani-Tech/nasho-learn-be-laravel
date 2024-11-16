@@ -22,9 +22,13 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // 'nama_lengkap' => 'required',
+            // 'email' => 'required|email|unique:users,email',
+            // 'username' => 'required|string',
+            // 'password' => 'required|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+            // 'password_confirmation' => 'required|same:password',
             'nama_lengkap' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'username' => 'required|string',
+            'umail' => 'required|string',
             'password' => 'required|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
             'password_confirmation' => 'required|same:password',
         ];
