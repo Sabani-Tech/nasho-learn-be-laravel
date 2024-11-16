@@ -33,7 +33,7 @@ class CategoryRepositories extends Controller
 
     private function handle_validate_category_id_for_materi($kategori_id): bool
     {
-        if ($this->materi->where('kategori_materi_id', $kategori_id)->first()) {
+        if ($this->category->find($kategori_id)) {
             return true;
         }
         return false;
