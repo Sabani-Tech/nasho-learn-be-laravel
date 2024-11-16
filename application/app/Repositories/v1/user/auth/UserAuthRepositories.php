@@ -18,19 +18,19 @@ class UserAuthRepositories extends Controller
         } else if ($this->handle_exists_user_by_email($login, $user)) {
             $user_req = $this->handle_where_exists_by_username_or_email('email', $user, $login['umail']);
         } else {
-            return $this->error_response('Email/username salah');
+            return $this->error_response('Wrong Email');
         }
 
         if ($this->handle_exists_user_by_password($login, $user_req)) {
             if (!$this->handle_validate_role_after_do_login($user_req)) {
-                return $this->error_response('anda bukan user');
+                return $this->error_response('You not user');
             }
 
             if ($this->handle_validate_role_after_do_login($user_req)) {
-                return $this->success_response($this->handle_mapping_user_login($user_req), 'Berhasil Login');
+                return $this->success_response($this->handle_mapping_user_login($user_req), 'Success Login');
             }
         } else {
-            return $this->error_response('password salah');
+            return $this->error_response('Wrong Password');
         }
     }
 
