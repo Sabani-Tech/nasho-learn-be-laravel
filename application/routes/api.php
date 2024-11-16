@@ -6,6 +6,7 @@ use App\Http\Controllers\v1\admin\master_data\KategoriMateriController;
 use App\Http\Controllers\v1\admin\master_data\MateriController;
 use App\Http\Controllers\v1\admin\master_data\UserManagementController;
 use App\Http\Controllers\v1\user\auth\UserAuthController;
+use App\Http\Controllers\v1\user\category\CategoryController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -92,6 +93,10 @@ Route::prefix('v1')->group(function () {
         });
         Route::middleware(['auth:api', 'user_middleware'])->group(function () {
             Route::get('profile', [UserAuthController::class, 'profile'])->name('user.auth.profile');
+            Route::prefix('category')->group(function () {
+                Route::get('/', [CategoryController::class, 'ListCategory'])->name('user.category');
+                Route::get('/{kategori_id}/materi', [CategoryController::class, 'ListMateriByCategory'])->name('user.category_id.materi');
+            });
         });
     });
     Route::prefix('admin')->group(function () {

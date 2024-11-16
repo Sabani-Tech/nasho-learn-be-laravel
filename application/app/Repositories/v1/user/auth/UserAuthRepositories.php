@@ -92,16 +92,23 @@ class UserAuthRepositories extends Controller
         $register['password'] = Hash::make($register['password']);
         $register['role_id'] = 1; //role default user is (1)
 
-        $validate_strings_input = $this->handle_validate_strings_inputs($register);
-        if (!$validate_strings_input) {
-            $submit = $this->handle_map_register_by_username($register);
+        $validate_existing_email = $this->handle_validate_existing_email($register, $user);
+        if (!$validate_existing_email) {
+
+            $validate_strings_input = $this->handle_validate_strings_inputs($register);
+            if (!$validate_strings_input) {
+                $submit = $this->handle_map_register_by_username($register);
+            }
+
+            if ($validate_strings_input) {
+                $submit = $this->handle_map_register_by_email($register);
+            }
+            return $user->create($submit);
         }
 
-        if ($validate_strings_input) {
-            $submit = $this->handle_map_register_by_email($register);
+        if ($validate_existing_email) {
+            return $this->error_response('Email has been already', 422);
         }
-
-        return $user->create($submit);
     }
 
     public function logout($user_session)
@@ -143,5 +150,13 @@ class UserAuthRepositories extends Controller
             return true; //email
         }
         return false; //username
+    }
+
+    private function handle_validate_existing_email(array $register, $user): bool
+    {
+        if ($user->where('email', $register['umail'])) {
+            return true;
+        }
+        return false;
     }
 }

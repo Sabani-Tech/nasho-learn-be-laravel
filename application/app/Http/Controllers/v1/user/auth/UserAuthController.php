@@ -43,7 +43,6 @@ class UserAuthController extends Controller
             $validate = $request->validated();
             $validate = $request->safe()->only(['umail', 'nama_lengkap', 'password', 'role_id']);
             $validate = $this->user_repositories->register($validate, $this->user);
-            $validate = $this->success_response($validate, 'Berhasil Registrasi');
         }
 
         return $validate;
