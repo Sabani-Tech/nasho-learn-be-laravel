@@ -72,14 +72,14 @@ class MateriRepositories extends Controller
             ->paginate($limit ?? 10);
     }
 
-    public function show($uid_materi)
+    public function show($permalink_materi)
     {
-        if (!$this->validate_exists_materi_by_id_childs($uid_materi)) {
+        if (!$this->validate_exists_materi_by_permalink_childs($permalink_materi)) {
             return $this->error_response('materi tidak ditemukan');
         }
 
-        if ($this->validate_exists_materi_by_id_childs($uid_materi)) {
-            return $this->success_response($this->where_exists_materi_by_id_childs($uid_materi), 'Berhasil detail materi');
+        if ($this->validate_exists_materi_by_permalink_childs($permalink_materi)) {
+            return $this->success_response($this->where_exists_materi_by_permalink_childs($permalink_materi), 'Berhasil detail materi');
         }
     }
 
@@ -103,7 +103,7 @@ class MateriRepositories extends Controller
         }
     }
 
-    public function update($materi, $uid_materi)
+    public function update($materi, $permalink_materi)
     {
         try {
             $this->start_transaction;
@@ -114,13 +114,13 @@ class MateriRepositories extends Controller
                 return $this->error_response('Category not found', 422);
             }
 
-            $update_materi = $this->validate_exists_materi_by_id_childs($uid_materi);
+            $update_materi = $this->validate_exists_materi_by_permalink_childs($permalink_materi);
             if (!$update_materi) {
                 return $this->error_response('id materi salah');
             }
 
             if ($update_materi) {
-                $this->materi_query_builder->where('id', $uid_materi)->update($materi);
+                $this->materi_query_builder->where('permalink', $permalink_materi)->update($materi);
                 $this->commit_transaction;
                 return $this->success_response($materi, 'Berhasil update materi');
             }
@@ -130,20 +130,20 @@ class MateriRepositories extends Controller
         }
     }
 
-    public function delete($uid_materi)
+    public function delete($permalink_materi)
     {
         try {
             $this->start_transaction;
 
-            $delete_materi = $this->validate_exists_materi_by_id_childs($uid_materi);
+            $delete_materi = $this->validate_exists_materi_by_permalink_childs($permalink_materi);
             if (!$delete_materi) {
                 return $this->error_response('materi sudah di hapus');
             }
 
             if ($delete_materi) {
-                $this->delete_materi_by_id_childs($uid_materi);
+                $this->delete_materi_by_id_childs($permalink_materi);
                 $this->commit_transaction;
-                return $this->success_response($this->where_exists_materi_by_id_childs($uid_materi), 'Berhasil delete materi');
+                return $this->success_response($this->where_exists_materi_by_permalink_childs($permalink_materi), 'Berhasil delete materi');
             }
         } catch (\Exception $e) {
             $this->rollback_transaction;
@@ -151,14 +151,14 @@ class MateriRepositories extends Controller
         }
     }
 
-    private function delete_materi_by_id_childs($uid_materi)
+    private function delete_materi_by_id_childs($permalink_materi)
     {
-        return $this->materi_query_builder->where('id', $uid_materi)->delete();
+        return $this->materi_query_builder->where('permalink', $permalink_materi)->delete();
     }
 
-    private function where_exists_materi_by_id_childs($uid_materi)
+    private function where_exists_materi_by_permalink_childs($permalink_materi)
     {
-        return $this->materi_query_builder->find($uid_materi);
+        return $this->materi_query_builder->wherepermalink($permalink_materi)->first();
     }
 
     private function where_exists_category_materi_by_id($kategori)
@@ -166,9 +166,10 @@ class MateriRepositories extends Controller
         return $this->category_materi_query_builder->find($kategori['kategori_materi_id']);
     }
 
-    private function validate_exists_materi_by_id_childs($uid_materi): bool
+    // handler validate materi by permalink
+    private function validate_exists_materi_by_permalink_childs($permalink_materi): bool
     {
-        if ($this->where_exists_materi_by_id_childs($uid_materi)) {
+        if ($this->where_exists_materi_by_permalink_childs($permalink_materi)) {
             return true;
         }
         return false;
