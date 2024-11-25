@@ -5,21 +5,47 @@ namespace App\Repositories\v1\admin\master_data;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 
-class Materi extends Model {}
+//model
+class Materi extends Model
+{
+    protected $table = 'materi';
+    protected $fillable = ['embed', 'judul', 'permalink', 'isi', 'kategori_materi_id'];
+    protected $casts = ['id' => 'string', 'created_at' => 'date:M-d-Y H:i:s', 'updated_at' => 'date:M-d-Y H:i:s'];
+    protected $hidden = ['id', 'kategori_materi_id', 'isi'];
 
+    //relation from materi.kategori_materi_id -> kategori_materi.id (untuk get kategori from materi)
+    public function kategori(): HasOne
+    {
+        return $this->hasOne(CategoryMateri::class, 'id', 'kategori_materi_id');
+    }
+}
+
+class CategoryMateri extends Model
+{
+    protected $table = 'kategori_materi';
+    protected $fillable = ['id', 'jenis', 'deskripsi'];
+    protected $hidden = ['id'];
+    protected $casts = ['id' => 'string', 'created_at' => 'date:M-d-Y H:i:s', 'updated_at' => 'date:M-d-Y H:i:s'];
+}
+
+//repositories
 class MateriRepositories extends Controller
 {
-    private $model,
-        $category_materi,
+    private
+        $materi_model,
+        $materi_query_builder,
+        $category_materi_query_builder,
         $start_transaction,
         $commit_transaction,
         $rollback_transaction;
     public function __construct()
     {
-        $this->model = DB::table('materi');
-        $this->category_materi = DB::table('kategori_materi');
+        $this->materi_model = new Materi();
+        $this->materi_query_builder = DB::table('materi');
+        $this->category_materi_query_builder = DB::table('kategori_materi');
         $this->start_transaction = DB::beginTransaction();
         $this->commit_transaction = DB::commit();
         $this->rollback_transaction = DB::commit();
@@ -31,8 +57,8 @@ class MateriRepositories extends Controller
             $limit = $request->limit;
         }
 
-        return $this->model
-            ->join('kategori_materi', 'materi.kategori_materi_id', '=', 'kategori_materi.id')
+        return $this->materi_model
+            ->with('kategori')
             ->when($request->judul, function ($query) use ($request) {
                 $query->where('judul', 'like', "%{$request->judul}%");
             })
@@ -42,7 +68,7 @@ class MateriRepositories extends Controller
             ->when($request->id, function ($query) use ($request) {
                 $query->where('id', $request->id);
             })
-            ->orderBy('kategori_materi.id', $request->typeSort ?? 'asc')
+            ->orderBy('id', $request->typeSort ?? 'asc')
             ->paginate($limit ?? 10);
     }
 
@@ -68,7 +94,7 @@ class MateriRepositories extends Controller
                 return $this->error_response('Category not found', 422);
             }
 
-            $this->model->insert($materi);
+            $this->materi_query_builder->insert($materi);
             $this->commit_transaction;
             return $this->success_response($materi, 'Berhasil tambah materi');
         } catch (\Exception $e) {
@@ -94,7 +120,7 @@ class MateriRepositories extends Controller
             }
 
             if ($update_materi) {
-                $this->model->where('id', $uid_materi)->update($materi);
+                $this->materi_query_builder->where('id', $uid_materi)->update($materi);
                 $this->commit_transaction;
                 return $this->success_response($materi, 'Berhasil update materi');
             }
@@ -127,17 +153,17 @@ class MateriRepositories extends Controller
 
     private function delete_materi_by_id_childs($uid_materi)
     {
-        return $this->model->where('id', $uid_materi)->delete();
+        return $this->materi_query_builder->where('id', $uid_materi)->delete();
     }
 
     private function where_exists_materi_by_id_childs($uid_materi)
     {
-        return $this->model->find($uid_materi);
+        return $this->materi_query_builder->find($uid_materi);
     }
 
     private function where_exists_category_materi_by_id($kategori)
     {
-        return $this->category_materi->find($kategori['kategori_materi_id']);
+        return $this->category_materi_query_builder->find($kategori['kategori_materi_id']);
     }
 
     private function validate_exists_materi_by_id_childs($uid_materi): bool
