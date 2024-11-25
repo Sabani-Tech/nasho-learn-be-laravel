@@ -4,7 +4,10 @@ namespace App\Repositories\v1\admin\master_data;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+
+class Materi extends Model {}
 
 class MateriRepositories extends Controller
 {
