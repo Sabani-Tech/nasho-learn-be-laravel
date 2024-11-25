@@ -4,8 +4,8 @@ namespace App\Repositories\v1\user\category;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\DB;
 
 //model
 class Materi extends Model
@@ -28,6 +28,12 @@ class Category extends Model
     protected $fillable = ['jenis', 'deskripsi', 'created_at', 'updated_at'];
 
     protected $casts = ['id' => 'string', 'created_at' => 'date:d-M-y H:i:s', 'updated_at' => 'date:d-M-y H:i:s'];
+
+    //relation list nya kategori_materi.id -> materi.kategori_materi_id (untuk mengambil list materi berdasarkan dari kategori)
+    public function materi(): HasMany
+    {
+        return $this->hasMany(Materi::class, 'kategori_materi_id');
+    }
 }
 
 //repositories
@@ -42,7 +48,7 @@ class CategoryRepositories extends Controller
 
     public function ListCategory()
     {
-        return $this->category->get();
+        return $this->category->with('materi')->get();
     }
 
     public function ListMateriByCategory($kategori_id)
