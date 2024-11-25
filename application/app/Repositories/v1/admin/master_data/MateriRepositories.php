@@ -68,7 +68,7 @@ class MateriRepositories extends Controller
             ->when($request->id, function ($query) use ($request) {
                 $query->where('id', $request->id);
             })
-            ->orderBy('id', $request->typeSort ?? 'asc')
+            ->orderBy('permalink', $request->typeSort ?? 'asc')
             ->paginate($limit ?? 10);
     }
 
