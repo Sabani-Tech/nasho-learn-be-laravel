@@ -17,6 +17,7 @@ return new class extends Migration
                 ->primary()
                 ->default(DB::raw('(UUID())'));
             $table->string('embed');
+            $table->string('phase');
             $table->string('judul');
             $table->string('permalink');
             $table->text('isi');
