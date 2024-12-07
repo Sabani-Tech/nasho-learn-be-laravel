@@ -75,7 +75,7 @@ class CategoryRepositories extends Controller
 
     private function handle_materi_by_id_category($category)
     {
-        $category['jenis_arab'] = $category['jenis'] == 'nahwu' ? 'نحوو' : 'صرف';
+        $category['jenis_arab'] = $category['jenis'] == 'Nahwu' || $category['jenis'] == 'nahwu' ? 'نحوو' : 'صرف';
         $category['materi_phase1'] = $this->materi->where([['kategori_materi_id', '=', $category->id], ['phase', '=', 1]])->get();
         $category['materi_phase2'] = $this->materi->where([['kategori_materi_id', '=', $category->id], ['phase', '=', 2]])->get();
         $category['status'] = Status::status1;
