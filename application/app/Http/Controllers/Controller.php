@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 abstract class Controller
 {
-    protected function success_response($data, string $message, int $status_code = 200, bool $error = false)
+    protected function success_response($data, string $message = 'SUCCESS', int $status_code = 200, bool $error = false)
     {
         return response()->json(
             [

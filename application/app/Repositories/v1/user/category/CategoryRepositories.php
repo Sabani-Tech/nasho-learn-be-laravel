@@ -69,17 +69,17 @@ class CategoryRepositories extends Controller
         if ($validate_category_id_for_materi) {
             // return $this->success_response($this->materi->where('kategori_materi_id', $kategori_id)->with('kategori')->get(), 'Successfully Get Materi By Category');
             $category = $this->category->whereId($kategori_id)->firstOrFail();
-            return $this->handle_materi_by_id_category($category);
+            return $this->success_response($this->handle_materi_by_id_category($category));
         }
     }
 
-    private function handle_materi_by_id_category($category)
+    private function handle_materi_by_id_category($category): array
     {
         $category['jenis_arab'] = $category['jenis'] == 'Nahwu' || $category['jenis'] == 'nahwu' ? 'نحوو' : 'صرف';
         $category['materi_phase1'] = $this->materi->where([['kategori_materi_id', '=', $category->id], ['phase', '=', 1]])->get();
         $category['materi_phase2'] = $this->materi->where([['kategori_materi_id', '=', $category->id], ['phase', '=', 2]])->get();
         $category['status'] = Status::status1;
-        return $this->success_response($category, 'SUCCESS');
+        return $category;
     }
 
     private function handle_validate_category_id_for_materi($kategori_id): bool
