@@ -18,6 +18,6 @@ class CategoryController extends Controller
 
     public function ListMateriByCategory($kategori_id)
     {
-        return $this->categoryRepositories->ListMateriByCategory($kategori_id);
+        return $this->success_response($this->categoryRepositories->ListMateriByCategory($kategori_id));
     }
 }

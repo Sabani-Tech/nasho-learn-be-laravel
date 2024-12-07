@@ -17,7 +17,7 @@ abstract class Controller
         );
     }
 
-    protected function error_response(string $message, int $status_code = 422, bool $error = true, $debug = "{}", $env_mode = "{}")
+    protected function error_response(string $message = 'ERROR', int $status_code = 422, bool $error = true, $debug = "{}", $env_mode = "{}")
     {
         //selain error uncorrectable proses maka tampilkan mode debug
         if ($status_code != 422) {
