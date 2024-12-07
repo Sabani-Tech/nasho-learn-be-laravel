@@ -13,11 +13,11 @@ class CategoryController extends Controller
 
     public function ListCategory()
     {
-        return $this->success_response($this->categoryRepositories->ListCategory(), 'Success Get Category');
+        return $this->success_response($this->categoryRepositories->ListCategory());
     }
 
     public function ListMateriByCategory($kategori_id)
     {
-        return $this->categoryRepositories->ListMateriByCategory($kategori_id);
+        return $this->success_response($this->categoryRepositories->ListMateriByCategory($kategori_id));
     }
 }
