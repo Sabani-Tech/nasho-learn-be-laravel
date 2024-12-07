@@ -3,10 +3,18 @@
 namespace App\Repositories\v1\user\category;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\MateriResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+enum Status: string
+{
+    case status1 = 'Materi1';
+    case status2 = 'Exam1';
+    case status3 = 'Materi2';
+    case status4 = 'Exam2';
+}
 //model
 class Materi extends Model
 {
@@ -48,7 +56,7 @@ class CategoryRepositories extends Controller
 
     public function ListCategory()
     {
-        return $this->category->with('materi')->get();
+        return MateriResource::collection($this->category->get());
     }
 
     public function ListMateriByCategory($kategori_id)
@@ -59,8 +67,19 @@ class CategoryRepositories extends Controller
         }
 
         if ($validate_category_id_for_materi) {
-            return $this->success_response($this->materi->where('kategori_materi_id', $kategori_id)->with('kategori')->get(), 'Successfully Get Materi By Category');
+            // return $this->success_response($this->materi->where('kategori_materi_id', $kategori_id)->with('kategori')->get(), 'Successfully Get Materi By Category');
+            $category = $this->category->whereId($kategori_id)->firstOrFail();
+            return $this->handle_materi_by_id_category($category);
         }
+    }
+
+    private function handle_materi_by_id_category($category)
+    {
+        $category['jenis_arab'] = $category['jenis'] == 'nahwu' ? 'نحوو' : 'صرف';
+        $category['materi_phase1'] = $this->materi->where([['kategori_materi_id', '=', $category->id], ['phase', '=', 1]])->get();
+        $category['materi_phase2'] = $this->materi->where([['kategori_materi_id', '=', $category->id], ['phase', '=', 2]])->get();
+        $category['status'] = Status::status1;
+        return $this->success_response($category, 'SUCCESS');
     }
 
     private function handle_validate_category_id_for_materi($kategori_id): bool
