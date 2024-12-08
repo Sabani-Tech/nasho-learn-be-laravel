@@ -62,7 +62,7 @@ class UserManagementRepositories extends Controller
             return $this->success_response($user, 'Berhasil tambah user');
         } catch (\Exception $e) {
             $this->rollback_transaction;
-            return $this->error_response($e->getMessage(), '500', $e, \env('APP_ENV'));
+            return $this->error_response($e->getMessage(), '500', true, \env('APP_ENV'));
         }
     }
 
@@ -85,7 +85,7 @@ class UserManagementRepositories extends Controller
             }
         } catch (\Exception $e) {
             $this->rollback_transaction;
-            return $this->error_response($e->getMessage(), '500', $e, \env('APP_ENV'));
+            return $this->error_response($e->getMessage(), '500', true, \env('APP_ENV'));
         }
     }
 
@@ -106,7 +106,7 @@ class UserManagementRepositories extends Controller
             }
         } catch (\Exception $e) {
             $this->rollback_transaction;
-            return $this->error_response($e->getMessage(), '500', $e, \env('APP_ENV'));
+            return $this->error_response($e->getMessage(), '500', true, \env('APP_ENV'));
         }
     }
 
