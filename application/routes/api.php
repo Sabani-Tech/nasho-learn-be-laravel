@@ -4,11 +4,11 @@ use App\Http\Controllers\v1\admin\auth\AdminAuthController;
 use App\Http\Controllers\v1\admin\master_data\AboutController;
 use App\Http\Controllers\v1\admin\master_data\KategoriMateriController;
 use App\Http\Controllers\v1\admin\master_data\MateriController;
-use App\Http\Controllers\v1\admin\master_data\SoalController;
+use App\Http\Controllers\v1\admin\master_data\SoalController as AdminSoal;
 use App\Http\Controllers\v1\admin\master_data\UserManagementController;
 use App\Http\Controllers\v1\user\auth\UserAuthController;
 use App\Http\Controllers\v1\user\category\CategoryController;
-use App\Http\Controllers\v1\user\soal\SoalController;
+use App\Http\Controllers\v1\user\soal\SoalController as UserSoal;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -100,7 +100,7 @@ Route::prefix('v1')->group(function () {
                 Route::get('/{kategori_id}/materi', [CategoryController::class, 'ListMateriByCategory'])->name('user.category_id.materi');
                 Route::put('/{category_id}/status/{status_category}', [CategoryController::class, 'UpdateStatusByCategoryId'])->name('user.category_id.materi');
             });
-            Route::get('soal', [SoalController::class, 'index']);
+            Route::get('soal', [UserSoal::class, 'index']);
         });
     });
     Route::prefix('admin')->group(function () {
@@ -117,7 +117,7 @@ Route::prefix('v1')->group(function () {
                 Route::resource('kategori-materi', KategoriMateriController::class);
                 Route::resource('about', AboutController::class);
                 Route::resource('user', UserManagementController::class);
-                Route::resource('soal', SoalController::class);
+                Route::resource('soal', AdminSoal::class);
             });
         });
     });
