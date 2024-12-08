@@ -12,16 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('materi', function (Blueprint $table) {
+        Schema::create('soal', function (Blueprint $table) {
             $table->uuid('id')
                 ->primary()
                 ->default(DB::raw('(UUID())'));
-            $table->string('embed');
-            $table->string('phase');
-            $table->string('judul');
-            $table->string('permalink');
-            $table->text('isi');
-            $table->uuid('kategori_materi_id');
+            $table->string('title', 128);
+            $table->string('question', 128);
+            $table->integer('point');
+            $table->json('option');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('materi');
+        Schema::dropIfExists('soal');
     }
 };
