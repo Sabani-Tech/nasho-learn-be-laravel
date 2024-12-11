@@ -4,7 +4,7 @@ use App\Http\Controllers\v1\admin\auth\AdminAuthController;
 use App\Http\Controllers\v1\admin\master_data\AboutController;
 use App\Http\Controllers\v1\admin\master_data\KategoriMateriController;
 use App\Http\Controllers\v1\admin\master_data\MateriController;
-use App\Http\Controllers\v1\admin\master_data\SoalController;
+use App\Http\Controllers\v1\admin\master_data\QuisController;
 use App\Http\Controllers\v1\admin\master_data\UserManagementController;
 use App\Http\Controllers\v1\user\auth\UserAuthController;
 use App\Http\Controllers\v1\user\category\CategoryController;
@@ -115,7 +115,7 @@ Route::prefix('v1')->group(function () {
                 Route::resource('kategori-materi', KategoriMateriController::class);
                 Route::resource('about', AboutController::class);
                 Route::resource('user', UserManagementController::class);
-                Route::resource('soal', SoalController::class);
+                Route::resource('quis', QuisController::class);
             });
         });
     });
