@@ -98,8 +98,9 @@ Route::prefix('v1')->group(function () {
                 Route::get('/', [CategoryController::class, 'ListCategory'])->name('user.category');
                 Route::get('/{kategori_id}/materi', [CategoryController::class, 'ListMateriByCategory'])->name('user.category_id.materi');
                 Route::put('/{category_id}/status/{status_category}', [CategoryController::class, 'UpdateStatusByCategoryId'])->name('user.category_id.status');
+                Route::get('/{category_id}/materi/{materi_id}/quis', [SoalController::class, 'quis'])->name('user.category_id.quis');
+                Route::get('/{category_id}/exam', [SoalController::class, 'exam'])->name('user.category_id.exam');
             });
-            Route::get('soal', [SoalController::class, 'index']);
         });
     });
     Route::prefix('admin')->group(function () {
