@@ -16,12 +16,12 @@ class QuisModel extends Model
 }
 class UjianModel extends Model
 {
-    protected $table = 'quis';
+    protected $table = 'exam';
     protected $casts = [
         'option' => 'array',
         'id' => 'string',
     ];
-    protected $hidden = ['kategori_materi_id', 'materi_id'];
+    protected $hidden = ['kategori_materi_id', 'materi_id', 'phase'];
 }
 
 class SoalRepositories extends Controller
