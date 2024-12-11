@@ -13,11 +13,11 @@ class SoalController extends Controller
     ) {}
     public function quis($category_id, $materi_id)
     {
-        return $this->soalRepositories->quis($category_id, $materi_id);
+        return $this->soalRepositories->Quis($category_id, $materi_id);
     }
 
-    public function exam($category_id)
+    public function exam($category_id, Request $request)
     {
-        return $this->soalRepositories->exam($category_id);
+        return $this->soalRepositories->Exam($category_id, $request);
     }
 }
