@@ -97,6 +97,7 @@ Route::prefix('v1')->group(function () {
             Route::prefix('category')->group(function () {
                 Route::get('/', [CategoryController::class, 'ListCategory'])->name('user.category');
                 Route::get('/{kategori_id}/materi', [CategoryController::class, 'ListMateriByCategory'])->name('user.category_id.materi');
+                Route::put('/{category_id}/status/{status_category}', [CategoryController::class, 'UpdateStatusByCategoryId'])->name('user.category_id.status');
             });
         });
     });
