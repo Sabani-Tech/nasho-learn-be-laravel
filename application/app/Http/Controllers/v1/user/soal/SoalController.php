@@ -11,8 +11,13 @@ class SoalController extends Controller
     public function __construct(
         private SoalRepositories $soalRepositories
     ) {}
-    public function index()
+    public function quis($category_id, $materi_id)
     {
-        return $this->success_response($this->soalRepositories->index());
+        return $this->soalRepositories->Quis($category_id, $materi_id);
+    }
+
+    public function exam($category_id, Request $request)
+    {
+        return $this->soalRepositories->Exam($category_id, $request);
     }
 }
