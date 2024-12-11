@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('soal', function (Blueprint $table) {
+        Schema::create('exam', function (Blueprint $table) {
             $table->uuid('id')
                 ->primary()
                 ->default(DB::raw('(UUID())'));
@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('question', 128);
             $table->integer('point');
             $table->json('option');
+            $table->integer('phase');
+            $table->string('kategori_materi_id');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('soal');
+        Schema::dropIfExists('exam');
     }
 };

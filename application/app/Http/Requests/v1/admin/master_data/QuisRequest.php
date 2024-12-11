@@ -4,7 +4,7 @@ namespace App\Http\Requests\v1\admin\master_data;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SoalRequest extends FormRequest
+class QuisRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,6 +25,8 @@ class SoalRequest extends FormRequest
             'title' => 'required|string',
             'question' => 'required|string',
             'point' => 'required|integer',
+            'kategori_materi_id' => 'required|string',
+            'materi_id' => 'required|string',
             'option' => 'required|string',
         ];
     }
