@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('question', 128);
             $table->integer('point');
             $table->json('option');
+            $table->integer('phase');
             $table->string('kategori_materi_id');
             $table->timestamps();
         });
