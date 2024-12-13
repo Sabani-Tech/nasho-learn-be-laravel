@@ -32,12 +32,12 @@ class AdminMiddleware extends Controller
                 return $this->error_response('platform not exists', 401, true, 'Hint: platform available is mobile or web,and use that platform base on roles', env('APP_ENV'));
             }
 
+            $Platform = DB::table('request_header')->where('platform', $request->header('X-PLATFORM-NASHO'))->first()->platform;
             if (
-                DB::table('request_header')
-                ->where('platform', $request->header('X-PLATFORM-NASHO'))
-                ->first()->platform != 'web'
+                $Platform != 'web' &&
+                $Platform != 'internal-tools'
             ) {
-                return $this->error_response('wrong platform', 401, true, 'Hint:use mobile platfrom cause that is user roles', env('APP_ENV'));
+                return $this->error_response('wrong platform', 401, true, 'Hint:use admin platfrom cause that is admin roles', env('APP_ENV'));
             }
 
             if (

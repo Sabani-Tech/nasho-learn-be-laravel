@@ -22,6 +22,12 @@ class HeaderReqSeeder extends Seeder
             'created_at' => Carbon::now()->timezone(env('APP_TIMEZONE'))->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->timezone(env('APP_TIMEZONE'))->format('Y-m-d H:i:s'),
         ], [
+            'platform' => 'internal-tools',
+            'client_key' => Str::uuid(),
+            'version' => '1.0',
+            'created_at' => Carbon::now()->timezone(env('APP_TIMEZONE'))->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->timezone(env('APP_TIMEZONE'))->format('Y-m-d H:i:s'),
+        ], [
             'platform' => 'mobile',
             'client_key' => Str::uuid(),
             'version' => '1.0',
