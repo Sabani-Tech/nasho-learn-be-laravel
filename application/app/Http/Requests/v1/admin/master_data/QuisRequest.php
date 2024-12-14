@@ -4,7 +4,7 @@ namespace App\Http\Requests\v1\admin\master_data;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MateriRequest extends FormRequest
+class QuisRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,12 @@ class MateriRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'embed' => 'required|string',
-            'judul' => 'required|string',
-            'phase' => 'required|integer',
-            'kategori_materi_id' => 'string',
-            'permalink' => 'string',
-            'isi' => 'required|string',
+            'title' => 'required|string',
+            'question' => 'required|string',
+            'point' => 'required|integer',
+            'kategori_materi_id' => 'required|string',
+            'materi_id' => 'required|string',
+            'option' => 'required|string',
         ];
     }
 }
