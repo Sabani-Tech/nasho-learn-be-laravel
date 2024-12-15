@@ -27,6 +27,8 @@ class QuisRequest extends FormRequest
             'point' => 'required|integer',
             'kategori_materi_id' => 'required|string',
             'materi_id' => 'required|string',
+            'batch' => 'required|integer',
+            'answer_key' => 'required',
             'option' => 'required|string',
         ];
     }
