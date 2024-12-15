@@ -27,6 +27,7 @@ class UjianRequest extends FormRequest
             'point' => 'required|integer',
             'kategori_materi_id' => 'required|string',
             'phase' => 'integer|required',
+            'batch' => 'required|integer',
             'option' => 'required|string',
         ];
     }
