@@ -18,9 +18,37 @@ enum Status: string
 class Category extends Model
 {
     protected $table = 'kategori_materi';
-    protected $fillable = ['jenis', 'deskripsi', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'jenis',
+        'deskripsi',
+        'created_at',
+        'updated_at'
+    ];
 
-    protected $casts = ['id' => 'string', 'created_at' => 'date:d-M-y H:i:s', 'updated_at' => 'date:d-M-y H:i:s'];
+    protected $casts = [
+        'id' => 'string',
+        'created_at' => 'date:d-M-y H:i:s',
+        'updated_at' => 'date:d-M-y H:i:s'
+    ];
+}
+
+class Materi extends Model
+{
+    protected $table = 'materi';
+    protected $casts = [
+        'id' => 'string',
+        'created_at' => 'date:d-M-y H:i:s',
+        'updated_at' => 'date:d-M-y H:i:s'
+    ];
+}
+
+class CategoryMateriDetail extends Model
+{
+    protected $table = 'kategori_materi_detail';
+    protected $casts = [
+        'created_at' => 'date:d-M-y H:i:s',
+        'updated_at' => 'date:d-M-y H:i:s'
+    ];
 }
 
 //repositories
@@ -30,8 +58,8 @@ class CategoryRepositories extends Controller
     public function __construct()
     {
         $this->category = new Category();
-        $this->category_detail = DB::table('kategori_materi_detail');
-        $this->materi = DB::table('materi');
+        $this->category_detail = new CategoryMateriDetail();
+        $this->materi = new Materi();
     }
 
     public function ListCategory()
@@ -88,12 +116,18 @@ class CategoryRepositories extends Controller
 
     private function HandleGetListMateriByIdCategoryOfMateriPhase1($category)
     {
-        return $this->materi->where([['kategori_materi_id', '=', $category->id], ['phase', '=', 1]])->get();
+        return $this->materi->where([
+            ['kategori_materi_id', '=', $category->id],
+            ['phase', '=', 1],
+        ])->get();
     }
 
     private function HandleGetListMateriByIdCategoryOfMateriPhase2($category)
     {
-        return $this->materi->where([['kategori_materi_id', '=', $category->id], ['phase', '=', 2]])->get();
+        return $this->materi->where([
+            ['kategori_materi_id', '=', $category->id],
+            ['phase', '=', 2],
+        ])->get();
     }
 
     private function HandleValidateCategoryById($kategori_id): bool
@@ -110,23 +144,34 @@ class CategoryRepositories extends Controller
     }
     private function HandleGetCategoryDetailByIdCategory($category_id)
     {
-        return $this->category_detail->where([['kategori_materi_id', '=', $category_id], ['users_id', '=', Auth::guard('api')->user()->id]])->first();
+        return $this->category_detail->where([
+            ['kategori_materi_id', '=', $category_id],
+            ['users_id', '=', Auth::guard('api')->user()->id]
+        ])->first();
     }
 
     private function HandleValidateFieldCategoryDetailByUserID($kategori_id): bool
     {
-        return $this->category_detail->where([['kategori_materi_id', '=', $kategori_id], ['users_id', '=', Auth::guard('api')->user()->id]])->first() ? true : false;
+        return $this->category_detail->where([
+            ['kategori_materi_id', '=', $kategori_id],
+            ['users_id', '=', Auth::guard('api')->user()->id]
+        ])->first() ? true : false;
     }
 
     private function HandleCreateFieldCategoryDetailByUserID($kategori_id)
     {
-        return $this->category_detail->insert(['kategori_materi_id' => $kategori_id, 'users_id' => Auth::guard('api')->user()->id, 'created_at' => date('Y-m-d H:i:s')]);
+        return $this->category_detail->insert(
+            ['kategori_materi_id' => $kategori_id, 'users_id' => Auth::guard('api')->user()->id, 'created_at' => date('Y-m-d H:i:s')]
+        );
     }
 
     private function HandleUpdateFieldCategoryDetailByUserID($category_id, $status_category)
     {
         return $this->category_detail
-            ->where([['kategori_materi_id', '=', $category_id], ['users_id', '=', Auth::guard('api')->user()->id]])
+            ->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['users_id', '=', Auth::guard('api')->user()->id]
+            ])
             ->update(['status' => $status_category]);
     }
 }
