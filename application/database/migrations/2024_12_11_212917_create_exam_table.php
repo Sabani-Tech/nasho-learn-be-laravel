@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('phase');
             $table->string('kategori_materi_id');
             $table->integer('batch');
+            $table->char('answer_key');
             $table->timestamps();
         });
     }
