@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -12,8 +13,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('quis_answer', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')
+                ->primary()
+                ->default(DB::raw('(UUID())'));
             $table->integer('point');
+            $table->integer('batch');
+            $table->json('answer');
+            $table->string('quis_id');
             $table->foreignId('users_id')->references('id')->on('users');
             $table->timestamps();
         });
