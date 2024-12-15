@@ -119,7 +119,7 @@ class CategoryRepositories extends Controller
         return $this->materi->where([
             ['kategori_materi_id', '=', $category->id],
             ['phase', '=', 1],
-        ])->get();
+        ])->orderBy('urutan')->get();
     }
 
     private function HandleGetListMateriByIdCategoryOfMateriPhase2($category)
@@ -127,7 +127,7 @@ class CategoryRepositories extends Controller
         return $this->materi->where([
             ['kategori_materi_id', '=', $category->id],
             ['phase', '=', 2],
-        ])->get();
+        ])->orderBy('urutan')->get();
     }
 
     private function HandleValidateCategoryById($kategori_id): bool
