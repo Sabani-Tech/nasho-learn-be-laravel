@@ -28,6 +28,7 @@ class MateriRequest extends FormRequest
             'kategori_materi_id' => 'required|string',
             'permalink' => 'string',
             'isi' => 'required|string',
+            'urutan' => 'required|integer',
         ];
     }
 }
