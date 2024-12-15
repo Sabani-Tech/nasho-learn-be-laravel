@@ -25,7 +25,7 @@ class UjianController extends Controller
     public function store(UjianRequest $quisRequest)
     {
         $materi = $quisRequest->validated();
-        $materi = $this->ujianRepositories->store($quisRequest->safe()->only(['title', 'question', 'point', 'option', 'phase', 'kategori_materi_id']));
+        $materi = $this->ujianRepositories->store($quisRequest->safe()->only(['title', 'question', 'point', 'option', 'phase', 'kategori_materi_id', 'batch']));
         return $materi;
     }
 
@@ -43,7 +43,7 @@ class UjianController extends Controller
     public function update(UjianRequest $ujianRequest, string $id)
     {
         $materi = $ujianRequest->validated();
-        $materi = $this->ujianRepositories->update($ujianRequest->safe()->only(['title', 'question', 'point', 'option', 'phase', 'kategori_materi_id']), $id);
+        $materi = $this->ujianRepositories->update($ujianRequest->safe()->only(['title', 'question', 'point', 'option', 'phase', 'kategori_materi_id', 'batch']), $id);
         return $materi;
     }
 

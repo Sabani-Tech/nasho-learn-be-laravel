@@ -22,6 +22,7 @@ return new class extends Migration
             $table->json('option');
             $table->integer('phase');
             $table->string('kategori_materi_id');
+            $table->integer('batch');
             $table->timestamps();
         });
     }
