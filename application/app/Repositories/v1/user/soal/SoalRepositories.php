@@ -95,4 +95,12 @@ class SoalRepositories extends Controller
             ]
         )->get();
     }
+
+    /**
+     * Handler Submit(Quis And Exam)
+     */
+
+    public function QuisSubmit($category_id, $materi_id) {}
+
+    public function ExamSubmit($category_id, $request) {}
 }
