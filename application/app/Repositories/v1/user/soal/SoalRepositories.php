@@ -96,12 +96,13 @@ class SoalRepositories extends Controller
 
     private function HandleGetQuisByCategoryIdAndMateriId($quis_model, $category_id, $materi_id)
     {
-        return $quis_model->where(
-            [
-                ['kategori_materi_id', '=', $category_id],
-                ['materi_id', '=', $materi_id]
-            ]
-        )->get();
+        $RandBatch = rand(1, 3);
+        $QuisModel = $quis_model->where([
+            ['kategori_materi_id', '=', $category_id],
+            ['materi_id', '=', $materi_id],
+            ['batch', '=', $RandBatch],
+        ])->limit(5)->get(); //untuk quis menampilkan 5 soal dengan point 20
+        return $QuisModel;
     }
 
     /**
