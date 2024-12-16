@@ -125,7 +125,7 @@ class SoalRepositories extends Controller
         return $this->success_response($PrintQuis);
     }
 
-    private function _SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
+    private function _SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id): void
     {
         $CollectAnswer = [];
         foreach ($REQUEST_POST as $quis) {
@@ -139,7 +139,7 @@ class SoalRepositories extends Controller
             array_push($CollectAnswer, $quis);
         }
         // return $CollectAnswer;
-        QuisAnswerModel::insert($CollectAnswer);
+        $this->quis_answer_model->insert($CollectAnswer);
     }
 
     public function ExamSubmit($category_id, $request) {}
