@@ -30,7 +30,7 @@ class UjianModel extends Model
 class QuisAnswerModel extends Model
 {
     protected $table = 'quis_answer';
-    protected $fillable = ['point', 'batch', 'answer', 'quis_id', 'users_id'];
+    protected $fillable = ['id', 'point', 'batch', 'answer', 'quis_id', 'users_id', 'created_at', 'updated_at'];
 }
 
 class SoalRepositories extends Controller
@@ -121,7 +121,7 @@ class SoalRepositories extends Controller
         }
 
         $PrintQuis = $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
-        // $QuisAnswerModel = $this->quis_answer_model->create($PrintQuis);
+        // $QuisAnswerModel = $this->quis_answer_model->insert($PrintQuis);
         return $this->success_response($PrintQuis);
     }
 
@@ -134,10 +134,12 @@ class SoalRepositories extends Controller
                 ['materi_id', '=', $materi_id],
                 ['id', '=', $quis['quis_id']]
             ])->first()->answer_key == $quis['answer']['key'] ? 20 : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
+            $quis['answer'] = $quis['answer']['key'];
             $quis['users_id'] = Auth::guard('api')->user()->id;
             array_push($CollectAnswer, $quis);
         }
-        return $CollectAnswer;
+        // return $CollectAnswer;
+        QuisAnswerModel::insert($CollectAnswer);
     }
 
     public function ExamSubmit($category_id, $request) {}

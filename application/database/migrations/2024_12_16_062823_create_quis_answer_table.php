@@ -18,7 +18,7 @@ return new class extends Migration
                 ->default(DB::raw('(UUID())'));
             $table->integer('point');
             $table->integer('batch');
-            $table->json('answer');
+            $table->string('answer');
             $table->string('quis_id');
             $table->foreignId('users_id')->references('id')->on('users');
             $table->timestamps();
