@@ -5,6 +5,7 @@ namespace App\Repositories\v1\user\soal;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 //Model query(quis and exam)
 class QuisModel extends Model
@@ -113,6 +114,7 @@ class SoalRepositories extends Controller
      * Handler Submit(Quis And Exam)
      */
 
+    //quis
     public function QuisSubmit($category_id, $materi_id, $REQUEST_POST)
     {
         if (!$this->HandleValidateQuisCategoryById($category_id)) {
@@ -122,8 +124,7 @@ class SoalRepositories extends Controller
             return $this->error_response('Materi Not Found');
         }
 
-        $PrintQuis = $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
-        // $QuisAnswerModel = $this->quis_answer_model->insert($PrintQuis);
+        $PrintQuis = $this->_GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
         return $this->success_response($PrintQuis);
     }
 
@@ -138,11 +139,49 @@ class SoalRepositories extends Controller
             ])->first()->answer_key == $quis['answer']['key'] ? 20 : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
             $quis['answer'] = $quis['answer']['key'];
             $quis['users_id'] = Auth::guard('api')->user()->id;
+            $quis['kategori_materi_id'] = $category_id;
+            $quis['materi_id'] = $materi_id;
             array_push($CollectAnswer, $quis);
         }
         // return $CollectAnswer;
         $this->quis_answer_model->insert($CollectAnswer);
     }
+
+    private function _GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
+    {
+        $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
+
+        //return mapping quis
+        return $this->HandleMappingSubmitQuis($category_id, $materi_id);
+    }
+
+    private function HandleMappingSubmitQuis($category_id, $materi_id): array
+    {
+        return array(
+            'passed' => $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+            ])->sum('point') <= 100 ? false : true,
+            'correct_count' => $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['point', '=', 20]
+            ])->get()->count(),
+            'incorrect_count' => $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['point', '=', 0]
+            ])->get()->count(),
+            'score' => $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+            ])->sum('point'),
+            'total_score' => 100,
+            'title' => DB::table('materi')->whereId($materi_id)->first()->judul,
+        );
+    }
+
+    //exam
 
     public function ExamSubmit($category_id, $request) {}
 }

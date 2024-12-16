@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('batch');
             $table->string('answer');
             $table->string('quis_id');
+            $table->string('kategori_materi_id');
+            $table->string('materi_id');
             $table->foreignId('users_id')->references('id')->on('users');
             $table->timestamps();
         });
