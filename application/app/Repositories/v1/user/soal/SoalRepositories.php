@@ -122,7 +122,7 @@ class SoalRepositories extends Controller
             return $this->error_response('Materi Not Found');
         }
 
-        $PrintQuis = $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
+        $PrintQuis = $this->_GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
         // $QuisAnswerModel = $this->quis_answer_model->insert($PrintQuis);
         return $this->success_response($PrintQuis);
     }
@@ -138,10 +138,17 @@ class SoalRepositories extends Controller
             ])->first()->answer_key == $quis['answer']['key'] ? 20 : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
             $quis['answer'] = $quis['answer']['key'];
             $quis['users_id'] = Auth::guard('api')->user()->id;
+            $quis['kategori_materi_id'] = $category_id;
+            $quis['materi_id'] = $materi_id;
             array_push($CollectAnswer, $quis);
         }
         // return $CollectAnswer;
         $this->quis_answer_model->insert($CollectAnswer);
+    }
+
+    private function _GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
+    {
+        $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
     }
 
     public function ExamSubmit($category_id, $request) {}
