@@ -22,7 +22,13 @@ class SoalController extends Controller
     }
 
     //submit quis and exam
-    public function quisSubmit($category_id, $materi_id) {}
+    public function quisSubmit($category_id, $materi_id)
+    {
+        return $this->soalRepositories->QuisSubmit($category_id, $materi_id);
+    }
 
-    public function examSubmit($category_id, Request $request) {}
+    public function examSubmit($category_id, Request $request)
+    {
+        return $this->soalRepositories->ExamSubmit($category_id, $request);
+    }
 }
