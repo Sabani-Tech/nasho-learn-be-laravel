@@ -143,7 +143,6 @@ class SoalRepositories extends Controller
             $quis['materi_id'] = $materi_id;
             array_push($CollectAnswer, $quis);
         }
-        // return $CollectAnswer;
         $this->quis_answer_model->insert($CollectAnswer);
     }
 

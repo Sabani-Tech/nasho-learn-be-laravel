@@ -25,15 +25,7 @@ class SoalController extends Controller
     //submit quis and exam
     public function quisSubmit($category_id, $materi_id, Request $request)
     {
-        //validation
-        $validator = Validator::make($request->all(), [
-            'request' => 'required|array'
-        ]);
-        if ($validator->fails()) {
-            return $this->error_response($validator->errors());
-        }
-        //body request
-        $REQUEST_POST = $request->post('request');
+        $REQUEST_POST = $request->post();
         return $this->soalRepositories->QuisSubmit($category_id, $materi_id, $REQUEST_POST);
     }
 
