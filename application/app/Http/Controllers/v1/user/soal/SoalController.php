@@ -22,11 +22,19 @@ class SoalController extends Controller
         return $this->soalRepositories->Exam($category_id, $request);
     }
 
-    //submit quis and exam
+    /**
+     * result,submit(quis and exam)
+     */
+    //quis
     public function quisSubmit($category_id, $materi_id, Request $request)
     {
         $REQUEST_POST = $request->post();
         return $this->soalRepositories->QuisSubmit($category_id, $materi_id, $REQUEST_POST);
+    }
+
+    public function quisResult($category_id, $materi_id)
+    {
+        return $this->soalRepositories->QuisResult($category_id, $materi_id);
     }
 
     public function examSubmit($category_id, Request $request)

@@ -3,6 +3,7 @@
 namespace App\Repositories\v1\user\soal;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PembahasanResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +33,9 @@ class QuisAnswerModel extends Model
 {
     protected $table = 'quis_answer';
     protected $fillable = ['id', 'point', 'batch', 'answer', 'quis_id', 'users_id', 'created_at', 'updated_at'];
+    protected $casts = [
+        'id' => 'string'
+    ];
 }
 
 class SoalRepositories extends Controller
@@ -136,7 +140,7 @@ class SoalRepositories extends Controller
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
                 ['id', '=', $quis['quis_id']]
-            ])->first()->answer_key == $quis['answer']['key'] ? 20 : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
+            ])->first()->answer_key == $quis['answer']['key'] ? $quis['point'] : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
             $quis['answer'] = $quis['answer']['key'];
             $quis['users_id'] = Auth::guard('api')->user()->id;
             $quis['kategori_materi_id'] = $category_id;
@@ -148,6 +152,15 @@ class SoalRepositories extends Controller
 
     private function _GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
     {
+        //cek data jika sudah menjawab soal by batch maka akan digantikan dengan soal batch berikutnya
+        $RowAnswer = $this->quis_answer_model->where([
+            ['kategori_materi_id', '=', $category_id],
+            ['materi_id', '=', $materi_id],
+        ])->first();
+        if ($RowAnswer) {
+            $RowAnswer->truncate();
+        }
+
         $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
 
         //return mapping quis
@@ -160,7 +173,7 @@ class SoalRepositories extends Controller
             'passed' => $this->quis_answer_model->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
-            ])->sum('point') <= 100 ? false : true,
+            ])->sum('point') < 100 ? false : true,
             'correct_count' => $this->quis_answer_model->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
@@ -178,6 +191,22 @@ class SoalRepositories extends Controller
             'total_score' => 100,
             'title' => DB::table('materi')->whereId($materi_id)->first()->judul,
         );
+    }
+
+    public function QuisResult($category_id, $materi_id)
+    {
+        if (!$this->HandleValidateQuisCategoryById($category_id)) {
+            return $this->error_response('Category Not Found');
+        }
+        if (!$this->HandleValidateQuisMateriById($materi_id)) {
+            return $this->error_response('Materi Not Found');
+        }
+
+        return $this->success_response(PembahasanResource::collection($this->quis_answer_model->where([
+            ['kategori_materi_id', '=', $category_id],
+            ['materi_id', '=', $materi_id],
+            ['users_id', '=', Auth::guard('api')->user()->id],
+        ])->get()));
     }
 
     //exam
