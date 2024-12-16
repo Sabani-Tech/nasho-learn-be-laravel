@@ -5,6 +5,7 @@ namespace App\Repositories\v1\user\soal;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 
+//Model query(quis and exam)
 class QuisModel extends Model
 {
     protected $table = 'quis';
@@ -23,6 +24,8 @@ class UjianModel extends Model
     ];
     protected $hidden = ['kategori_materi_id', 'materi_id', 'phase'];
 }
+
+//Model submit(Quis and Exam)
 
 class SoalRepositories extends Controller
 {
@@ -100,7 +103,17 @@ class SoalRepositories extends Controller
      * Handler Submit(Quis And Exam)
      */
 
-    public function QuisSubmit($category_id, $materi_id) {}
+    public function QuisSubmit($category_id, $materi_id, $REQUEST_POST)
+    {
+        if (!$this->HandleValidateQuisCategoryById($category_id)) {
+            return $this->error_response('Category Not Found');
+        }
+        if (!$this->HandleValidateQuisMateriById($materi_id)) {
+            return $this->error_response('Materi Not Found');
+        }
+
+        return response()->json($REQUEST_POST);
+    }
 
     public function ExamSubmit($category_id, $request) {}
 }
