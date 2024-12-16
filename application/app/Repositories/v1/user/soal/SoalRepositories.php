@@ -136,7 +136,7 @@ class SoalRepositories extends Controller
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
                 ['id', '=', $quis['quis_id']]
-            ])->first()->answer_key == $quis['answer']['key'] ? 20 : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
+            ])->first()->answer_key == $quis['answer']['key'] ? $quis['point'] : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
             $quis['answer'] = $quis['answer']['key'];
             $quis['users_id'] = Auth::guard('api')->user()->id;
             $quis['kategori_materi_id'] = $category_id;
@@ -160,7 +160,7 @@ class SoalRepositories extends Controller
             'passed' => $this->quis_answer_model->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
-            ])->sum('point') <= 100 ? false : true,
+            ])->sum('point') < 100 ? false : true,
             'correct_count' => $this->quis_answer_model->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
