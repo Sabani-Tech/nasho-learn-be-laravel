@@ -4,6 +4,7 @@ namespace App\Repositories\v1\user\soal;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 //Model query(quis and exam)
 class QuisModel extends Model
@@ -34,11 +35,12 @@ class QuisAnswerModel extends Model
 
 class SoalRepositories extends Controller
 {
-    private $quis_model, $ujian_model;
+    private $quis_model, $ujian_model, $quis_answer_model;
     public function __construct()
     {
         $this->quis_model = new QuisModel();
         $this->ujian_model = new UjianModel();
+        $this->quis_answer_model = new QuisAnswerModel();
     }
     public function Quis($category_id, $materi_id)
     {
@@ -118,7 +120,24 @@ class SoalRepositories extends Controller
             return $this->error_response('Materi Not Found');
         }
 
-        return response()->json($REQUEST_POST);
+        $PrintQuis = $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
+        // $QuisAnswerModel = $this->quis_answer_model->create($PrintQuis);
+        return $this->success_response($PrintQuis);
+    }
+
+    private function _SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
+    {
+        $CollectAnswer = [];
+        foreach ($REQUEST_POST as $quis) {
+            $quis['point'] = $this->quis_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['id', '=', $quis['quis_id']]
+            ])->first()->answer_key == $quis['answer']['key'] ? 20 : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
+            $quis['users_id'] = Auth::guard('api')->user()->id;
+            array_push($CollectAnswer, $quis);
+        }
+        return $CollectAnswer;
     }
 
     public function ExamSubmit($category_id, $request) {}
