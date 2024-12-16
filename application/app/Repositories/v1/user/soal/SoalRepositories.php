@@ -148,6 +148,15 @@ class SoalRepositories extends Controller
 
     private function _GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
     {
+        //cek data jika sudah menjawab soal by batch maka akan digantikan dengan soal batch berikutnya
+        $RowAnswer = $this->quis_answer_model->where([
+            ['kategori_materi_id', '=', $category_id],
+            ['materi_id', '=', $materi_id],
+        ])->first();
+        if ($RowAnswer) {
+            $RowAnswer->truncate();
+        }
+
         $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
 
         //return mapping quis
