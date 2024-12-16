@@ -26,7 +26,7 @@ class PembahasanResource extends JsonResource
             }
         }
         return [
-            'id' => $this->id,
+            'id' => $this->quis_id,
             'qustion' => DB::table('quis')->where('id', $this->quis_id)->first()->question,
             'point' => $this->point,
             'answer' => array(
