@@ -156,13 +156,13 @@ class SoalRepositories extends Controller
         $RowAnswer = $this->quis_answer_model->where([
             ['kategori_materi_id', '=', $category_id],
             ['materi_id', '=', $materi_id],
-        ])->first();
+            ['users_id', '=', Auth::guard('api')->user()->id],
+        ]);
         if ($RowAnswer) {
-            $RowAnswer->truncate();
+            $RowAnswer->delete();
         }
 
         $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
-
         //return mapping quis
         return $this->HandleMappingSubmitQuis($category_id, $materi_id);
     }
@@ -173,20 +173,24 @@ class SoalRepositories extends Controller
             'passed' => $this->quis_answer_model->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
             ])->sum('point') < 100 ? false : true,
             'correct_count' => $this->quis_answer_model->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
                 ['point', '=', 20]
             ])->get()->count(),
             'incorrect_count' => $this->quis_answer_model->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
-                ['point', '=', 0]
+                ['users_id', '=', Auth::guard('api')->user()->id],
+                ['point', '=', 0],
             ])->get()->count(),
             'score' => $this->quis_answer_model->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
             ])->sum('point'),
             'total_score' => 100,
             'title' => DB::table('materi')->whereId($materi_id)->first()->judul,
