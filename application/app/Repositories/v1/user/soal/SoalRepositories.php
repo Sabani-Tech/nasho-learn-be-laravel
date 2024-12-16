@@ -26,6 +26,11 @@ class UjianModel extends Model
 }
 
 //Model submit(Quis and Exam)
+class QuisAnswerModel extends Model
+{
+    protected $table = 'quis_answer';
+    protected $fillable = ['point', 'batch', 'answer', 'quis_id', 'users_id'];
+}
 
 class SoalRepositories extends Controller
 {
