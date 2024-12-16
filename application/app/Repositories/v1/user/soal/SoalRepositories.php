@@ -3,6 +3,7 @@
 namespace App\Repositories\v1\user\soal;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PembahasanResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +33,9 @@ class QuisAnswerModel extends Model
 {
     protected $table = 'quis_answer';
     protected $fillable = ['id', 'point', 'batch', 'answer', 'quis_id', 'users_id', 'created_at', 'updated_at'];
+    protected $casts = [
+        'id' => 'string'
+    ];
 }
 
 class SoalRepositories extends Controller
@@ -187,6 +191,22 @@ class SoalRepositories extends Controller
             'total_score' => 100,
             'title' => DB::table('materi')->whereId($materi_id)->first()->judul,
         );
+    }
+
+    public function QuisResult($category_id, $materi_id)
+    {
+        if (!$this->HandleValidateQuisCategoryById($category_id)) {
+            return $this->error_response('Category Not Found');
+        }
+        if (!$this->HandleValidateQuisMateriById($materi_id)) {
+            return $this->error_response('Materi Not Found');
+        }
+
+        return $this->success_response(PembahasanResource::collection($this->quis_answer_model->where([
+            ['kategori_materi_id', '=', $category_id],
+            ['materi_id', '=', $materi_id],
+            ['users_id', '=', Auth::guard('api')->user()->id],
+        ])->get()));
     }
 
     //exam
