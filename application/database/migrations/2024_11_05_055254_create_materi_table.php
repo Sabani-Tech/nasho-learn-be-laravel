@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('permalink');
             $table->text('isi');
             $table->uuid('kategori_materi_id');
+            $table->integer('urutan');
             $table->timestamps();
         });
     }
