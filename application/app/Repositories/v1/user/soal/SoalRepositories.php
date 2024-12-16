@@ -74,10 +74,12 @@ class SoalRepositories extends Controller
 
     private function HandleGetUjianByCategoryId($ujian_model, $category_id, $request)
     {
+        $RandBatch = rand(1, 3);
         return $ujian_model->where([
             ['kategori_materi_id', '=', $category_id],
             ['phase', '=', $request->query('phase')],
-        ])->get();
+            ['batch', '=', $RandBatch],
+        ])->limit(10)->get();
     }
 
     //handler quis
