@@ -1,5 +1,147 @@
 <?php
 
 return [
-    'dummy' => "[{\"id\":\"0cc3cebf-badb-11ef-8196-00163e047c76\",\"title\":\"Unsurpembentukkalimat(الْجُمْلاَةُالمُفِيْدَةُ)\",\"question\":\"Berikutiniyangtermasukdalampembagianالْكَلِمَةُadalah?\",\"point\":20,\"option\":[{\"key\":\"A\",\"value\":\"الْإِسْمُ,الْفِعْلُ,الْمَوْصُوْل\"},{\"key\":\"B\",\"value\":\"الْإِسْمُ,الْفِعْلُ,الْحَرْف\"},{\"key\":\"C\",\"value\":\"مَاضِي,مُضَارِعُ,أَمْرُ\"},{\"key\":\"D\",\"value\":\"الْإِسْمُ,الْفِعْلُ,الْحَرْفُ,الْمُضَارِع\"}],\"batch\":1,\"answer_key\":\"B\",\"created_at\":null,\"updated_at\":null},{\"id\":\"79ec533d-bada-11ef-8196-00163e047c76\",\"title\":\"Unsurpembentukkalimat(الْجُمْلاَةُالمُفِيْدَةُ)\\r\\n\\r\\n\",\"question\":\"Apayangdimaksuddenganالْكَلِمَةُ?\",\"point\":20,\"option\":[{\"key\":\"A\",\"value\":\"Kata\"},{\"key\":\"B\",\"value\":\"Kalimat\"},{\"key\":\"C\",\"value\":\"Katakerja\"},{\"key\":\"D\",\"value\":\"KataPerintah\"}],\"batch\":1,\"answer_key\":\"A\",\"created_at\":null,\"updated_at\":null},{\"id\":\"97448723-bada-11ef-8196-00163e047c76\",\"title\":\"Unsurpembentukkalimat(الْجُمْلاَةُالمُفِيْدَةُ)\",\"question\":\"Isim(الْإِسْمُ)adalahkatayangmenunjukankepada....\",\"point\":20,\"option\":[{\"key\":\"A\",\"value\":\"BendahidupdanBendaMati\"},{\"key\":\"B\",\"value\":\"KataKerja\"},{\"key\":\"C\",\"value\":\"Katabantu\"},{\"key\":\"D\",\"value\":\"Katasambung\"}],\"batch\":1,\"answer_key\":\"A\",\"created_at\":null,\"updated_at\":null},{\"id\":\"97449262-bada-11ef-8196-00163e047c76\",\"title\":\"Unsurpembentukkalimat(الْجُمْلاَةُالمُفِيْدَةُ)\",\"question\":\"Berikutinicontohyangtermasukfiiladalah.....\",\"point\":20,\"option\":[{\"key\":\"A\",\"value\":\"كِتَابٌ,الْقَلَمُ,يَذْهَب\"},{\"key\":\"B\",\"value\":\"مُدَرِّسٌ,شَجَرَةٌ,الْغَنَم\"},{\"key\":\"C\",\"value\":\"أَكَلَ,عَلَّمَ,يُعَلِّم\"},{\"key\":\"D\",\"value\":\"مِنْ,إِلَى,عَن\"}],\"batch\":1,\"answer_key\":\"C\",\"created_at\":null,\"updated_at\":null},{\"id\":\"97449f06-bada-11ef-8196-00163e047c76\",\"title\":\"Unsurpembentukkalimat(الْجُمْلاَةُالمُفِيْدَةُ)\",\"question\":\"Harfjardalamkalimatberikut**\\\"اَلرَّحْمٰنُعَلَىالْعَرْشِاسْتَوٰى\\\"**adalah:\",\"point\":20,\"option\":[{\"key\":\"A\",\"value\":\"اَلرَّحْمٰنُ\"},{\"key\":\"B\",\"value\":\"عَلَى\"},{\"key\":\"C\",\"value\":\"الْعَرْشِ\"},{\"key\":\"D\",\"value\":\"اسْتَوٰى\"}],\"batch\":1,\"answer_key\":\"B\",\"created_at\":null,\"updated_at\":null}],[{\"id\":\"3664df76-badd-11ef-8196-00163e047c76\",\"title\":\"Unsurpembentukkalimat(الْجُمْلاَةُالمُفِيْدَةُ)\",\"question\":\"Berikutiniadalahmacam-macamdarikata(أنواعالكلمة),kecuali..\",\"point\":20,\"option\":[{\"key\":\"A\",\"value\":\"إسم\"},{\"key\":\"B\",\"value\":\"جملة\"},{\"key\":\"C\",\"value\":\"فعل\"},{\"key\":\"D\",\"value\":\"حرف\"}],\"batch\":2,\"answer_key\":\"B\",\"created_at\":null,\"updated_at\":null},{\"id\":\"3664eebd-badd-11ef-8196-00163e047c76\",\"title\":\"Unsurpembentukkalimat(الْجُمْلاَةُالمُفِيْدَةُ)\",\"question\":\"Manakahkatadibawahiniyangmerupakanisim?\",\"point\":20,\"option\":[{\"key\":\"A\",\"value\":\"أُسْتَاذٌ\"},{\"key\":\"B\",\"value\":\"قَرَآ\"},{\"key\":\"C\",\"value\":\"جَلَس\"},{\"key\":\"D\",\"value\":\"فِي\"}],\"batch\":2,\"answer_key\":\"A\",\"created_at\":null,\"updated_at\":null},{\"id\":\"3664fe2e-badd-11ef-8196-00163e047c76\",\"title\":\"Unsurpembentukkalimat(الْجُمْلاَةُالمُفِيْدَةُ)\",\"question\":\"Apakahyangdimaksuddenganfi’il\",\"point\":20,\"option\":[{\"key\":\"A\",\"value\":\"katayangmenunjukankatabenda\"},{\"key\":\"B\",\"value\":\"Katayangmenunjukansuatuperistiwa\"},{\"key\":\"C\",\"value\":\"KatamenunjukanperintahKatamenunjukanperintah\"},{\"key\":\"D\",\"value\":\"Katayangmenunjukansuatutugas\"}],\"batch\":2,\"answer_key\":\"B\",\"created_at\":null,\"updated_at\":null},{\"id\":\"36650c6e-badd-11ef-8196-00163e047c76\",\"title\":\"Unsurpembentukkalimat(الْجُمْلاَةُالمُفِيْدَةُ)\",\"question\":\"Manakahcontohberikutyangterdapatharfjar?\",\"point\":20,\"option\":[{\"key\":\"A\",\"value\":\"اَلرَّحْمٰنُعَلَىالْعَرْشِاسْتَوٰى\"},{\"key\":\"B\",\"value\":\"أَكَلْتُالْخُبْز\"},{\"key\":\"C\",\"value\":\"حَضَرَتْمَرْيَم\"},{\"key\":\"D\",\"value\":\"قَرَأَإِبْرَاهِيْمُالْكِتَابَ\"}],\"batch\":2,\"answer_key\":\"A\",\"created_at\":null,\"updated_at\":null},{\"id\":\"366517d5-badd-11ef-8196-00163e047c76\",\"title\":\"Unsurpembentukkalimat(الْجُمْلاَةُالمُفِيْدَةُ)\",\"question\":\"DibawahiniyangtermasukdalamHarfJaradalah?\",\"point\":20,\"option\":[{\"key\":\"A\",\"value\":\"نَظَر\"},{\"key\":\"B\",\"value\":\"جَمُل\"},{\"key\":\"C\",\"value\":\"قَرُب\"},{\"key\":\"D\",\"value\":\"فِي\"}],\"batch\":2,\"answer_key\":\"D\",\"created_at\":null,\"updated_at\":null}]"
+    'dummy' => [
+        [
+            "id" => "0cc3cebf-badb-11ef-8196-00163e047c76",
+            "title" => "Unsur pembentuk kalimat (الْجُمْلاَةُ المُفِيْدَةُ)",
+            "question" => "Berikut ini yang termasuk dalam pembagian الْكَلِمَةُ adalah?",
+            "point" => 20,
+            "option" => [
+                [
+                    "key" => "A",
+                    "value" => "الْإِسْمُ , الْفِعْلُ , الْمَوْصُوْل"
+                ],
+                [
+                    "key" => "B",
+                    "value" => "الْإِسْمُ , الْفِعْلُ , الْحَرْف"
+                ],
+                [
+                    "key" => "C",
+                    "value" => "مَاضِي , مُضَارِعُ , أَمْرُ"
+                ],
+                [
+                    "key" => "D",
+                    "value" => "الْإِسْمُ , الْفِعْلُ , الْحَرْفُ , الْمُضَارِع"
+                ]
+            ],
+            "batch" => 1,
+            "answer_key" => "B",
+            "created_at" => null,
+            "updated_at" => null
+        ],
+        [
+            "id" => "79ec533d-bada-11ef-8196-00163e047c76",
+            "title" => "Unsur pembentuk kalimat (الْجُمْلاَةُ المُفِيْدَةُ)",
+            "question" => "Apa yang dimaksud dengan الْكَلِمَةُ ?",
+            "point" => 20,
+            "option" => [
+                [
+                    "key" => "A",
+                    "value" => "Kata"
+                ],
+                [
+                    "key" => "B",
+                    "value" => "Kalimat"
+                ],
+                [
+                    "key" => "C",
+                    "value" => "Kata kerja"
+                ],
+                [
+                    "key" => "D",
+                    "value" => "Kata Perintah"
+                ]
+            ],
+            "batch" => 1,
+            "answer_key" => "A",
+            "created_at" => null,
+            "updated_at" => null
+        ],
+        [
+            "id" => "97448723-bada-11ef-8196-00163e047c76",
+            "title" => "Unsur pembentuk kalimat (الْجُمْلاَةُ المُفِيْدَةُ)",
+            "question" => "Isim (الْإِسْمُ) adalah kata yang menunjukan kepada ....",
+            "point" => 20,
+            "option" => [
+                [
+                    "key" => "A",
+                    "value" => "Benda hidup dan Benda Mati"
+                ],
+                [
+                    "key" => "B",
+                    "value" => "Kata Kerja"
+                ],
+                [
+                    "key" => "C",
+                    "value" => "Kata bantu"
+                ],
+                [
+                    "key" => "D",
+                    "value" => "Kata sambung"
+                ]
+            ],
+            "batch" => 1,
+            "answer_key" => "A",
+            "created_at" => null,
+            "updated_at" => null
+        ],
+        [
+            "id" => "97449262-bada-11ef-8196-00163e047c76",
+            "title" => "Unsur pembentuk kalimat (الْجُمْلاَةُ المُفِيْدَةُ)",
+            "question" => "Berikut ini contoh yang termasuk fiil adalah .....",
+            "point" => 20,
+            "option" => [
+                [
+                    "key" => "A",
+                    "value" => " كِتَابٌ , الْقَلَمُ , يَذْهَب"
+                ],
+                [
+                    "key" => "B",
+                    "value" => " مُدَرِّسٌ , شَجَرَةٌ , الْغَنَم"
+                ],
+                [
+                    "key" => "C",
+                    "value" => "أَكَلَ , عَلَّمَ , يُعَلِّم"
+                ],
+                [
+                    "key" => "D",
+                    "value" => "مِنْ , إِلَى , عَن"
+                ]
+            ],
+            "batch" => 1,
+            "answer_key" => "C",
+            "created_at" => null,
+            "updated_at" => null
+        ],
+        [
+            "id" => "97449f06-bada-11ef-8196-00163e047c76",
+            "title" => "Unsur pembentuk kalimat (الْجُمْلاَةُ المُفِيْدَةُ)",
+            "question" => "Harf jar dalam kalimat berikut **اَلرَّحْمٰنُ عَلَى الْعَرْشِ اسْتَوٰى** adalah:",
+            "point" => 20,
+            "option" => [
+                [
+                    "key" => "A",
+                    "value" => "اَلرَّحْمٰنُ"
+                ],
+                [
+                    "key" => "B",
+                    "value" => "عَلَى"
+                ],
+                [
+                    "key" => "C",
+                    "value" => "الْعَرْشِ"
+                ],
+                [
+                    "key" => "D",
+                    "value" => "اسْتَوٰى"
+                ]
+            ],
+            "batch" => 1,
+            "answer_key" => "B",
+            "created_at" => null,
+            "updated_at" => null
+        ]
+    ]
+
 ];
