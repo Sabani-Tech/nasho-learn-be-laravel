@@ -12,19 +12,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('materi', function (Blueprint $table) {
+        Schema::create('quis_answer', function (Blueprint $table) {
             $table->uuid('id')
                 ->primary()
                 ->default(DB::raw('(UUID())'));
-            $table->string('embed');
-            $table->string('phase');
-            $table->string('judul');
-            $table->string('permalink');
-            $table->text('isi')->nullable();
-            $table->text('file_uri');
-            $table->uuid('kategori_materi_id');
-            $table->integer('urutan');
-            $table->enum('quis_status', [false, true]);
+            $table->integer('point');
+            $table->integer('batch');
+            $table->string('answer');
+            $table->string('quis_id');
+            $table->string('kategori_materi_id');
+            $table->string('materi_id');
+            $table->foreignId('users_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('materi');
+        Schema::dropIfExists('quis_answer');
     }
 };
