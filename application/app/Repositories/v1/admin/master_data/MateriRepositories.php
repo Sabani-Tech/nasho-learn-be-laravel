@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Request;
 
 //model
@@ -146,6 +147,8 @@ class MateriRepositories extends Controller
             }
 
             if ($delete_materi) {
+                $file_path = public_path("assets/{$this->where_exists_materi_by_permalink_childs($permalink_materi)->file_uri}");
+                File::delete($file_path);
                 $this->delete_materi_by_id_childs($permalink_materi);
                 $this->commit_transaction;
                 return $this->success_response($this->where_exists_materi_by_permalink_childs($permalink_materi), 'Berhasil delete materi');
