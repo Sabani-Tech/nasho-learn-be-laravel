@@ -82,9 +82,18 @@ function get_personal_access_client($id_user)
     }
 }
 
+//test internal tools dummu
+function handle_dummy_test_internal_tools()
+{
+    return response()->json(collect(config('appsmith.dummy')));
+}
+
 Route::prefix('v1')->group(function () {
     Route::get('test', function (Request $request) {
         return get_personal_access_client($request->input('id'));
+    });
+    Route::get('internal/tools/test', function () {
+        return handle_dummy_test_internal_tools();
     });
     Route::prefix('user')->group(function () {
         Route::prefix('auth')->group(function () {
