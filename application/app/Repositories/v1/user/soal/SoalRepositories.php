@@ -25,27 +25,60 @@ class UjianModel extends Model
         'option' => 'array',
         'id' => 'string',
     ];
-    protected $hidden = ['kategori_materi_id', 'materi_id', 'phase'];
+    protected $hidden = [
+        'kategori_materi_id',
+        'materi_id',
+        'phase'
+    ];
 }
 
 //Model submit(Quis and Exam)
 class QuisAnswerModel extends Model
 {
     protected $table = 'quis_answer';
-    protected $fillable = ['id', 'point', 'batch', 'answer', 'quis_id', 'users_id', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'id',
+        'point',
+        'batch',
+        'answer',
+        'quis_id',
+        'users_id',
+        'created_at',
+        'updated_at'
+    ];
     protected $casts = [
         'id' => 'string'
     ];
 }
 
+class ExamAnswerModel extends Model
+{
+    protected $table = 'exam_answer';
+    protected $fillable = [
+        'point',
+        'batch',
+        'answer',
+        'exam_id',
+        'kategori_materi_id',
+        'phase',
+        'users_id',
+        'created_at',
+        'updated_at',
+    ];
+    protected $casts = [
+        'id' => 'string',
+    ];
+}
+
 class SoalRepositories extends Controller
 {
-    private $quis_model, $ujian_model, $quis_answer_model;
+    private $quis_model, $ujian_model, $quis_answer_model, $exam_answer_model;
     public function __construct()
     {
         $this->quis_model = new QuisModel();
         $this->ujian_model = new UjianModel();
         $this->quis_answer_model = new QuisAnswerModel();
+        $this->exam_answer_model = new ExamAnswerModel();
     }
     public function Quis($category_id, $materi_id)
     {
@@ -235,5 +268,88 @@ class SoalRepositories extends Controller
 
     //exam
 
-    public function ExamSubmit($category_id, $request) {}
+    public function ExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE)
+    {
+        DB::beginTransaction();
+        try {
+            if (!$this->HandleValidateQuisCategoryById($category_id)) {
+                return $this->error_response('Category Not Found');
+            }
+
+            $PrintExam = $this->_GetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE);
+            DB::commit();
+            return $this->success_response($PrintExam);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->error_response($e->getMessage());
+        }
+    }
+
+    private function _SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE)
+    {
+        $CollectAnswer = [];
+        foreach ($REQUEST_POST as $exam) {
+            $exam['point'] = $this->ujian_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['phase', '=', $REQUEST_GET_PHASE],
+                ['id', '=', $exam['exam_id']]
+            ])->first()->answer_key == $exam['answer']['key'] ? $exam['point'] : 0; //mencocokan jawaban user dengan kunci jawaban dari soal jika bener maka point full:10 akan tetapi jika salah point:0
+            $exam['answer'] = $exam['answer']['key'];
+            $exam['users_id'] = Auth::guard('api')->user()->id;
+            $exam['kategori_materi_id'] = $category_id;
+            $exam['phase'] = $REQUEST_GET_PHASE;
+            array_push($CollectAnswer, $exam);
+        }
+        $this->exam_answer_model->insert($CollectAnswer);
+    }
+
+    private function _GetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE)
+    {
+        $RowAnswer = $this->exam_answer_model->where([
+            ['kategori_materi_id', '=', $category_id],
+            ['phase', '=', $REQUEST_GET_PHASE],
+            ['users_id', '=', Auth::guard('api')->user()->id],
+        ]);
+        if ($RowAnswer) {
+            $RowAnswer->delete();
+        }
+
+        //submit exam
+        $this->_SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE);
+        //return mapping exam
+        return $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE);
+    }
+
+    private function HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE): array
+    {
+        return array(
+            'passed' => $this->exam_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['phase', '=', $REQUEST_GET_PHASE],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+            ])->sum('point') >= 60 ? true : false,
+            'correct_count' => $this->exam_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['phase', '=', $REQUEST_GET_PHASE],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+                ['point', '=', 10],
+            ])->get()->count(),
+            'incorrect_count' => $this->exam_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['phase', '=', $REQUEST_GET_PHASE],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+                ['point', '=', 0],
+            ])->get()->count(),
+            'score' => $this->exam_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['phase', '=', $REQUEST_GET_PHASE],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+            ])->sum('point'),
+            'total_score' => 100,
+            'title' => DB::table('materi')
+                ->wherekategori_materi_id($category_id)
+                ->first()
+                ->judul,
+        );
+    }
 }
