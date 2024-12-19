@@ -2,11 +2,12 @@
 
 namespace App\Repositories\v1\user\soal;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\PembahasanResource;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\PembahasanExamResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use App\Http\Resources\PembahasanQuisResource;
 
 //Model query(quis and exam)
 class QuisModel extends Model
@@ -259,7 +260,7 @@ class SoalRepositories extends Controller
             return $this->error_response('Materi Not Found');
         }
 
-        return $this->success_response(PembahasanResource::collection($this->quis_answer_model->where([
+        return $this->success_response(PembahasanQuisResource::collection($this->quis_answer_model->where([
             ['kategori_materi_id', '=', $category_id],
             ['materi_id', '=', $materi_id],
             ['users_id', '=', Auth::guard('api')->user()->id],
@@ -283,6 +284,19 @@ class SoalRepositories extends Controller
             DB::rollBack();
             return $this->error_response($e->getMessage());
         }
+    }
+
+    public function ExamResult($category_id, $REQUEST_GET_PHASE)
+    {
+        if (!$this->HandleValidateQuisCategoryById($category_id)) {
+            return $this->error_response('Category Not Found');
+        }
+
+        return $this->success_response(PembahasanExamResource::collection($this->exam_answer_model->where([
+            ['kategori_materi_id', '=', $category_id],
+            ['phase', '=', $REQUEST_GET_PHASE],
+            ['users_id', '=', Auth::guard('api')->user()->id],
+        ])->get()));
     }
 
     private function _SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE): void
