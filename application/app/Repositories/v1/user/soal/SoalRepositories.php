@@ -121,15 +121,22 @@ class SoalRepositories extends Controller
     //quis
     public function QuisSubmit($category_id, $materi_id, $REQUEST_POST)
     {
-        if (!$this->HandleValidateQuisCategoryById($category_id)) {
-            return $this->error_response('Category Not Found');
-        }
-        if (!$this->HandleValidateQuisMateriById($materi_id)) {
-            return $this->error_response('Materi Not Found');
-        }
+        DB::beginTransaction();
+        try {
+            if (!$this->HandleValidateQuisCategoryById($category_id)) {
+                return $this->error_response('Category Not Found');
+            }
+            if (!$this->HandleValidateQuisMateriById($materi_id)) {
+                return $this->error_response('Materi Not Found');
+            }
 
-        $PrintQuis = $this->_GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
-        return $this->success_response($PrintQuis);
+            $PrintQuis = $this->_GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
+            DB::commit();
+            return $this->success_response($PrintQuis);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->error_response($e);
+        }
     }
 
     private function _SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id): void
@@ -162,7 +169,10 @@ class SoalRepositories extends Controller
             $RowAnswer->delete();
         }
 
+        //submit quis
         $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
+        //update quis_status materi: kalo udah pernah ikut quis ubah value quis_status jadi true base on id materi
+        $this->HandleUpdateQuisStatusAfterSubmitQuisByIdMateri($materi_id);
         //return mapping quis
         return $this->HandleMappingSubmitQuis($category_id, $materi_id);
     }
@@ -193,8 +203,18 @@ class SoalRepositories extends Controller
                 ['users_id', '=', Auth::guard('api')->user()->id],
             ])->sum('point'),
             'total_score' => 100,
-            'title' => DB::table('materi')->whereId($materi_id)->first()->judul,
+            'title' => DB::table('materi')
+                ->whereId($materi_id)
+                ->first()
+                ->judul,
         );
+    }
+
+    private function HandleUpdateQuisStatusAfterSubmitQuisByIdMateri($materi_id)
+    {
+        return DB::table('materi')
+            ->whereId($materi_id)
+            ->update(['quis_status' => 'true']);
     }
 
     public function QuisResult($category_id, $materi_id)

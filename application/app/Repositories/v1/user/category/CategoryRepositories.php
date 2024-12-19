@@ -40,6 +40,9 @@ class Materi extends Model
         'created_at' => 'date:d-M-y H:i:s',
         'updated_at' => 'date:d-M-y H:i:s'
     ];
+    protected $hidden = [
+        'isi'
+    ];
 }
 
 class CategoryMateriDetail extends Model
