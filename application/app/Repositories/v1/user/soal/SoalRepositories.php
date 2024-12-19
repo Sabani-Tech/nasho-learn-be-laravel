@@ -285,7 +285,7 @@ class SoalRepositories extends Controller
         }
     }
 
-    private function _SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE)
+    private function _SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE): void
     {
         $CollectAnswer = [];
         foreach ($REQUEST_POST as $exam) {
@@ -316,6 +316,22 @@ class SoalRepositories extends Controller
 
         //submit exam
         $this->_SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE);
+        // update status after passed exam phase 1 (uts) or exam phase 2 (uas)
+        if ($REQUEST_GET_PHASE == '1') {
+            if (
+                $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE)['score'] >= 60 &&
+                $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE)['passed'] == true
+            ) {
+                $this->HandleUpdateExamAndStatusAfterSubmitExamIfPassedPhase1($category_id);
+            }
+        } else if ($REQUEST_GET_PHASE == '2') {
+            if (
+                $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE)['score'] >= 60 &&
+                $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE)['passed'] == true
+            ) {
+                $this->HandleUpdateExamAndStatusAfterSubmitExamIfPassedPhase2($category_id);
+            }
+        }
         //return mapping exam
         return $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE);
     }
@@ -346,10 +362,33 @@ class SoalRepositories extends Controller
                 ['users_id', '=', Auth::guard('api')->user()->id],
             ])->sum('point'),
             'total_score' => 100,
-            'title' => DB::table('materi')
-                ->wherekategori_materi_id($category_id)
+            'title' => DB::table('kategori_materi')
+                ->whereId($category_id)
                 ->first()
-                ->judul,
+                ->jenis,
         );
+    }
+
+    private function HandleUpdateExamAndStatusAfterSubmitExamIfPassedPhase1($category_id)
+    {
+        return DB::table('kategori_materi_detail')
+            ->where([
+                ['users_id', '=', Auth::guard('api')->user()->id],
+                ['kategori_materi_id', '=', $category_id],
+            ])->update([
+                'exam1' => 'true', //uts nya lulus
+                'status' => 'Exam2', // langsung membuka ujian untuk tahap uas
+            ]);
+    }
+
+    private function HandleUpdateExamAndStatusAfterSubmitExamIfPassedPhase2($category_id)
+    {
+        return DB::table('kategori_materi_detail')
+            ->where([
+                ['users_id', '=', Auth::guard('api')->user()->id],
+                ['kategori_materi_id', '=', $category_id],
+            ])->update([
+                'exam2' => 'true', // uas nya lulus
+            ]);
     }
 }
