@@ -20,8 +20,8 @@ class MateriDetailResource extends JsonResource
             "embed" => $this->embed,
             "phase" => $this->phase,
             "judul" => $this->judul,
-            "permalink" => url("assets/{$this->permalink}"),
-            "file_uri" => $this->file_uri,
+            "permalink" => $this->permalink,
+            "file_uri" => url("assets/{$this->file_uri}"),
             "quis_status" => $this->quis_status,
             "urutan" => $this->urutan,
             "kategori_materi_id" => DB::table('kategori_materi')
