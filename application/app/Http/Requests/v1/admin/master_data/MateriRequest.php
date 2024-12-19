@@ -25,9 +25,11 @@ class MateriRequest extends FormRequest
             'embed' => 'required|string',
             'judul' => 'required|string',
             'phase' => 'required|integer',
-            'kategori_materi_id' => 'string',
+            'kategori_materi_id' => 'required|string',
             'permalink' => 'string',
-            'isi' => 'required|string',
+            'isi' => 'string',
+            'file_uri' => 'required|file|mimes:pdf|max:1024',
+            'urutan' => 'required|integer',
         ];
     }
 }

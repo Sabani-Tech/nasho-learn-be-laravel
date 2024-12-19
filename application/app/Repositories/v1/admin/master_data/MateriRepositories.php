@@ -7,12 +7,14 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Request;
 
 //model
 class Materi extends Model
 {
     protected $table = 'materi';
-    protected $fillable = ['embed', 'judul', 'permalink', 'isi', 'kategori_materi_id'];
+    protected $fillable = ['embed', 'judul', 'permalink', 'isi', 'file_uri', 'quis_status', 'kategori_materi_id', 'created_at', 'updated_at'];
     protected $casts = ['id' => 'string', 'created_at' => 'date:M-d-Y H:i:s', 'updated_at' => 'date:M-d-Y H:i:s'];
     protected $hidden = ['id', 'kategori_materi_id', 'isi'];
 
@@ -93,6 +95,8 @@ class MateriRepositories extends Controller
             if (!$this->validate_category_materi_by_id($materi)) {
                 return $this->error_response('Category not found', 422);
             }
+            $nama_file = $this->handle_create_or_update_file_materi();
+            $materi['file_uri'] = $nama_file;
 
             $this->materi_query_builder->insert($materi);
             $this->commit_transaction;
@@ -120,6 +124,8 @@ class MateriRepositories extends Controller
             }
 
             if ($update_materi) {
+                $nama_file = $this->handle_create_or_update_file_materi();
+                $materi['file_uri'] = $nama_file;
                 $this->materi_query_builder->where('permalink', $permalink_materi)->update($materi);
                 $this->commit_transaction;
                 return $this->success_response($materi, 'Berhasil update materi');
@@ -141,6 +147,8 @@ class MateriRepositories extends Controller
             }
 
             if ($delete_materi) {
+                $file_path = public_path("assets/{$this->where_exists_materi_by_permalink_childs($permalink_materi)->file_uri}");
+                File::delete($file_path);
                 $this->delete_materi_by_id_childs($permalink_materi);
                 $this->commit_transaction;
                 return $this->success_response($this->where_exists_materi_by_permalink_childs($permalink_materi), 'Berhasil delete materi');
@@ -149,6 +157,15 @@ class MateriRepositories extends Controller
             $this->rollback_transaction;
             return $this->error_response($e->getMessage(), '500', true, $e, \env('APP_ENV'));
         }
+    }
+    private function handle_create_or_update_file_materi()
+    {
+        $file = Request::file('file_uri');
+        $nama_file = time() . "-" . $file->getClientOriginalName();
+
+        $destination_file_upload = 'assets';
+        $file->move($destination_file_upload, $nama_file);
+        return $nama_file;
     }
 
     private function delete_materi_by_id_childs($permalink_materi)

@@ -3,8 +3,12 @@
 namespace App\Repositories\v1\user\soal;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PembahasanResource;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
+//Model query(quis and exam)
 class QuisModel extends Model
 {
     protected $table = 'quis';
@@ -24,13 +28,24 @@ class UjianModel extends Model
     protected $hidden = ['kategori_materi_id', 'materi_id', 'phase'];
 }
 
+//Model submit(Quis and Exam)
+class QuisAnswerModel extends Model
+{
+    protected $table = 'quis_answer';
+    protected $fillable = ['id', 'point', 'batch', 'answer', 'quis_id', 'users_id', 'created_at', 'updated_at'];
+    protected $casts = [
+        'id' => 'string'
+    ];
+}
+
 class SoalRepositories extends Controller
 {
-    private $quis_model, $ujian_model;
+    private $quis_model, $ujian_model, $quis_answer_model;
     public function __construct()
     {
         $this->quis_model = new QuisModel();
         $this->ujian_model = new UjianModel();
+        $this->quis_answer_model = new QuisAnswerModel();
     }
     public function Quis($category_id, $materi_id)
     {
@@ -64,10 +79,12 @@ class SoalRepositories extends Controller
 
     private function HandleGetUjianByCategoryId($ujian_model, $category_id, $request)
     {
+        $RandBatch = rand(1, 3);
         return $ujian_model->where([
             ['kategori_materi_id', '=', $category_id],
             ['phase', '=', $request->query('phase')],
-        ])->get();
+            ['batch', '=', $RandBatch],
+        ])->limit(10)->get();
     }
 
     //handler quis
@@ -88,11 +105,115 @@ class SoalRepositories extends Controller
 
     private function HandleGetQuisByCategoryIdAndMateriId($quis_model, $category_id, $materi_id)
     {
-        return $quis_model->where(
-            [
-                ['kategori_materi_id', '=', $category_id],
-                ['materi_id', '=', $materi_id]
-            ]
-        )->get();
+        $RandBatch = rand(1, 3);
+        $QuisModel = $quis_model->where([
+            ['kategori_materi_id', '=', $category_id],
+            ['materi_id', '=', $materi_id],
+            ['batch', '=', $RandBatch],
+        ])->limit(5)->get(); //untuk quis menampilkan 5 soal dengan point 20
+        return $QuisModel;
     }
+
+    /**
+     * Handler Submit(Quis And Exam)
+     */
+
+    //quis
+    public function QuisSubmit($category_id, $materi_id, $REQUEST_POST)
+    {
+        if (!$this->HandleValidateQuisCategoryById($category_id)) {
+            return $this->error_response('Category Not Found');
+        }
+        if (!$this->HandleValidateQuisMateriById($materi_id)) {
+            return $this->error_response('Materi Not Found');
+        }
+
+        $PrintQuis = $this->_GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
+        return $this->success_response($PrintQuis);
+    }
+
+    private function _SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id): void
+    {
+        $CollectAnswer = [];
+        foreach ($REQUEST_POST as $quis) {
+            $quis['point'] = $this->quis_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['id', '=', $quis['quis_id']]
+            ])->first()->answer_key == $quis['answer']['key'] ? $quis['point'] : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
+            $quis['answer'] = $quis['answer']['key'];
+            $quis['users_id'] = Auth::guard('api')->user()->id;
+            $quis['kategori_materi_id'] = $category_id;
+            $quis['materi_id'] = $materi_id;
+            array_push($CollectAnswer, $quis);
+        }
+        $this->quis_answer_model->insert($CollectAnswer);
+    }
+
+    private function _GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
+    {
+        //cek data jika sudah menjawab soal by batch maka akan digantikan dengan soal batch berikutnya
+        $RowAnswer = $this->quis_answer_model->where([
+            ['kategori_materi_id', '=', $category_id],
+            ['materi_id', '=', $materi_id],
+            ['users_id', '=', Auth::guard('api')->user()->id],
+        ]);
+        if ($RowAnswer) {
+            $RowAnswer->delete();
+        }
+
+        $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
+        //return mapping quis
+        return $this->HandleMappingSubmitQuis($category_id, $materi_id);
+    }
+
+    private function HandleMappingSubmitQuis($category_id, $materi_id): array
+    {
+        return array(
+            'passed' => $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+            ])->sum('point') < 100 ? false : true,
+            'correct_count' => $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+                ['point', '=', 20]
+            ])->get()->count(),
+            'incorrect_count' => $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+                ['point', '=', 0],
+            ])->get()->count(),
+            'score' => $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+            ])->sum('point'),
+            'total_score' => 100,
+            'title' => DB::table('materi')->whereId($materi_id)->first()->judul,
+        );
+    }
+
+    public function QuisResult($category_id, $materi_id)
+    {
+        if (!$this->HandleValidateQuisCategoryById($category_id)) {
+            return $this->error_response('Category Not Found');
+        }
+        if (!$this->HandleValidateQuisMateriById($materi_id)) {
+            return $this->error_response('Materi Not Found');
+        }
+
+        return $this->success_response(PembahasanResource::collection($this->quis_answer_model->where([
+            ['kategori_materi_id', '=', $category_id],
+            ['materi_id', '=', $materi_id],
+            ['users_id', '=', Auth::guard('api')->user()->id],
+        ])->get()));
+    }
+
+    //exam
+
+    public function ExamSubmit($category_id, $request) {}
 }

@@ -12,18 +12,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exam', function (Blueprint $table) {
+        Schema::create('quis_answer', function (Blueprint $table) {
             $table->uuid('id')
                 ->primary()
                 ->default(DB::raw('(UUID())'));
-            $table->string('title', 128);
-            $table->string('question', 128);
             $table->integer('point');
-            $table->json('option');
-            $table->integer('phase');
-            $table->string('kategori_materi_id');
             $table->integer('batch');
-            $table->char('answer_key');
+            $table->string('answer');
+            $table->string('quis_id');
+            $table->string('kategori_materi_id');
+            $table->string('materi_id');
+            $table->foreignId('users_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exam');
+        Schema::dropIfExists('quis_answer');
     }
 };

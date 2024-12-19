@@ -20,8 +20,11 @@ return new class extends Migration
             $table->string('phase');
             $table->string('judul');
             $table->string('permalink');
-            $table->text('isi');
+            $table->text('isi')->nullable();
+            $table->text('file_uri');
             $table->uuid('kategori_materi_id');
+            $table->integer('urutan');
+            $table->enum('quis_status', [false, true]);
             $table->timestamps();
         });
     }
