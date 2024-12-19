@@ -82,7 +82,7 @@ class SoalRepositories extends Controller
         $RandBatch = rand(1, 3);
         return $ujian_model->where([
             ['kategori_materi_id', '=', $category_id],
-            ['phase', '=', $request->query('phase')],
+            ['phase', '=', $request],
             ['batch', '=', $RandBatch],
         ])->limit(10)->get();
     }

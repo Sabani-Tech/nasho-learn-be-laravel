@@ -19,7 +19,8 @@ class SoalController extends Controller
 
     public function exam($category_id, Request $request)
     {
-        return $this->soalRepositories->Exam($category_id, $request);
+        $REQUEST_GET = $request->query('phase');
+        return $this->soalRepositories->Exam($category_id, $REQUEST_GET);
     }
 
     /**
