@@ -9,6 +9,7 @@ use App\Http\Controllers\v1\admin\master_data\UjianController;
 use App\Http\Controllers\v1\admin\master_data\UserManagementController;
 use App\Http\Controllers\v1\user\auth\UserAuthController;
 use App\Http\Controllers\v1\user\category\CategoryController;
+use App\Http\Controllers\v1\user\materi\MateriController as UserMateriController;
 use App\Http\Controllers\v1\user\soal\SoalController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -117,6 +118,7 @@ Route::prefix('v1')->group(function () {
                 Route::get('/{category_id}/exam', [SoalController::class, 'exam'])->name('user.category_id.exam');
                 Route::post('/{category_id}/exam/submit', [SoalController::class, 'examSubmit'])->name('user.category_id.exam.submit');
             });
+            Route::get('materi/{materi_id}', [UserMateriController::class, 'index']);
         });
     });
     Route::prefix('admin')->group(function () {
