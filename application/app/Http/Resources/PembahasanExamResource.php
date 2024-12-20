@@ -3,10 +3,10 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class PembahasanResource extends JsonResource
+class PembahasanExamResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,29 +15,29 @@ class PembahasanResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        foreach (json_decode(DB::table('quis')->where('id', $this->quis_id)->first()->option, true) as $key) {
-            if ($key['key'] == DB::table('quis')->where('id', $this->quis_id)->first()->answer_key) {
+        foreach (json_decode(DB::table('exam')->where('id', $this->exam_id)->first()->option, true) as $key) {
+            if ($key['key'] == DB::table('exam')->where('id', $this->exam_id)->first()->answer_key) {
                 $CollectOptionRightAnswer = $key['value'];
             }
         }
-        foreach (json_decode(DB::table('quis')->where('id', $this->quis_id)->first()->option, true) as $key) {
+        foreach (json_decode(DB::table('exam')->where('id', $this->exam_id)->first()->option, true) as $key) {
             if ($key['key'] == $this->answer) {
                 $CollectOptionAnswer = $key['value'];
             }
         }
         return [
-            'id' => $this->quis_id,
-            'question' => DB::table('quis')->where('id', $this->quis_id)->first()->question,
+            'id' => $this->exam_id,
+            'question' => DB::table('exam')->where('id', $this->exam_id)->first()->question,
             'point' => $this->point,
             'answer' => array(
                 'key' => $this->answer,
                 'value' => $CollectOptionAnswer,
             ),
             'right_answer' => array(
-                'key' =>  DB::table('quis')->where('id', $this->quis_id)->first()->answer_key,
+                'key' =>  DB::table('exam')->where('id', $this->exam_id)->first()->answer_key,
                 'value' => $CollectOptionRightAnswer,
             ),
-            // 'right_answer' => DB::table('quis')->where('id', $this->quis_id)->first()->answer_key,
+            // 'right_answer' => DB::table('exam')->where('id', $this->exam_id)->first()->answer_key,
         ];
     }
 }

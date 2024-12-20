@@ -19,7 +19,8 @@ class SoalController extends Controller
 
     public function exam($category_id, Request $request)
     {
-        return $this->soalRepositories->Exam($category_id, $request);
+        $REQUEST_GET = $request->query('phase');
+        return $this->soalRepositories->Exam($category_id, $REQUEST_GET);
     }
 
     /**
@@ -39,6 +40,14 @@ class SoalController extends Controller
 
     public function examSubmit($category_id, Request $request)
     {
-        return $this->soalRepositories->ExamSubmit($category_id, $request);
+        $REQUEST_POST = $request->post();
+        $REQUEST_GET_PHASE = $request->query('phase');
+        return $this->soalRepositories->ExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE);
+    }
+
+    public function examResult($category_id, Request $request)
+    {
+        $REQUEST_GET_PHASE = $request->query('phase');
+        return $this->soalRepositories->ExamResult($category_id, $REQUEST_GET_PHASE);
     }
 }
