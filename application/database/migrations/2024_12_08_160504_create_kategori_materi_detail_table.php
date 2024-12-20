@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->enum('exam1', ['false', 'true']);
             $table->enum('exam2', ['false', 'true']);
-            $table->enum('status', ['Materi1', 'Exam1', 'Materi2', 'Exam2']);
+            // $table->enum('status', ['Materi1', 'Exam1', 'Materi2', 'Exam2']);
+            $table->enum('status', ['Exam1', 'Exam2']);
             $table->string('kategori_materi_id');
             $table->foreignId('users_id')->references('id')->on('users');
             $table->timestamps();
