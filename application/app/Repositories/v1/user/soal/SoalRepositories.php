@@ -331,21 +331,20 @@ class SoalRepositories extends Controller
         //submit exam
         $this->_SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE);
         // update status after passed exam phase 1 (uts) or exam phase 2 (uas)
-        if ($REQUEST_GET_PHASE == 1) {
-            if (
-                $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE)['score'] >= 60 &&
-                $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE)['passed'] == true
-            ) {
-                $this->HandleUpdateExamAndStatusAfterSubmitExamIfPassedPhase1($category_id);
-            }
-        } else if ($REQUEST_GET_PHASE == 2) {
-            if (
-                $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE)['score'] >= 60 &&
-                $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE)['passed'] == true
-            ) {
-                $this->HandleUpdateExamAndStatusAfterSubmitExamIfPassedPhase2($category_id);
+        if (
+            $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE)['score'] >= 60 &&
+            $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE)['passed'] == true
+        ) {
+            switch ($REQUEST_GET_PHASE) {
+                case 1:
+                    $this->HandleUpdateExamAndStatusAfterSubmitExamIfPassedPhase1($category_id);
+                    break;
+                case 2:
+                    $this->HandleUpdateExamAndStatusAfterSubmitExamIfPassedPhase2($category_id);
+                    break;
             }
         }
+
         //return mapping exam
         return $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE);
     }
