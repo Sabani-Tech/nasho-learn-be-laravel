@@ -330,6 +330,7 @@ class SoalRepositories extends Controller
 
         //submit exam
         $this->_SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE);
+
         // update status after passed exam phase 1 (uts) or exam phase 2 (uas)
         if (
             $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE)['score'] >= 60 &&
