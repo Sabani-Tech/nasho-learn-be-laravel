@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Resources\GetMateriByCategoryResource;
+use App\Http\Resources\MateriResourceByPhase;
 use Illuminate\Support\Facades\Auth;
 
 enum Status: string
@@ -38,11 +39,11 @@ class Materi extends Model
     protected $casts = [
         'id' => 'string',
         'created_at' => 'date:d-M-y H:i:s',
-        'updated_at' => 'date:d-M-y H:i:s'
+        'updated_at' => 'date:d-M-y H:i:s',
+        'phase' => 'integer',
+        'quis_status' => 'integer',
     ];
-    protected $hidden = [
-        'isi'
-    ];
+    protected $hidden = ['isi'];
 }
 
 class CategoryMateriDetail extends Model
@@ -119,18 +120,18 @@ class CategoryRepositories extends Controller
 
     private function HandleGetListMateriByIdCategoryOfMateriPhase1($category)
     {
-        return $this->materi->where([
+        return MateriResourceByPhase::collection($this->materi->where([
             ['kategori_materi_id', '=', $category->id],
             ['phase', '=', 1],
-        ])->orderBy('urutan')->get();
+        ])->orderBy('urutan')->get());
     }
 
     private function HandleGetListMateriByIdCategoryOfMateriPhase2($category)
     {
-        return $this->materi->where([
+        return MateriResourceByPhase::collection($this->materi->where([
             ['kategori_materi_id', '=', $category->id],
             ['phase', '=', 2],
-        ])->orderBy('urutan')->get();
+        ])->orderBy('urutan')->get());
     }
 
     private function HandleValidateCategoryById($kategori_id): bool
