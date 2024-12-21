@@ -271,19 +271,12 @@ class SoalRepositories extends Controller
 
     public function ExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE)
     {
-        DB::beginTransaction();
-        try {
-            if (!$this->HandleValidateQuisCategoryById($category_id)) {
-                return $this->error_response('Category Not Found');
-            }
-
-            $PrintExam = $this->_GetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE);
-            DB::commit();
-            return $this->success_response($PrintExam);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $this->error_response($e->getMessage());
+        if (!$this->HandleValidateQuisCategoryById($category_id)) {
+            return $this->error_response('Category Not Found');
         }
+
+        $PrintExam = $this->_GetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE);
+        return $this->success_response($PrintExam);
     }
 
     public function ExamResult($category_id, $REQUEST_GET_PHASE)
@@ -303,23 +296,30 @@ class SoalRepositories extends Controller
         }
     }
 
-    private function _SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE): void
+    private function _SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE)
     {
-        $CollectAnswer = [];
-        foreach ($REQUEST_POST as $exam) {
-            $exam['exam_id'] = $exam['id'];
-            $exam['point'] = $this->ujian_model->where([
-                ['kategori_materi_id', '=', $category_id],
-                ['phase', '=', $REQUEST_GET_PHASE],
-                ['id', '=', $exam['exam_id']]
-            ])->first()->answer_key == $exam['answer']['key'] ? $exam['point'] : 0; //mencocokan jawaban user dengan kunci jawaban dari soal jika bener maka point full:10 akan tetapi jika salah point:0
-            $exam['answer'] = $exam['answer']['key'];
-            $exam['users_id'] = Auth::guard('api')->user()->id;
-            $exam['kategori_materi_id'] = $category_id;
-            $exam['phase'] = $REQUEST_GET_PHASE;
-            array_push($CollectAnswer, $exam);
+        DB::beginTransaction();
+        try {
+            $CollectAnswer = [];
+            foreach ($REQUEST_POST as $exam) {
+                $exam['exam_id'] = $exam['id'];
+                $exam['point'] = $this->ujian_model->where([
+                    ['kategori_materi_id', '=', $category_id],
+                    ['phase', '=', $REQUEST_GET_PHASE],
+                    ['id', '=', $exam['exam_id']]
+                ])->first()->answer_key == $exam['answer']['key'] ? $exam['point'] : 0; //mencocokan jawaban user dengan kunci jawaban dari soal jika bener maka point full:10 akan tetapi jika salah point:0
+                $exam['answer'] = $exam['answer']['key'];
+                $exam['users_id'] = Auth::guard('api')->user()->id;
+                $exam['kategori_materi_id'] = $category_id;
+                $exam['phase'] = $REQUEST_GET_PHASE;
+                array_push($CollectAnswer, $exam);
+            }
+            $this->exam_answer_model->insert($CollectAnswer);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->error_response($e->getMessage());
         }
-        $this->exam_answer_model->insert($CollectAnswer);
     }
 
     private function _GetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE)
@@ -357,35 +357,39 @@ class SoalRepositories extends Controller
 
     private function HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE): array
     {
-        return array(
-            'passed' => $this->exam_answer_model->where([
-                ['kategori_materi_id', '=', $category_id],
-                ['phase', '=', $REQUEST_GET_PHASE],
-                ['users_id', '=', Auth::guard('api')->user()->id],
-            ])->sum('point') >= 60 ? true : false,
-            'correct_count' => $this->exam_answer_model->where([
-                ['kategori_materi_id', '=', $category_id],
-                ['phase', '=', $REQUEST_GET_PHASE],
-                ['users_id', '=', Auth::guard('api')->user()->id],
-                ['point', '=', 10],
-            ])->get()->count(),
-            'incorrect_count' => $this->exam_answer_model->where([
-                ['kategori_materi_id', '=', $category_id],
-                ['phase', '=', $REQUEST_GET_PHASE],
-                ['users_id', '=', Auth::guard('api')->user()->id],
-                ['point', '=', 0],
-            ])->get()->count(),
-            'score' => $this->exam_answer_model->where([
-                ['kategori_materi_id', '=', $category_id],
-                ['phase', '=', $REQUEST_GET_PHASE],
-                ['users_id', '=', Auth::guard('api')->user()->id],
-            ])->sum('point'),
-            'total_score' => 100,
-            'title' => DB::table('kategori_materi')
-                ->whereId($category_id)
-                ->first()
-                ->jenis,
-        );
+        try {
+            return array(
+                'passed' => $this->exam_answer_model->where([
+                    ['kategori_materi_id', '=', $category_id],
+                    ['phase', '=', $REQUEST_GET_PHASE],
+                    ['users_id', '=', Auth::guard('api')->user()->id],
+                ])->sum('point') >= 60 ? true : false,
+                'correct_count' => $this->exam_answer_model->where([
+                    ['kategori_materi_id', '=', $category_id],
+                    ['phase', '=', $REQUEST_GET_PHASE],
+                    ['users_id', '=', Auth::guard('api')->user()->id],
+                    ['point', '=', 10],
+                ])->get()->count(),
+                'incorrect_count' => $this->exam_answer_model->where([
+                    ['kategori_materi_id', '=', $category_id],
+                    ['phase', '=', $REQUEST_GET_PHASE],
+                    ['users_id', '=', Auth::guard('api')->user()->id],
+                    ['point', '=', 0],
+                ])->get()->count(),
+                'score' => $this->exam_answer_model->where([
+                    ['kategori_materi_id', '=', $category_id],
+                    ['phase', '=', $REQUEST_GET_PHASE],
+                    ['users_id', '=', Auth::guard('api')->user()->id],
+                ])->sum('point'),
+                'total_score' => 100,
+                'title' => DB::table('kategori_materi')
+                    ->whereId($category_id)
+                    ->first()
+                    ->jenis,
+            );
+        } catch (\Exception $e) {
+            return $this->error_response($e->getMessage());
+        }
     }
 
     private function HandleUpdateExamAndStatusAfterSubmitExamIfPassedPhase1($category_id)
