@@ -19,6 +19,7 @@ class PembahasanExamResource extends JsonResource
             if ($key['key'] == DB::table('exam')->where('id', $this->exam_id)->first()->answer_key) {
                 $CollectOptionRightAnswer = $key['value'];
             }
+            $CollectOptionRightAnswer = $key['value'];
         }
         foreach (json_decode(DB::table('exam')->where('id', $this->exam_id)->first()->option, true) as $key) {
             if ($key['key'] == $this->answer) {
