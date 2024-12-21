@@ -206,8 +206,6 @@ class SoalRepositories extends Controller
 
         //submit quis
         $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
-        //update quis_status materi: kalo udah pernah ikut quis ubah value quis_status jadi true base on id materi
-        $this->HandleUpdateQuisStatusAfterSubmitQuisByIdMateri($materi_id);
         //return mapping quis
         return $this->HandleMappingSubmitQuis($category_id, $materi_id);
     }
@@ -243,13 +241,6 @@ class SoalRepositories extends Controller
                 ->first()
                 ->judul,
         );
-    }
-
-    private function HandleUpdateQuisStatusAfterSubmitQuisByIdMateri($materi_id)
-    {
-        return DB::table('materi')
-            ->whereId($materi_id)
-            ->update(['quis_status' => 'true']);
     }
 
     public function QuisResult($category_id, $materi_id)
@@ -408,3 +399,13 @@ class SoalRepositories extends Controller
             ]);
     }
 }
+
+/**
+ * ====================== deprecated =========================
+ */
+    // private function HandleUpdateQuisStatusAfterSubmitQuisByIdMateri($materi_id)
+    // {
+    //     return DB::table('materi')
+    //         ->whereId($materi_id)
+    //         ->update(['quis_status' => 2]);
+    // }
