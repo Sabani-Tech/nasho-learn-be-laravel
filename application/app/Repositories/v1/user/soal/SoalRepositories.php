@@ -168,28 +168,21 @@ class SoalRepositories extends Controller
 
     private function _SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
     {
-        DB::beginTransaction();
-        try {
-            $CollectAnswer = [];
-            foreach ($REQUEST_POST as $quis) {
-                $quis['quis_id'] = $quis['id'];
-                $quis['point'] = $this->quis_model->where([
-                    ['kategori_materi_id', '=', $category_id],
-                    ['materi_id', '=', $materi_id],
-                    ['id', '=', $quis['quis_id']]
-                ])->first()->answer_key == $quis['answer']['key'] ? $quis['point'] : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
-                $quis['answer'] = $quis['answer']['key'];
-                $quis['users_id'] = Auth::guard('api')->user()->id;
-                $quis['kategori_materi_id'] = $category_id;
-                $quis['materi_id'] = $materi_id;
-                array_push($CollectAnswer, $quis);
-            }
-            $this->quis_answer_model->insert($CollectAnswer);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $this->error_response($e->getMessage());
+        $CollectAnswer = [];
+        foreach ($REQUEST_POST as $quis) {
+            $quis['quis_id'] = $quis['id'];
+            $quis['point'] = $this->quis_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['id', '=', $quis['quis_id']]
+            ])->first()->answer_key == $quis['answer']['key'] ? $quis['point'] : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
+            $quis['answer'] = $quis['answer']['key'];
+            $quis['users_id'] = Auth::guard('api')->user()->id;
+            $quis['kategori_materi_id'] = $category_id;
+            $quis['materi_id'] = $materi_id;
+            array_push($CollectAnswer, $quis);
         }
+        $this->quis_answer_model->insert($CollectAnswer);
     }
 
     private function _GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
@@ -298,28 +291,21 @@ class SoalRepositories extends Controller
 
     private function _SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE)
     {
-        DB::beginTransaction();
-        try {
-            $CollectAnswer = [];
-            foreach ($REQUEST_POST as $exam) {
-                $exam['exam_id'] = $exam['id'];
-                $exam['point'] = $this->ujian_model->where([
-                    ['kategori_materi_id', '=', $category_id],
-                    ['phase', '=', $REQUEST_GET_PHASE],
-                    ['id', '=', $exam['exam_id']]
-                ])->first()->answer_key == $exam['answer']['key'] ? $exam['point'] : 0; //mencocokan jawaban user dengan kunci jawaban dari soal jika bener maka point full:10 akan tetapi jika salah point:0
-                $exam['answer'] = $exam['answer']['key'];
-                $exam['users_id'] = Auth::guard('api')->user()->id;
-                $exam['kategori_materi_id'] = $category_id;
-                $exam['phase'] = $REQUEST_GET_PHASE;
-                array_push($CollectAnswer, $exam);
-            }
-            $this->exam_answer_model->insert($CollectAnswer);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $this->error_response($e->getMessage());
+        $CollectAnswer = [];
+        foreach ($REQUEST_POST as $exam) {
+            $exam['exam_id'] = $exam['id'];
+            $exam['point'] = $this->ujian_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['phase', '=', $REQUEST_GET_PHASE],
+                ['id', '=', $exam['exam_id']]
+            ])->first()->answer_key == $exam['answer']['key'] ? $exam['point'] : 0; //mencocokan jawaban user dengan kunci jawaban dari soal jika bener maka point full:10 akan tetapi jika salah point:0
+            $exam['answer'] = $exam['answer']['key'];
+            $exam['users_id'] = Auth::guard('api')->user()->id;
+            $exam['kategori_materi_id'] = $category_id;
+            $exam['phase'] = $REQUEST_GET_PHASE;
+            array_push($CollectAnswer, $exam);
         }
+        $this->exam_answer_model->insert($CollectAnswer);
     }
 
     private function _GetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE)
