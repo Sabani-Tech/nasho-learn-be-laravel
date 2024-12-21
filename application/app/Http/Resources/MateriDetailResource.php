@@ -18,11 +18,11 @@ class MateriDetailResource extends JsonResource
         return [
             "id" => $this->id,
             "embed" => $this->embed,
-            "phase" => (int)$this->phase,
+            "phase" => $this->phase,
             "judul" => $this->judul,
             "permalink" => $this->permalink,
             "file_uri" => url("assets/{$this->file_uri}"),
-            "quis_status" => (bool)$this->quis_status,
+            "quis_status" => $this->quis_status == 1 ? false : true,
             "urutan" => $this->urutan,
             "kategori_materi_id" => DB::table('kategori_materi')
                 ->whereId($this->kategori_materi_id)
