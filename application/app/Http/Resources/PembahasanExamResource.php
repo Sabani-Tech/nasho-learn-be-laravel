@@ -16,18 +16,12 @@ class PembahasanExamResource extends JsonResource
     public function toArray(Request $request): array
     {
         foreach (json_decode(DB::table('exam')->where('id', $this->exam_id)->first()->option, true) as $key) {
-            if (
-                $key['key'] == DB::table('exam')->where('id', $this->exam_id)->first()->answer_key &&
-                DB::table('exam')->where('id', $this->exam_id)->first()->batch == $this->batch
-            ) {
+            if ($key['key'] == DB::table('exam')->where('id', $this->exam_id)->first()->answer_key) {
                 $CollectOptionRightAnswer = $key['value'];
             }
         }
         foreach (json_decode(DB::table('exam')->where('id', $this->exam_id)->first()->option, true) as $key) {
-            if (
-                $key['key'] == $this->answer &&
-                DB::table('exam')->where('id', $this->exam_id)->first()->batch == $this->batch
-            ) {
+            if ($key['key'] == $this->answer) {
                 $CollectOptionAnswer = $key['value'];
             }
         }
