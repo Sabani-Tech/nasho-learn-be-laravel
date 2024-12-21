@@ -29,7 +29,8 @@ class RegisterRequest extends FormRequest
             // 'password_confirmation' => 'required|same:password',
             'nama_lengkap' => 'required',
             'umail' => 'required|string',
-            'password' => 'required|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+            // 'password' => 'required|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+            'password' => 'required|string',
             'password_confirmation' => 'required|same:password',
         ];
     }
