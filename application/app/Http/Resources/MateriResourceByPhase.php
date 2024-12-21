@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MateriResourceByPhase extends JsonResource
@@ -23,7 +24,9 @@ class MateriResourceByPhase extends JsonResource
             "file_uri" => url("assets/{$this->file_uri}"),
             "quis_status" => $this->quis_status == 1 ? false : true,
             "urutan" => $this->urutan,
-            "kategori_materi_id" => $this->kategori_materi_id,
+            "kategori" => DB::table('kategori_materi')
+                ->whereId($this->kategori_materi_id)
+                ->first(),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
         ];
