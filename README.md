@@ -1,66 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# introduce
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<h5>API nasho learn di build menggunakan framework lumen versi 11 dengan versi php 8.2, jadi pastikan versi php anda sudah diatas versi >=7, (framework lumen adalah salah satu framwork api dari bahasa pemrograman php) </h5>
 
-## About Laravel
+<h5>
+aktifkan require module php yang dibutukan untuk menjalankan framework tersebut, beberapa modul yang di harus di aktifkan ialah pdo_mysqli, mysqli, xml  dan mbstring 
+</h5>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# composer run
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```Bash
+composer install
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# Start Local Development Server Ngandre API
 
-## Learning Laravel
+```Bash
+php -S localhost:8000 -t public || php artisan serve
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# migrate table db
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```Bash
+php artisan migrate
+# migrate refresh ketika ada update/perubahan schema column table
+php artisan migrate:refresh
+# jika ingin rollback table nya jalan kan perintah di bawah ini
+php artisan migrate:rollback
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Base URL
 
-## Laravel Sponsors
+```bash
+#baseUrl
+localhost:8000 -> sesuaikan dengan base url kalian
+#ver
+v1
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Endpoint Auth API
 
-### Premium Partners
+```Bash
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+#Login
+{{base_url}}{{ver}}/user/auth/login ->POST
+#register
+{{base_url}}{{ver}}/user/auth/register ->POST
+#logout
+{{base_url}}{{ver}}/user/auth/logout ->POST
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
 
-## Code of Conduct
+# Endpoint Profile API
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```Bash
 
-## Security Vulnerabilities
+#Profile
+{{base_url}}{{ver}}/user/profile ->GET
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
 
-## License
+# Endpoint API USER
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```Bash
+#category and materi
+{{base_url}}{{ver}}/user/category ->GET (List category)
+{{base_url}}{{ver}}/user/category/:kategori_id/materi ->GET (List materi by category_id)
+{{base_url}}{{ver}}/user/category/:category_id/status/:status_category ->PUT (Update status by users_id of exam,quis and status lock)
+{{base_url}}{{ver}}/user/materi/:materi_id ->GET (Detail materi by materi_id)
+
+#========== soal ===============
+#quis
+{{base_url}}{{ver}}/user/category/:category_id/materi/:materi_id/quis ->GET (List quis by materi_id and category_id)
+{{base_url}}{{ver}}/user/category/:category_id/materi/:materi_id/quis/submit ->POST (submit jawaban quis by materi_id and category_id)
+{{base_url}}{{ver}}/user/category/:category_id/materi/:materi_id/quis/result ->GET (result jawaban quis by materi_id and category_id)
+
+#ujian
+{{base_url}}{{ver}}/user/category/:category_id/exam?phase=1 ->GET (list exam by category_id and phase)
+{{base_url}}{{ver}}/user/category/:category_id/exam/submit?phase=1 ->POST (submit exam by category_id and phase)
+{{base_url}}{{ver}}/user/category/:category_id/exam/result?phase=2 ->GET (result exam by category_id and phase)
+
+```
+
+# Access Ke Endpoint API Yang Menggunakan Session
+
+<h5>jika ingin mengakses api yang menggunakan session, maka anda harus mengirimkan 5 buah object/param seperti dibawah ini, kirim ketiga buah object tersebut melalui request header</h5>
+
+<h5>Object param yang dikirim lewat request header</h5>
+
+```JSON
+{
+    "Accept": "Application/json",
+    "Authorization": "Bearer {{token}}",
+    "X-PLATFORM-NASHO": "{{platform}}",
+    "X-VERSION-NASHO": "{{version}}",
+    "X-CLIENT-KEY-NASHO": "{{version}}",
+}
+```
