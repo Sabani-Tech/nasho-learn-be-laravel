@@ -245,18 +245,22 @@ class SoalRepositories extends Controller
 
     public function QuisResult($category_id, $materi_id)
     {
-        if (!$this->HandleValidateQuisCategoryById($category_id)) {
-            return $this->error_response('Category Not Found');
-        }
-        if (!$this->HandleValidateQuisMateriById($materi_id)) {
-            return $this->error_response('Materi Not Found');
-        }
+        try {
+            if (!$this->HandleValidateQuisCategoryById($category_id)) {
+                return $this->error_response('Category Not Found');
+            }
+            if (!$this->HandleValidateQuisMateriById($materi_id)) {
+                return $this->error_response('Materi Not Found');
+            }
 
-        return $this->success_response(PembahasanQuisResource::collection($this->quis_answer_model->where([
-            ['kategori_materi_id', '=', $category_id],
-            ['materi_id', '=', $materi_id],
-            ['users_id', '=', Auth::guard('api')->user()->id],
-        ])->get()));
+            return $this->success_response(PembahasanQuisResource::collection($this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+            ])->get()));
+        } catch (\Exception $e) {
+            return $this->error_response($e->getMessage());
+        }
     }
 
     //exam
@@ -280,15 +284,19 @@ class SoalRepositories extends Controller
 
     public function ExamResult($category_id, $REQUEST_GET_PHASE)
     {
-        if (!$this->HandleValidateQuisCategoryById($category_id)) {
-            return $this->error_response('Category Not Found');
-        }
+        try {
+            if (!$this->HandleValidateQuisCategoryById($category_id)) {
+                return $this->error_response('Category Not Found');
+            }
 
-        return $this->success_response(PembahasanExamResource::collection($this->exam_answer_model->where([
-            ['kategori_materi_id', '=', $category_id],
-            ['phase', '=', $REQUEST_GET_PHASE],
-            ['users_id', '=', Auth::guard('api')->user()->id],
-        ])->get()));
+            return $this->success_response(PembahasanExamResource::collection($this->exam_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['phase', '=', $REQUEST_GET_PHASE],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+            ])->get()));
+        } catch (\Exception $e) {
+            return $this->error_response($e->getMessage());
+        }
     }
 
     private function _SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE): void
