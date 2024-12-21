@@ -177,6 +177,7 @@ class SoalRepositories extends Controller
     {
         $CollectAnswer = [];
         foreach ($REQUEST_POST as $quis) {
+            $quis['quis_id'] = $quis['id'];
             $quis['point'] = $this->quis_model->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
@@ -303,6 +304,7 @@ class SoalRepositories extends Controller
     {
         $CollectAnswer = [];
         foreach ($REQUEST_POST as $exam) {
+            $exam['exam_id'] = $exam['id'];
             $exam['point'] = $this->ujian_model->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['phase', '=', $REQUEST_GET_PHASE],
