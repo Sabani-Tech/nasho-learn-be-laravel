@@ -117,6 +117,7 @@ Route::prefix('v1')->group(function () {
                 //exam
                 Route::get('/{category_id}/exam', [SoalController::class, 'exam'])->name('user.category_id.exam');
                 Route::post('/{category_id}/exam/submit', [SoalController::class, 'examSubmit'])->name('user.category_id.exam.submit');
+                Route::get('/{category_id}/exam/result', [SoalController::class, 'examResult'])->name('user.category_id.exam.result');
             });
             Route::get('materi/{materi_id}', [UserMateriController::class, 'index']);
         });
