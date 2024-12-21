@@ -155,41 +155,41 @@ class SoalRepositories extends Controller
     //quis
     public function QuisSubmit($category_id, $materi_id, $REQUEST_POST)
     {
-        DB::beginTransaction();
-        try {
-            if (!$this->HandleValidateQuisCategoryById($category_id)) {
-                return $this->error_response('Category Not Found');
-            }
-            if (!$this->HandleValidateQuisMateriById($materi_id)) {
-                return $this->error_response('Materi Not Found');
-            }
-
-            $PrintQuis = $this->_GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
-            DB::commit();
-            return $this->success_response($PrintQuis);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $this->error_response($e);
+        if (!$this->HandleValidateQuisCategoryById($category_id)) {
+            return $this->error_response('Category Not Found');
         }
+        if (!$this->HandleValidateQuisMateriById($materi_id)) {
+            return $this->error_response('Materi Not Found');
+        }
+
+        $PrintQuis = $this->_GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
+        return $this->success_response($PrintQuis);
     }
 
-    private function _SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id): void
+    private function _SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
     {
-        $CollectAnswer = [];
-        foreach ($REQUEST_POST as $quis) {
-            $quis['quis_id'] = $quis['id'];
-            $quis['point'] = $this->quis_model->where([
-                ['kategori_materi_id', '=', $category_id],
-                ['materi_id', '=', $materi_id],
-                ['id', '=', $quis['quis_id']]
-            ])->first()->answer_key == $quis['answer']['key'] ? $quis['point'] : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
-            $quis['answer'] = $quis['answer']['key'];
-            $quis['users_id'] = Auth::guard('api')->user()->id;
-            $quis['kategori_materi_id'] = $category_id;
-            $quis['materi_id'] = $materi_id;
-            array_push($CollectAnswer, $quis);
+        DB::beginTransaction();
+        try {
+            $CollectAnswer = [];
+            foreach ($REQUEST_POST as $quis) {
+                $quis['quis_id'] = $quis['id'];
+                $quis['point'] = $this->quis_model->where([
+                    ['kategori_materi_id', '=', $category_id],
+                    ['materi_id', '=', $materi_id],
+                    ['id', '=', $quis['quis_id']]
+                ])->first()->answer_key == $quis['answer']['key'] ? $quis['point'] : 0; //mencocokan jawaban user dengan kunci jawaban dari soal: jika benar maka point full:20 akan tetapi jika salah point 0
+                $quis['answer'] = $quis['answer']['key'];
+                $quis['users_id'] = Auth::guard('api')->user()->id;
+                $quis['kategori_materi_id'] = $category_id;
+                $quis['materi_id'] = $materi_id;
+                array_push($CollectAnswer, $quis);
+            }
+            return $this->quis_answer_model->insert($CollectAnswer);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->error_response($e->getMessage());
         }
-        $this->quis_answer_model->insert($CollectAnswer);
     }
 
     private function _GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
@@ -212,35 +212,39 @@ class SoalRepositories extends Controller
 
     private function HandleMappingSubmitQuis($category_id, $materi_id): array
     {
-        return array(
-            'passed' => $this->quis_answer_model->where([
-                ['kategori_materi_id', '=', $category_id],
-                ['materi_id', '=', $materi_id],
-                ['users_id', '=', Auth::guard('api')->user()->id],
-            ])->sum('point') < 100 ? false : true,
-            'correct_count' => $this->quis_answer_model->where([
-                ['kategori_materi_id', '=', $category_id],
-                ['materi_id', '=', $materi_id],
-                ['users_id', '=', Auth::guard('api')->user()->id],
-                ['point', '=', 20]
-            ])->get()->count(),
-            'incorrect_count' => $this->quis_answer_model->where([
-                ['kategori_materi_id', '=', $category_id],
-                ['materi_id', '=', $materi_id],
-                ['users_id', '=', Auth::guard('api')->user()->id],
-                ['point', '=', 0],
-            ])->get()->count(),
-            'score' => $this->quis_answer_model->where([
-                ['kategori_materi_id', '=', $category_id],
-                ['materi_id', '=', $materi_id],
-                ['users_id', '=', Auth::guard('api')->user()->id],
-            ])->sum('point'),
-            'total_score' => 100,
-            'title' => DB::table('materi')
-                ->whereId($materi_id)
-                ->first()
-                ->judul,
-        );
+        try {
+            return array(
+                'passed' => $this->quis_answer_model->where([
+                    ['kategori_materi_id', '=', $category_id],
+                    ['materi_id', '=', $materi_id],
+                    ['users_id', '=', Auth::guard('api')->user()->id],
+                ])->sum('point') < 100 ? false : true,
+                'correct_count' => $this->quis_answer_model->where([
+                    ['kategori_materi_id', '=', $category_id],
+                    ['materi_id', '=', $materi_id],
+                    ['users_id', '=', Auth::guard('api')->user()->id],
+                    ['point', '=', 20]
+                ])->get()->count(),
+                'incorrect_count' => $this->quis_answer_model->where([
+                    ['kategori_materi_id', '=', $category_id],
+                    ['materi_id', '=', $materi_id],
+                    ['users_id', '=', Auth::guard('api')->user()->id],
+                    ['point', '=', 0],
+                ])->get()->count(),
+                'score' => $this->quis_answer_model->where([
+                    ['kategori_materi_id', '=', $category_id],
+                    ['materi_id', '=', $materi_id],
+                    ['users_id', '=', Auth::guard('api')->user()->id],
+                ])->sum('point'),
+                'total_score' => 100,
+                'title' => DB::table('materi')
+                    ->whereId($materi_id)
+                    ->first()
+                    ->judul,
+            );
+        } catch (\Exception $e) {
+            return $this->error_response($e->getMessage());
+        }
     }
 
     public function QuisResult($category_id, $materi_id)
