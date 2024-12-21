@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('file_uri');
             $table->uuid('kategori_materi_id');
             $table->integer('urutan');
-            $table->enum('quis_status', [false, true]);
+            $table->tinyInteger('quis_status');
             $table->timestamps();
         });
     }
