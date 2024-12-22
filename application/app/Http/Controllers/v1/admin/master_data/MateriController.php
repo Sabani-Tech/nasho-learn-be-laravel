@@ -25,7 +25,7 @@ class MateriController extends Controller
     public function store(MateriRequest $materiRequest)
     {
         $materi = $materiRequest->validated();
-        $materi = $this->materiRepositories->store($materiRequest->safe()->only(['embed', 'judul', 'phase', 'isi', 'file_uri', 'kategori_materi_id', 'permalink', 'urutan']));
+        $materi = $this->materiRepositories->store($materiRequest->safe()->only(['embed', 'judul', 'phase', 'isi', 'file_uri', 'kategori_materi_id', 'permalink', 'urutan', 'quis_status']));
         return $materi;
     }
 
@@ -43,7 +43,7 @@ class MateriController extends Controller
     public function update(MateriRequest $materiRequest, string $id)
     {
         $materi = $materiRequest->validated();
-        $materi = $this->materiRepositories->update($materiRequest->safe()->only(['embed', 'judul', 'phase', 'isi', 'file_uri', 'kategori_materi_id', 'permalink', 'urutan']), $id);
+        $materi = $this->materiRepositories->update($materiRequest->safe()->only(['embed', 'judul', 'phase', 'isi', 'file_uri', 'kategori_materi_id', 'permalink', 'urutan', 'quis_status']), $id);
         return $materi;
     }
 

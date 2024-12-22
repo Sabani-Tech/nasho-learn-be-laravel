@@ -30,6 +30,7 @@ class MateriRequest extends FormRequest
             'isi' => 'string',
             'file_uri' => 'required|file|mimes:pdf|max:5024',
             'urutan' => 'required|integer',
+            'quis_status' => 'required|integer',
         ];
     }
 }
