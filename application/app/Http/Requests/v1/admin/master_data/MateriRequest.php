@@ -28,7 +28,7 @@ class MateriRequest extends FormRequest
             'kategori_materi_id' => 'required|string',
             'permalink' => 'string',
             'isi' => 'string',
-            'file_uri' => 'required|file|mimes:pdf|max:1024',
+            'file_uri' => 'required|file|mimes:pdf|max:5024',
             'urutan' => 'required|integer',
         ];
     }
