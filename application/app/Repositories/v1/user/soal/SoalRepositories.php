@@ -340,7 +340,7 @@ class SoalRepositories extends Controller
             }
 
             //return mapping exam
-            return $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE);
+            return $this->success_response($this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE));
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->error_response($e->getMessage());
