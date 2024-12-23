@@ -323,7 +323,6 @@ class SoalRepositories extends Controller
 
             //submit exam
             DB::table('exam_answer')->insert($this->_SetRequestExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE));
-            DB::commit();
             // update status after passed exam phase 1 (uts) or exam phase 2 (uas)
             if (
                 $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE)['score'] >= 60 &&
@@ -338,9 +337,9 @@ class SoalRepositories extends Controller
                         break;
                 }
             }
-
+            DB::commit();
             //return mapping exam
-            return $this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE);
+            return $this->success_response($this->HandleMappingSubmitExam($category_id, $REQUEST_GET_PHASE));
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->error_response($e->getMessage());
