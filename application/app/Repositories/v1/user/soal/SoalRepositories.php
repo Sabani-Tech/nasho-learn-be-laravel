@@ -166,11 +166,10 @@ class SoalRepositories extends Controller
         return $this->_GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
     }
 
-    private function _SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
+    private function _SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id): array
     {
         $CollectAnswer = [];
         foreach ($REQUEST_POST as $quis) {
-            $quis['quis_id'] = $quis['id'];
             $quis['point'] = $this->quis_model->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
@@ -182,7 +181,7 @@ class SoalRepositories extends Controller
             $quis['materi_id'] = $materi_id;
             array_push($CollectAnswer, $quis);
         }
-        $this->quis_answer_model->insert($CollectAnswer);
+        return $CollectAnswer;
     }
 
     private function _GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
@@ -200,7 +199,7 @@ class SoalRepositories extends Controller
             }
 
             //submit quis
-            $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
+            DB::table('quis_answer')->insert($this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id));
             DB::commit();
             //return mapping quis
             return $this->success_response($this->HandleMappingSubmitQuis($category_id, $materi_id));
