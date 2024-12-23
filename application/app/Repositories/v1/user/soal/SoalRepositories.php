@@ -163,8 +163,7 @@ class SoalRepositories extends Controller
             return $this->error_response('Materi Not Found');
         }
 
-        $PrintQuis = $this->_GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
-        return $this->success_response($PrintQuis);
+        return $this->_GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
     }
 
     private function _SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
@@ -188,57 +187,60 @@ class SoalRepositories extends Controller
 
     private function _GetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id)
     {
-        //cek data jika sudah menjawab soal by batch maka akan digantikan dengan soal batch berikutnya
-        $RowAnswer = $this->quis_answer_model->where([
-            ['kategori_materi_id', '=', $category_id],
-            ['materi_id', '=', $materi_id],
-            ['users_id', '=', Auth::guard('api')->user()->id],
-        ]);
-        if ($RowAnswer) {
-            $RowAnswer->delete();
-        }
+        DB::beginTransaction();
+        try {
+            //cek data jika sudah menjawab soal by batch maka akan digantikan dengan soal batch berikutnya
+            $RowAnswer = $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+            ]);
+            if ($RowAnswer) {
+                $RowAnswer->delete();
+            }
 
-        //submit quis
-        $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
-        //return mapping quis
-        return $this->HandleMappingSubmitQuis($category_id, $materi_id);
+            //submit quis
+            $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
+            //return mapping quis
+            return $this->success_response($this->HandleMappingSubmitQuis($category_id, $materi_id));
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->error_response($e->getMessage());
+        }
     }
 
     private function HandleMappingSubmitQuis($category_id, $materi_id): array
     {
-        try {
-            return array(
-                'passed' => $this->quis_answer_model->where([
-                    ['kategori_materi_id', '=', $category_id],
-                    ['materi_id', '=', $materi_id],
-                    ['users_id', '=', Auth::guard('api')->user()->id],
-                ])->sum('point') < 100 ? false : true,
-                'correct_count' => $this->quis_answer_model->where([
-                    ['kategori_materi_id', '=', $category_id],
-                    ['materi_id', '=', $materi_id],
-                    ['users_id', '=', Auth::guard('api')->user()->id],
-                    ['point', '=', 20]
-                ])->get()->count(),
-                'incorrect_count' => $this->quis_answer_model->where([
-                    ['kategori_materi_id', '=', $category_id],
-                    ['materi_id', '=', $materi_id],
-                    ['users_id', '=', Auth::guard('api')->user()->id],
-                    ['point', '=', 0],
-                ])->get()->count(),
-                'score' => $this->quis_answer_model->where([
-                    ['kategori_materi_id', '=', $category_id],
-                    ['materi_id', '=', $materi_id],
-                    ['users_id', '=', Auth::guard('api')->user()->id],
-                ])->sum('point'),
-                'total_score' => 100,
-                'title' => DB::table('materi')
-                    ->whereId($materi_id)
-                    ->first()
-                    ->judul,
-            );
-        } catch (\Exception $e) {
-            return $this->error_response($e->getMessage());
-        }
+        return array(
+            'passed' => $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+            ])->sum('point') < 100 ? false : true,
+            'correct_count' => $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+                ['point', '=', 20]
+            ])->get()->count(),
+            'incorrect_count' => $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+                ['point', '=', 0],
+            ])->get()->count(),
+            'score' => $this->quis_answer_model->where([
+                ['kategori_materi_id', '=', $category_id],
+                ['materi_id', '=', $materi_id],
+                ['users_id', '=', Auth::guard('api')->user()->id],
+            ])->sum('point'),
+            'total_score' => 100,
+            'title' => DB::table('materi')
+                ->whereId($materi_id)
+                ->first()
+                ->judul,
+        );
     }
 
     public function QuisResult($category_id, $materi_id)
