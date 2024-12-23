@@ -5,6 +5,7 @@ namespace App\Repositories\v1\admin\master_data;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserManagementRepositories extends Controller
 {
@@ -57,6 +58,7 @@ class UserManagementRepositories extends Controller
             $this->start_transaction;
             $user['created_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
             $user['updated_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
+            $user['password'] = Hash::make($user['password']);
             $this->model->insert($user);
             $this->commit_transaction;
             return $this->success_response($user, 'Berhasil tambah user');
