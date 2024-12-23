@@ -201,9 +201,9 @@ class SoalRepositories extends Controller
 
             //submit quis
             $this->_SetRequestQuisSubmit($REQUEST_POST, $category_id, $materi_id);
+            DB::commit();
             //return mapping quis
             return $this->success_response($this->HandleMappingSubmitQuis($category_id, $materi_id));
-            DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->error_response($e->getMessage());
