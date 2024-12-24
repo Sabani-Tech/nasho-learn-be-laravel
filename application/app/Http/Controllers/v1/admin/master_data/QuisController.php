@@ -25,7 +25,7 @@ class QuisController extends Controller
     public function store(QuisRequest $quisRequest)
     {
         $materi = $quisRequest->validated();
-        $materi = $this->quisRepositories->store($quisRequest->safe()->only(['title', 'question', 'point', 'option', 'kategori_materi_id', 'materi_id', 'batch']));
+        $materi = $this->quisRepositories->store($quisRequest->safe()->only(['title', 'question', 'point', 'option', 'kategori_materi_id', 'materi_id', 'batch', 'answer_key']));
         return $materi;
     }
 
@@ -43,7 +43,7 @@ class QuisController extends Controller
     public function update(QuisRequest $quisRequest, string $id)
     {
         $materi = $quisRequest->validated();
-        $materi = $this->quisRepositories->update($quisRequest->safe()->only(['title', 'question', 'point', 'option', 'kategori_materi_id', 'materi_id', 'batch']), $id);
+        $materi = $this->quisRepositories->update($quisRequest->safe()->only(['title', 'question', 'point', 'option', 'kategori_materi_id', 'materi_id', 'batch', 'answer_key']), $id);
         return $materi;
     }
 

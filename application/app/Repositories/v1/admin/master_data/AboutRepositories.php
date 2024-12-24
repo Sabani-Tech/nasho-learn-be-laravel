@@ -56,7 +56,7 @@ class AboutRepositories extends Controller
             return $this->success_response($about, 'Berhasil tambah about');
         } catch (\Exception $e) {
             $this->rollback_transaction;
-            return $this->error_response($e->getMessage(), '500', $e, \env('APP_ENV'));
+            return $this->error_response($e->getMessage(), '500', true, $e, \env('APP_ENV'));
         }
     }
 
@@ -79,7 +79,7 @@ class AboutRepositories extends Controller
             }
         } catch (\Exception $e) {
             $this->rollback_transaction;
-            return $this->error_response($e->getMessage(), '500', $e, \env('APP_ENV'));
+            return $this->error_response($e->getMessage(), '500', true, $e, \env('APP_ENV'));
         }
     }
 
@@ -100,7 +100,7 @@ class AboutRepositories extends Controller
             }
         } catch (\Exception $e) {
             $this->rollback_transaction;
-            return $this->error_response($e->getMessage(), '500', $e, \env('APP_ENV'));
+            return $this->error_response($e->getMessage(), '500', true, $e, \env('APP_ENV'));
         }
     }
 
