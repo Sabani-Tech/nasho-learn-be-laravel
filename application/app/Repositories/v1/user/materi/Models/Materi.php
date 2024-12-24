@@ -17,9 +17,4 @@ class Materi extends Model
         'quis_status' => 'integer',
         'phase' => 'integer'
     ];
-
-    public function Category(): HasOne
-    {
-        return $this->hasOne(Category::class, 'id', 'kategori_materi_id');
-    }
 }
