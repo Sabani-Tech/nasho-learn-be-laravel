@@ -4,21 +4,7 @@ namespace App\Repositories\v1\user\materi;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MateriDetailResource;
-use Illuminate\Database\Eloquent\Model;
-
-//Model
-class Materi extends Model
-{
-    protected $table = 'materi';
-    protected $guarded = ['id'];
-    protected $hidden = ['isi'];
-    protected $casts = [
-        'id' => 'string',
-        'created_at' => 'date:d-M-Y H:i:s',
-        'quis_status' => 'integer',
-        'phase' => 'integer'
-    ];
-}
+use App\Repositories\v1\user\materi\Models\Materi;
 
 //Repository
 class MateriRepositories extends Controller
