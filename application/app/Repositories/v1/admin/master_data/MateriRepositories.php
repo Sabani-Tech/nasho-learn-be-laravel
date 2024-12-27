@@ -2,35 +2,12 @@
 
 namespace App\Repositories\v1\admin\master_data;
 
-use App\Http\Controllers\Controller;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\Materi;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Request;
-
-//model
-class Materi extends Model
-{
-    protected $table = 'materi';
-    protected $fillable = ['embed', 'judul', 'permalink', 'isi', 'file_uri', 'quis_status', 'kategori_materi_id', 'created_at', 'updated_at'];
-    protected $casts = ['id' => 'string', 'created_at' => 'date:M-d-Y H:i:s', 'updated_at' => 'date:M-d-Y H:i:s'];
-    protected $hidden = ['kategori_materi_id', 'isi'];
-
-    //relation from materi.kategori_materi_id -> kategori_materi.id (untuk get kategori from materi)
-    public function kategori(): HasOne
-    {
-        return $this->hasOne(CategoryMateri::class, 'id', 'kategori_materi_id');
-    }
-}
-
-class CategoryMateri extends Model
-{
-    protected $table = 'kategori_materi';
-    protected $fillable = ['id', 'jenis', 'deskripsi'];
-    protected $casts = ['id' => 'string', 'created_at' => 'date:M-d-Y H:i:s', 'updated_at' => 'date:M-d-Y H:i:s'];
-}
 
 //repositories
 class MateriRepositories extends Controller
