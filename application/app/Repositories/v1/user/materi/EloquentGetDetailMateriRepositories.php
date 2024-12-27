@@ -2,7 +2,7 @@
 
 namespace App\Repositories\v1\user\materi;
 
-use App\Http\Resources\MateriDetailResource;
+use App\Http\Resources\MateriResource;
 use App\Models\Materi;
 
 //Repository
@@ -20,7 +20,7 @@ class EloquentGetDetailMateriRepositories implements MateriRepositories
             return $controller->error_response('Materi not found');
         }
 
-        return $controller->success_response(new MateriDetailResource($this->HandleGetMateriById($materi_id)), 'Successfully Detail Materi');
+        return $controller->success_response(new MateriResource($this->HandleGetMateriById($materi_id)), 'Successfully Detail Materi');
     }
 
     private function HandleValidateIdMateri($materi_id): bool
