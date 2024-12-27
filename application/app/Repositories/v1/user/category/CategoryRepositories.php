@@ -2,12 +2,13 @@
 
 namespace App\Repositories\v1\user\category;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Materi;
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Model;
-use App\Http\Resources\GetMateriByCategoryResource;
-use App\Http\Resources\MateriResourceByPhase;
+use App\Models\CategoryMateriDetail;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\MateriResource;
+use App\Http\Resources\GetMateriByCategoryResource;
+use App\Models\CategoryMateri;
 
 enum Status: string
 {
@@ -16,44 +17,6 @@ enum Status: string
     case status3 = 'Materi2';
     case status4 = 'Exam2';
 }
-class Category extends Model
-{
-    protected $table = 'kategori_materi';
-    protected $fillable = [
-        'jenis',
-        'deskripsi',
-        'created_at',
-        'updated_at'
-    ];
-
-    protected $casts = [
-        'id' => 'string',
-        'created_at' => 'date:d-M-y H:i:s',
-        'updated_at' => 'date:d-M-y H:i:s'
-    ];
-}
-
-class Materi extends Model
-{
-    protected $table = 'materi';
-    protected $casts = [
-        'id' => 'string',
-        'created_at' => 'date:d-M-y H:i:s',
-        'updated_at' => 'date:d-M-y H:i:s',
-        'phase' => 'integer',
-        'quis_status' => 'integer',
-    ];
-    protected $hidden = ['isi'];
-}
-
-class CategoryMateriDetail extends Model
-{
-    protected $table = 'kategori_materi_detail';
-    protected $casts = [
-        'created_at' => 'date:d-M-y H:i:s',
-        'updated_at' => 'date:d-M-y H:i:s'
-    ];
-}
 
 //repositories
 class CategoryRepositories extends Controller
@@ -61,7 +24,7 @@ class CategoryRepositories extends Controller
     private $category, $category_detail, $materi;
     public function __construct()
     {
-        $this->category = new Category();
+        $this->category = new CategoryMateri();
         $this->category_detail = new CategoryMateriDetail();
         $this->materi = new Materi();
     }
@@ -120,7 +83,7 @@ class CategoryRepositories extends Controller
 
     private function HandleGetListMateriByIdCategoryOfMateriPhase1($category)
     {
-        return MateriResourceByPhase::collection($this->materi->where([
+        return MateriResource::collection($this->materi->where([
             ['kategori_materi_id', '=', $category->id],
             ['phase', '=', 1],
         ])->orderBy('urutan')->get());
@@ -128,7 +91,7 @@ class CategoryRepositories extends Controller
 
     private function HandleGetListMateriByIdCategoryOfMateriPhase2($category)
     {
-        return MateriResourceByPhase::collection($this->materi->where([
+        return MateriResource::collection($this->materi->where([
             ['kategori_materi_id', '=', $category->id],
             ['phase', '=', 2],
         ])->orderBy('urutan')->get());

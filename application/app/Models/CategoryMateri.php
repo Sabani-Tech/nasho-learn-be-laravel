@@ -8,9 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class CategoryMateri extends Model
 {
     protected $table = 'kategori_materi';
+    protected $fillable = [
+        'jenis',
+        'deskripsi',
+        'created_at',
+        'updated_at'
+    ];
+
     protected $casts = [
         'id' => 'string',
-        'created_at' => 'date:d-M-Y H:i:s',
-        'updated_at' => 'date:d-M-Y H:i:s',
+        'created_at' => 'date:d-M-y H:i:s',
+        'updated_at' => 'date:d-M-y H:i:s'
     ];
 }
