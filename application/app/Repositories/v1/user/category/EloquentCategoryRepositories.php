@@ -12,17 +12,17 @@ use App\Models\CategoryMateri;
 //repositories
 class EloquentCategoryRepositories implements CategoryRepositories
 {
-    private $category, $category_detail, $materi;
+    private $category_materi, $category_materi_detail, $materi;
     public function __construct()
     {
-        $this->category = new CategoryMateri();
-        $this->category_detail = new CategoryMateriDetail();
+        $this->category_materi = new CategoryMateri();
+        $this->category_materi_detail = new CategoryMateriDetail();
         $this->materi = new Materi();
     }
 
     public function ListCategory()
     {
-        return GetMateriByCategoryResource::collection($this->category->get());
+        return GetMateriByCategoryResource::collection($this->category_materi->get());
     }
 
     public function ListMateriByCategory($kategori_id, $response)
@@ -91,7 +91,7 @@ class EloquentCategoryRepositories implements CategoryRepositories
 
     private function HandleValidateCategoryById($kategori_id): bool
     {
-        if ($this->category->find($kategori_id)) {
+        if ($this->category_materi->find($kategori_id)) {
             return true;
         }
         return false;
@@ -99,11 +99,11 @@ class EloquentCategoryRepositories implements CategoryRepositories
 
     private function HandleGetCategoryById($category_id)
     {
-        return $this->category->whereId($category_id)->first();
+        return $this->category_materi->whereId($category_id)->first();
     }
     private function HandleGetCategoryDetailByIdCategory($category_id)
     {
-        return $this->category_detail->where([
+        return $this->category_materi_detail->where([
             ['kategori_materi_id', '=', $category_id],
             ['users_id', '=', Auth::guard('api')->user()->id]
         ])->first();
@@ -111,7 +111,7 @@ class EloquentCategoryRepositories implements CategoryRepositories
 
     private function HandleValidateFieldCategoryDetailByUserID($kategori_id): bool
     {
-        return $this->category_detail->where([
+        return $this->category_materi_detail->where([
             ['kategori_materi_id', '=', $kategori_id],
             ['users_id', '=', Auth::guard('api')->user()->id]
         ])->first() ? true : false;
@@ -119,7 +119,7 @@ class EloquentCategoryRepositories implements CategoryRepositories
 
     private function HandleCreateFieldCategoryDetailByUserID($kategori_id)
     {
-        return $this->category_detail->insert(
+        return $this->category_materi_detail->insert(
             ['kategori_materi_id' => $kategori_id, 'users_id' => Auth::guard('api')->user()->id, 'created_at' => date('Y-m-d H:i:s')]
         );
     }
