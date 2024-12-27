@@ -13,12 +13,10 @@ use App\Http\Resources\PembahasanQuisResource;
 
 enum Status: string
 {
-    case status1 = 'Materi1';
-    case status2 = 'Exam1';
-    case status3 = 'Materi2';
-    case status4 = 'Exam2';
+    case exam2 = 'true';
+    case exam1 = 'true';
+    case statusExam1 = 'Exam2';
 }
-
 //Repositories
 class EloquentSoalRepositories implements SoalRepositories
 {
@@ -334,8 +332,8 @@ class EloquentSoalRepositories implements SoalRepositories
                 ['users_id', '=', Auth::guard('api')->user()->id],
                 ['kategori_materi_id', '=', $category_id],
             ])->update([
-                'exam1' => 'true', //uts nya lulus
-                'status' => 'Exam2', // langsung membuka ujian untuk tahap uas
+                'exam1' => Status::exam1, //uts nya lulus
+                'status' => Status::statusExam1, // langsung membuka ujian untuk tahap uas
             ]);
     }
 
@@ -346,7 +344,7 @@ class EloquentSoalRepositories implements SoalRepositories
                 ['users_id', '=', Auth::guard('api')->user()->id],
                 ['kategori_materi_id', '=', $category_id],
             ])->update([
-                'exam2' => 'true', // uas nya lulus
+                'exam2' => Status::exam2, // uas nya lulus
             ]);
     }
 }
