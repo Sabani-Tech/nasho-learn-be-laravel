@@ -2,6 +2,7 @@
 
 namespace App\Repositories\v1\user\category;
 
+//interface for repositories
 interface CategoryRepositories
 {
     public function ListCategory();
