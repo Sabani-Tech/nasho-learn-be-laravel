@@ -134,7 +134,6 @@ Route::prefix('v1')->group(function () {
             Route::prefix('master-data')->group(function () {
                 Route::resource('materi', MateriController::class);
                 Route::resource('kategori-materi', KategoriMateriController::class);
-                Route::resource('about', AboutController::class);
                 Route::resource('user', UserManagementController::class);
                 Route::resource('quis', QuisController::class);
                 Route::resource('ujian', UjianController::class);
