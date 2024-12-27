@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Repositories\v1\user\materi\Models;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 //Model
 class Materi extends Model
 {
     protected $table = 'materi';
-    protected $guarded = ['id'];
     protected $hidden = ['isi'];
     protected $casts = [
         'id' => 'string',

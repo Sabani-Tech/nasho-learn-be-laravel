@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories\v1\user\materi\Models;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 //Model
-class Category extends Model
+class CategoryMateri extends Model
 {
     protected $table = 'kategori_materi';
     protected $casts = [
