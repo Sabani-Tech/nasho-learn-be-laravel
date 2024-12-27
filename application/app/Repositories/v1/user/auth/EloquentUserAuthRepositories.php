@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-
 class EloquentUserAuthRepositories implements UserAuthRepositories
 {
     public function login($login, $user, $response)
