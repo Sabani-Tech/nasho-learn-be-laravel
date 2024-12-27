@@ -2,76 +2,17 @@
 
 namespace App\Repositories\v1\user\soal;
 
+use App\Models\QuisModel;
+use App\Models\UjianModel;
+use App\Models\ExamAnswerModel;
+use App\Models\QuisAnswerModel;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PembahasanExamResource;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
+use App\Http\Resources\PembahasanExamResource;
 use App\Http\Resources\PembahasanQuisResource;
 
-//Model query(quis and exam)
-class QuisModel extends Model
-{
-    protected $table = 'quis';
-    protected $casts = [
-        'option' => 'array',
-        'id' => 'string',
-    ];
-    protected $hidden = ['kategori_materi_id', 'materi_id'];
-}
-class UjianModel extends Model
-{
-    protected $table = 'exam';
-    protected $casts = [
-        'option' => 'array',
-        'id' => 'string',
-    ];
-    protected $hidden = [
-        'kategori_materi_id',
-        'materi_id',
-        'phase'
-    ];
-}
-
-//Model submit(Quis and Exam)
-class QuisAnswerModel extends Model
-{
-    protected $table = 'quis_answer';
-    protected $fillable = [
-        'point',
-        'batch',
-        'answer',
-        'quis_id',
-        'kategori_materi_id',
-        'materi_id',
-        'users_id',
-        'created_at',
-        'updated_at'
-    ];
-    protected $casts = [
-        'id' => 'string'
-    ];
-}
-
-class ExamAnswerModel extends Model
-{
-    protected $table = 'exam_answer';
-    protected $fillable = [
-        'point',
-        'batch',
-        'answer',
-        'exam_id',
-        'kategori_materi_id',
-        'phase',
-        'users_id',
-        'created_at',
-        'updated_at',
-    ];
-    protected $casts = [
-        'id' => 'string',
-    ];
-}
-
+//Repositories
 class SoalRepositories extends Controller
 {
     private $quis_model, $ujian_model, $quis_answer_model, $exam_answer_model;
