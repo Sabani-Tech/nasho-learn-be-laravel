@@ -2,7 +2,6 @@
 
 namespace App\Repositories\v1\admin\master_data;
 
-use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
