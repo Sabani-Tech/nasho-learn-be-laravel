@@ -4,20 +4,21 @@ namespace App\Http\Controllers\v1\admin\master_data;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\v1\admin\master_data\MateriRequest;
-use App\Repositories\v1\admin\master_data\MateriRepositories;
+use App\Repositories\v1\admin\master_data\EloquentMateriRepositories;
 use Illuminate\Http\Request;
 
 class MateriController extends Controller
 {
     public function __construct(
-        private MateriRepositories $materiRepositories
+        private EloquentMateriRepositories $eloquentMateriRepositories,
+        private Controller $controller,
     ) {}
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        return $this->materiRepositories->index($request);
+        return $this->eloquentMateriRepositories->index($request);
     }
     /**
      * Store a newly created resource in storage.
@@ -25,7 +26,7 @@ class MateriController extends Controller
     public function store(MateriRequest $materiRequest)
     {
         $materi = $materiRequest->validated();
-        $materi = $this->materiRepositories->store($materiRequest->safe()->only(['embed', 'judul', 'phase', 'isi', 'file_uri', 'kategori_materi_id', 'permalink', 'urutan', 'quis_status']));
+        $materi = $this->eloquentMateriRepositories->store($materiRequest->safe()->only(['embed', 'judul', 'phase', 'isi', 'file_uri', 'kategori_materi_id', 'permalink', 'urutan', 'quis_status']), $this->controller);
         return $materi;
     }
 
@@ -34,7 +35,7 @@ class MateriController extends Controller
      */
     public function show(string $id)
     {
-        return $this->materiRepositories->show($id);
+        return $this->eloquentMateriRepositories->show($id, $this->controller);
     }
 
     /**
@@ -43,7 +44,7 @@ class MateriController extends Controller
     public function update(MateriRequest $materiRequest, string $id)
     {
         $materi = $materiRequest->validated();
-        $materi = $this->materiRepositories->update($materiRequest->safe()->only(['embed', 'judul', 'phase', 'isi', 'file_uri', 'kategori_materi_id', 'permalink', 'urutan', 'quis_status']), $id);
+        $materi = $this->eloquentMateriRepositories->update($materiRequest->safe()->only(['embed', 'judul', 'phase', 'isi', 'file_uri', 'kategori_materi_id', 'permalink', 'urutan', 'quis_status']), $id, $this->controller);
         return $materi;
     }
 
@@ -52,6 +53,6 @@ class MateriController extends Controller
      */
     public function destroy(string $id)
     {
-        return $this->materiRepositories->delete($id);
+        return $this->eloquentMateriRepositories->delete($id, $this->controller);
     }
 }
