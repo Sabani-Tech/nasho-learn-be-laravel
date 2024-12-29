@@ -70,7 +70,7 @@ class EloquentCategoryRepositories implements CategoryRepositories
 
     private function HandleValidateTypeArabicBaseCategory($category)
     {
-        return $category['jenis'] == 'Nahwu' || $category['jenis'] == 'nahwu' ? 'نحوو' : 'صرف';
+        return $category['jenis'] == 'Nahwu' || $category['jenis'] == 'nahwu' ? 'نحو' : 'صرف';
     }
 
     private function HandleGetListMateriByIdCategoryOfMateriPhase1($category)
