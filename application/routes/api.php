@@ -5,6 +5,7 @@ use App\Http\Controllers\v1\admin\master_data\KategoriMateriController;
 use App\Http\Controllers\v1\admin\master_data\MateriController;
 use App\Http\Controllers\v1\admin\master_data\QuisController;
 use App\Http\Controllers\v1\admin\master_data\ExamController;
+use App\Http\Controllers\v1\admin\master_data\ResultExamAndQuisController;
 use App\Http\Controllers\v1\admin\master_data\UserManagementController;
 use App\Http\Controllers\v1\user\auth\UserAuthController;
 use App\Http\Controllers\v1\user\category\CategoryController;
@@ -136,6 +137,9 @@ Route::prefix('v1')->group(function () {
                 Route::resource('user', UserManagementController::class);
                 Route::resource('quis', QuisController::class);
                 Route::resource('ujian', ExamController::class);
+            });
+            Route::prefix('result')->group(function () {
+                Route::get('exam-and-quis', [ResultExamAndQuisController::class, 'index'])->name('result.exam-and-quis');
             });
         });
     });
