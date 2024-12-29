@@ -126,7 +126,7 @@ class EloquentCategoryRepositories implements CategoryRepositories
 
     private function HandleUpdateFieldCategoryDetailByUserID($category_id, $status_category)
     {
-        return $this->category_detail
+        return $this->category_materi_detail
             ->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['users_id', '=', Auth::guard('api')->user()->id]
