@@ -4,23 +4,23 @@ namespace App\Http\Controllers\v1\user\soal;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Repositories\v1\user\soal\SoalRepositories;
-use Illuminate\Support\Facades\Validator;
+use App\Repositories\v1\user\soal\EloquentSoalRepositories;
 
-class SoalController extends Controller
+class SoalController
 {
     public function __construct(
-        private SoalRepositories $soalRepositories
+        private EloquentSoalRepositories $eloquentSoalRepositories,
+        private Controller $controller
     ) {}
     public function quis($category_id, $materi_id)
     {
-        return $this->soalRepositories->Quis($category_id, $materi_id);
+        return $this->eloquentSoalRepositories->Quis($category_id, $materi_id, $this->controller);
     }
 
     public function exam($category_id, Request $request)
     {
         $REQUEST_GET = $request->query('phase');
-        return $this->soalRepositories->Exam($category_id, $REQUEST_GET);
+        return $this->eloquentSoalRepositories->Exam($category_id, $REQUEST_GET, $this->controller);
     }
 
     /**
@@ -30,24 +30,24 @@ class SoalController extends Controller
     public function quisSubmit($category_id, $materi_id, Request $request)
     {
         $REQUEST_POST = $request->post();
-        return $this->soalRepositories->QuisSubmit($category_id, $materi_id, $REQUEST_POST);
+        return $this->eloquentSoalRepositories->QuisSubmit($category_id, $materi_id, $REQUEST_POST, $this->controller);
     }
 
     public function quisResult($category_id, $materi_id)
     {
-        return $this->soalRepositories->QuisResult($category_id, $materi_id);
+        return $this->eloquentSoalRepositories->QuisResult($category_id, $materi_id, $this->controller);
     }
 
     public function examSubmit($category_id, Request $request)
     {
         $REQUEST_POST = $request->post();
         $REQUEST_GET_PHASE = $request->query('phase');
-        return $this->soalRepositories->ExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE);
+        return $this->eloquentSoalRepositories->ExamSubmit($category_id, $REQUEST_POST, $REQUEST_GET_PHASE, $this->controller);
     }
 
     public function examResult($category_id, Request $request)
     {
         $REQUEST_GET_PHASE = $request->query('phase');
-        return $this->soalRepositories->ExamResult($category_id, $REQUEST_GET_PHASE);
+        return $this->eloquentSoalRepositories->ExamResult($category_id, $REQUEST_GET_PHASE, $this->controller);
     }
 }

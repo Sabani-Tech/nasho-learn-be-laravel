@@ -1,15 +1,15 @@
 <?php
 
 use App\Http\Controllers\v1\admin\auth\AdminAuthController;
-use App\Http\Controllers\v1\admin\master_data\AboutController;
 use App\Http\Controllers\v1\admin\master_data\KategoriMateriController;
 use App\Http\Controllers\v1\admin\master_data\MateriController;
 use App\Http\Controllers\v1\admin\master_data\QuisController;
-use App\Http\Controllers\v1\admin\master_data\UjianController;
+use App\Http\Controllers\v1\admin\master_data\ExamController;
+use App\Http\Controllers\v1\admin\master_data\ResultExamAndQuisController;
 use App\Http\Controllers\v1\admin\master_data\UserManagementController;
 use App\Http\Controllers\v1\user\auth\UserAuthController;
 use App\Http\Controllers\v1\user\category\CategoryController;
-use App\Http\Controllers\v1\user\materi\MateriController as UserMateriController;
+use App\Http\Controllers\v1\user\materi\GetDetailMateriController;
 use App\Http\Controllers\v1\user\soal\SoalController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -119,7 +119,7 @@ Route::prefix('v1')->group(function () {
                 Route::post('/{category_id}/exam/submit', [SoalController::class, 'examSubmit'])->name('user.category_id.exam.submit');
                 Route::get('/{category_id}/exam/result', [SoalController::class, 'examResult'])->name('user.category_id.exam.result');
             });
-            Route::get('materi/{materi_id}', [UserMateriController::class, 'index']);
+            Route::get('materi/{materi_id}', [GetDetailMateriController::class, 'Index']);
         });
     });
     Route::prefix('admin')->group(function () {
@@ -134,10 +134,12 @@ Route::prefix('v1')->group(function () {
             Route::prefix('master-data')->group(function () {
                 Route::resource('materi', MateriController::class);
                 Route::resource('kategori-materi', KategoriMateriController::class);
-                Route::resource('about', AboutController::class);
                 Route::resource('user', UserManagementController::class);
                 Route::resource('quis', QuisController::class);
-                Route::resource('ujian', UjianController::class);
+                Route::resource('ujian', ExamController::class);
+            });
+            Route::prefix('result')->group(function () {
+                Route::get('exam-and-quis', [ResultExamAndQuisController::class, 'index'])->name('result.exam-and-quis');
             });
         });
     });

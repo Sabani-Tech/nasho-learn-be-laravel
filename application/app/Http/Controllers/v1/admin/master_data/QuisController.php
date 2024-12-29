@@ -4,20 +4,21 @@ namespace App\Http\Controllers\v1\admin\master_data;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\v1\admin\master_data\QuisRequest;
-use App\Repositories\v1\admin\master_data\QuisRepositories;
+use App\Repositories\v1\admin\master_data\EloquentQuisRepositories;
 use Illuminate\Http\Request;
 
-class QuisController extends Controller
+class QuisController
 {
     public function __construct(
-        private QuisRepositories $quisRepositories
+        private EloquentQuisRepositories $eloquentQuisRepositories,
+        private Controller $controller,
     ) {}
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        return $this->quisRepositories->index($request);
+        return $this->eloquentQuisRepositories->index($request);
     }
     /**
      * Store a newly created resource in storage.
@@ -25,7 +26,7 @@ class QuisController extends Controller
     public function store(QuisRequest $quisRequest)
     {
         $materi = $quisRequest->validated();
-        $materi = $this->quisRepositories->store($quisRequest->safe()->only(['title', 'question', 'point', 'option', 'kategori_materi_id', 'materi_id', 'batch', 'answer_key']));
+        $materi = $this->eloquentQuisRepositories->store($quisRequest->safe()->only(['title', 'question', 'point', 'option', 'kategori_materi_id', 'materi_id', 'batch', 'answer_key']), $this->controller);
         return $materi;
     }
 
@@ -34,7 +35,7 @@ class QuisController extends Controller
      */
     public function show(string $id)
     {
-        return $this->quisRepositories->show($id);
+        return $this->eloquentQuisRepositories->show($id, $this->controller);
     }
 
     /**
@@ -43,7 +44,7 @@ class QuisController extends Controller
     public function update(QuisRequest $quisRequest, string $id)
     {
         $materi = $quisRequest->validated();
-        $materi = $this->quisRepositories->update($quisRequest->safe()->only(['title', 'question', 'point', 'option', 'kategori_materi_id', 'materi_id', 'batch', 'answer_key']), $id);
+        $materi = $this->eloquentQuisRepositories->update($quisRequest->safe()->only(['title', 'question', 'point', 'option', 'kategori_materi_id', 'materi_id', 'batch', 'answer_key']), $id, $this->controller);
         return $materi;
     }
 
@@ -52,6 +53,6 @@ class QuisController extends Controller
      */
     public function destroy(string $id)
     {
-        return $this->quisRepositories->delete($id);
+        return $this->eloquentQuisRepositories->delete($id, $this->controller);
     }
 }

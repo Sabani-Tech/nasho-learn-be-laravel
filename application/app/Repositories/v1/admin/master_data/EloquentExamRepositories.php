@@ -3,24 +3,11 @@
 namespace App\Repositories\v1\admin\master_data;
 
 use Carbon\Carbon;
+use App\Models\UjianModel;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Model;
-
-//model
-class UjianModel extends Model
-{
-    protected $table = 'exam';
-    protected $casts = [
-        'option' => 'array',
-        'id' => 'string',
-    ];
-
-    protected $fillable = ['title', 'question', 'point', 'option', 'kategori_materi_id', 'created_at', 'updated_at'];
-}
 
 //repositories
-class UjianRepositories extends Controller
+class EloquentExamRepositories implements ExamRepositories
 {
     private $model, $category,
         $start_transaction,
@@ -48,6 +35,9 @@ class UjianRepositories extends Controller
             ->when($request->question, function ($query) use ($request) {
                 $query->where('question', 'like', "%{$request->question}%");
             })
+            ->when($request->phase, function ($query) use ($request) {
+                $query->where('phase', $request->phase);
+            })
             ->when($request->point, function ($query) use ($request) {
                 $query->where('point', 'like', "%{$request->point}%");
             })
@@ -58,37 +48,37 @@ class UjianRepositories extends Controller
             ->paginate($limit ?? 10);
     }
 
-    public function show($id_ujian)
+    public function show($id_ujian, $response)
     {
         if (!$this->validate_exists_ujian_by_id_childs($id_ujian)) {
-            return $this->error_response('ujian tidak ditemukan');
+            return $response->error_response('ujian tidak ditemukan');
         }
 
         if ($this->validate_exists_ujian_by_id_childs($id_ujian)) {
-            return $this->success_response($this->where_exists_ujian_by_id_childs($id_ujian), 'Berhasil detail ujian');
+            return $response->success_response($this->where_exists_ujian_by_id_childs($id_ujian), 'Berhasil detail ujian');
         }
     }
 
-    public function store($ujian)
+    public function store($ujian, $response)
     {
         try {
             $this->start_transaction;
             $ujian['created_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
             $ujian['updated_at'] = Carbon::now()->timezone(\env('APP_TIMEZONE'));
             if (!$this->validate_category_by_id($ujian)) {
-                return $this->error_response('Category not found');
+                return $response->error_response('Category not found');
             }
 
             $this->model->insert($ujian);
             $this->commit_transaction;
-            return $this->success_response($ujian, 'Berhasil tambah ujian');
+            return $response->success_response($ujian, 'Berhasil tambah ujian');
         } catch (\Exception $e) {
             $this->rollback_transaction;
-            return $this->error_response($e->getMessage(), '500', true, 'Hint: cek request or something any method store', \env('APP_ENV'));
+            return $response->error_response($e->getMessage(), '500', true, 'Hint: cek request or something any method store', \env('APP_ENV'));
         }
     }
 
-    public function update($ujian, $id_ujian)
+    public function update($ujian, $id_ujian, $response)
     {
         try {
             $this->start_transaction;
@@ -97,42 +87,42 @@ class UjianRepositories extends Controller
 
             $update_ujian = $this->validate_exists_ujian_by_id_childs($id_ujian);
             if (!$update_ujian) {
-                return $this->error_response('id ujian salah');
+                return $response->error_response('id ujian salah');
             }
 
             if (!$this->validate_category_by_id($ujian)) {
-                return $this->error_response('Category not found');
+                return $response->error_response('Category not found');
             }
 
             if ($update_ujian) {
                 $this->model->where('id', $id_ujian)->update($ujian);
                 $this->commit_transaction;
-                return $this->success_response($ujian, 'Berhasil update ujian');
+                return $response->success_response($ujian, 'Berhasil update ujian');
             }
         } catch (\Exception $e) {
             $this->rollback_transaction;
-            return $this->error_response($e->getMessage(), '500', true, \env('APP_ENV'));
+            return $response->error_response($e->getMessage(), '500', true, \env('APP_ENV'));
         }
     }
 
-    public function delete($soal_id)
+    public function delete($soal_id, $response)
     {
         try {
             $this->start_transaction;
 
             $delete_ujian = $this->validate_exists_ujian_by_id_childs($soal_id);
             if (!$delete_ujian) {
-                return $this->error_response('ujian sudah di hapus');
+                return $response->error_response('ujian sudah di hapus');
             }
 
             if ($delete_ujian) {
                 $this->delete_ujian_by_id_childs($soal_id);
                 $this->commit_transaction;
-                return $this->success_response($this->where_exists_ujian_by_id_childs($soal_id), 'Berhasil delete ujian');
+                return $response->success_response($this->where_exists_ujian_by_id_childs($soal_id), 'Berhasil delete ujian');
             }
         } catch (\Exception $e) {
             $this->rollback_transaction;
-            return $this->error_response($e->getMessage(), '500', true, \env('APP_ENV'));
+            return $response->error_response($e->getMessage(), '500', true, \env('APP_ENV'));
         }
     }
 
