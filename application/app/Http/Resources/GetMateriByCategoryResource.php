@@ -20,7 +20,7 @@ class GetMateriByCategoryResource extends JsonResource
             'id' => $this->id,
             'jenis' => $this->jenis,
             'deskripsi' => $this->deskripsi,
-            'jenis_arab' => $this->jenis == 'Nahwu' || $this->jenis == 'nahwu' ? 'نحوو' : 'صرف',
+            'jenis_arab' => $this->jenis == 'Nahwu' || $this->jenis == 'nahwu' ? 'نحو' : 'صرف',
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -6,14 +6,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\v1\admin\auth\LoginRequest;
-use App\Repositories\v1\admin\auth\AdminAuthRepositories;
+use App\Repositories\v1\admin\auth\EloquentAdminAuthRepositories;
 
-class AdminAuthController extends Controller
+class AdminAuthController
 {
     //construct injection (inject repositories admin ke dalam construct)
     public function __construct(
-        private AdminAuthRepositories $admin_repositories,
+        private EloquentAdminAuthRepositories $eloquentAdminAuthRepositories,
         private User $user,
+        private Controller $controller,
     ) {}
 
     public function login(LoginRequest $request)
@@ -23,14 +24,14 @@ class AdminAuthController extends Controller
 
     public function logout(Request $request)
     {
-        return $this->success_response($this->admin_repositories->logout($request), 'Berhasil logout');
+        return $this->controller->success_response($this->eloquentAdminAuthRepositories->logout($request), 'Berhasil logout');
     }
 
     private function handle_validate_auth_childs($type, $request)
     {
         if ($type == 'login') {
             $validate = $request->validated();
-            $validate = $this->admin_repositories->login($validate, $this->user);
+            $validate = $this->eloquentAdminAuthRepositories->login($validate, $this->user, $this->controller);
         }
 
         return $validate;
@@ -38,6 +39,6 @@ class AdminAuthController extends Controller
 
     public function profile()
     {
-        return $this->success_response($this->admin_repositories->profile($this->user), 'Berhasil get profile');
+        return $this->controller->success_response($this->eloquentAdminAuthRepositories->profile($this->user), 'Berhasil get profile');
     }
 }

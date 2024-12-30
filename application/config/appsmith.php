@@ -1,147 +1,151 @@
 <?php
 
 return [
-    'dummy' => [
-        [
-            "id" => "0cc3cebf-badb-11ef-8196-00163e047c76",
-            "title" => "Unsur pembentuk kalimat (الْجُمْلاَةُ المُفِيْدَةُ)",
-            "question" => "Berikut ini yang termasuk dalam pembagian الْكَلِمَةُ adalah?",
-            "point" => 20,
-            "option" => [
-                [
-                    "key" => "A",
-                    "value" => "الْإِسْمُ , الْفِعْلُ , الْمَوْصُوْل"
+    'dummy' =>
+    [
+        "statusCode" => 200,
+        "message" => "berhasil mendapatkan data user",
+        "data" => [
+            [
+                "id" => 1,
+                "fullname" => "Laura Amelia",
+                "username" => "laura",
+                "email" => "laura@gmail.com",
+                "quis" => [
+                    [
+                        "passed" => false,
+                        "score" => 40,
+                        "right_answer" => 2,
+                        "wrong_answer" => 3,
+                        "batch" => 1,
+                        "point_right_answer" => 20,
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ],
+                    [
+                        "passed" => true,
+                        "score" => 100,
+                        "right_answer" => 5,
+                        "wrong_answer" => 0,
+                        "batch" => 2,
+                        "point_right_answer" => 20,
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ],
+                    [
+                        "passed" => false,
+                        "score" => 60,
+                        "right_answer" => 3,
+                        "wrong_answer" => 2,
+                        "batch" => 3,
+                        "point_right_answer" => 20,
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ]
                 ],
-                [
-                    "key" => "B",
-                    "value" => "الْإِسْمُ , الْفِعْلُ , الْحَرْف"
-                ],
-                [
-                    "key" => "C",
-                    "value" => "مَاضِي , مُضَارِعُ , أَمْرُ"
-                ],
-                [
-                    "key" => "D",
-                    "value" => "الْإِسْمُ , الْفِعْلُ , الْحَرْفُ , الْمُضَارِع"
+                "exam" => [
+                    [
+                        "passed" => false,
+                        "score" => 50,
+                        "right_answer" => 5,
+                        "wrong_answer" => 5,
+                        "batch" => 1,
+                        "point_right_answer" => 10,
+                        "total_soal" => 10,
+                        "passing_grade" => 60
+                    ],
+                    [
+                        "passed" => true,
+                        "score" => 100,
+                        "right_answer" => 10,
+                        "wrong_answer" => 0,
+                        "batch" => 2,
+                        "point_right_answer" => 10,
+                        "total_soal" => 10,
+                        "passing_grade" => 60
+                    ],
+                    [
+                        "passed" => true,
+                        "score" => 60,
+                        "right_answer" => 6,
+                        "wrong_answer" => 4,
+                        "batch" => 3,
+                        "point_right_answer" => 10,
+                        "total_soal" => 10,
+                        "passing_grade" => 60
+                    ]
                 ]
             ],
-            "batch" => 1,
-            "answer_key" => "B",
-            "created_at" => null,
-            "updated_at" => null
-        ],
-        [
-            "id" => "79ec533d-bada-11ef-8196-00163e047c76",
-            "title" => "Unsur pembentuk kalimat (الْجُمْلاَةُ المُفِيْدَةُ)",
-            "question" => "Apa yang dimaksud dengan الْكَلِمَةُ ?",
-            "point" => 20,
-            "option" => [
-                [
-                    "key" => "A",
-                    "value" => "Kata"
+            [
+                "id" => 2,
+                "fullname" => "Muh Syamsul Marif",
+                "username" => "samsul",
+                "email" => "samsul@gmail.com",
+                "quis" => [
+                    [
+                        "passed" => false,
+                        "score" => 40,
+                        "right_answer" => 2,
+                        "wrong_answer" => 3,
+                        "batch" => 1,
+                        "point_right_answer" => 20,
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ],
+                    [
+                        "passed" => true,
+                        "score" => 100,
+                        "right_answer" => 5,
+                        "wrong_answer" => 0,
+                        "batch" => 2,
+                        "point_right_answer" => 20,
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ],
+                    [
+                        "passed" => false,
+                        "score" => 60,
+                        "right_answer" => 3,
+                        "wrong_answer" => 2,
+                        "batch" => 3,
+                        "point_right_answer" => 20,
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ]
                 ],
-                [
-                    "key" => "B",
-                    "value" => "Kalimat"
-                ],
-                [
-                    "key" => "C",
-                    "value" => "Kata kerja"
-                ],
-                [
-                    "key" => "D",
-                    "value" => "Kata Perintah"
+                "exam" => [
+                    [
+                        "passed" => true,
+                        "score" => 60,
+                        "right_answer" => 6,
+                        "wrong_answer" => 4,
+                        "batch" => 1,
+                        "point_right_answer" => 10,
+                        "total_soal" => 10,
+                        "passing_grade" => 60
+                    ],
+                    [
+                        "passed" => false,
+                        "score" => 50,
+                        "right_answer" => 5,
+                        "wrong_answer" => 5,
+                        "batch" => 2,
+                        "point_right_answer" => 10,
+                        "total_soal" => 10,
+                        "passing_grade" => 60
+                    ],
+                    [
+                        "passed" => false,
+                        "score" => 40,
+                        "right_answer" => 4,
+                        "wrong_answer" => 6,
+                        "batch" => 3,
+                        "point_right_answer" => 10,
+                        "total_soal" => 10,
+                        "passing_grade" => 60
+                    ]
                 ]
-            ],
-            "batch" => 1,
-            "answer_key" => "A",
-            "created_at" => null,
-            "updated_at" => null
-        ],
-        [
-            "id" => "97448723-bada-11ef-8196-00163e047c76",
-            "title" => "Unsur pembentuk kalimat (الْجُمْلاَةُ المُفِيْدَةُ)",
-            "question" => "Isim (الْإِسْمُ) adalah kata yang menunjukan kepada ....",
-            "point" => 20,
-            "option" => [
-                [
-                    "key" => "A",
-                    "value" => "Benda hidup dan Benda Mati"
-                ],
-                [
-                    "key" => "B",
-                    "value" => "Kata Kerja"
-                ],
-                [
-                    "key" => "C",
-                    "value" => "Kata bantu"
-                ],
-                [
-                    "key" => "D",
-                    "value" => "Kata sambung"
-                ]
-            ],
-            "batch" => 1,
-            "answer_key" => "A",
-            "created_at" => null,
-            "updated_at" => null
-        ],
-        [
-            "id" => "97449262-bada-11ef-8196-00163e047c76",
-            "title" => "Unsur pembentuk kalimat (الْجُمْلاَةُ المُفِيْدَةُ)",
-            "question" => "Berikut ini contoh yang termasuk fiil adalah .....",
-            "point" => 20,
-            "option" => [
-                [
-                    "key" => "A",
-                    "value" => " كِتَابٌ , الْقَلَمُ , يَذْهَب"
-                ],
-                [
-                    "key" => "B",
-                    "value" => " مُدَرِّسٌ , شَجَرَةٌ , الْغَنَم"
-                ],
-                [
-                    "key" => "C",
-                    "value" => "أَكَلَ , عَلَّمَ , يُعَلِّم"
-                ],
-                [
-                    "key" => "D",
-                    "value" => "مِنْ , إِلَى , عَن"
-                ]
-            ],
-            "batch" => 1,
-            "answer_key" => "C",
-            "created_at" => null,
-            "updated_at" => null
-        ],
-        [
-            "id" => "97449f06-bada-11ef-8196-00163e047c76",
-            "title" => "Unsur pembentuk kalimat (الْجُمْلاَةُ المُفِيْدَةُ)",
-            "question" => "Harf jar dalam kalimat berikut **اَلرَّحْمٰنُ عَلَى الْعَرْشِ اسْتَوٰى** adalah:",
-            "point" => 20,
-            "option" => [
-                [
-                    "key" => "A",
-                    "value" => "اَلرَّحْمٰنُ"
-                ],
-                [
-                    "key" => "B",
-                    "value" => "عَلَى"
-                ],
-                [
-                    "key" => "C",
-                    "value" => "الْعَرْشِ"
-                ],
-                [
-                    "key" => "D",
-                    "value" => "اسْتَوٰى"
-                ]
-            ],
-            "batch" => 1,
-            "answer_key" => "B",
-            "created_at" => null,
-            "updated_at" => null
+            ]
         ]
     ]
-
 ];

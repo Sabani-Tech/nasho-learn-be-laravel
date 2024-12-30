@@ -4,20 +4,21 @@ namespace App\Http\Controllers\v1\admin\master_data;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\v1\admin\master_data\UjianRequest;
-use App\Repositories\v1\admin\master_data\UjianRepositories;
+use App\Repositories\v1\admin\master_data\EloquentExamRepositories;
 use Illuminate\Http\Request;
 
-class UjianController extends Controller
+class ExamController
 {
     public function __construct(
-        private UjianRepositories $ujianRepositories
+        private EloquentExamRepositories $eloquentExamRepositories,
+        private Controller $controller,
     ) {}
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        return $this->ujianRepositories->index($request);
+        return $this->eloquentExamRepositories->index($request);
     }
     /**
      * Store a newly created resource in storage.
@@ -25,7 +26,7 @@ class UjianController extends Controller
     public function store(UjianRequest $quisRequest)
     {
         $materi = $quisRequest->validated();
-        $materi = $this->ujianRepositories->store($quisRequest->safe()->only(['title', 'question', 'point', 'option', 'phase', 'kategori_materi_id', 'batch']));
+        $materi = $this->eloquentExamRepositories->store($quisRequest->safe()->only(['title', 'question', 'point', 'option', 'phase', 'kategori_materi_id', 'batch']), $this->controller);
         return $materi;
     }
 
@@ -34,7 +35,7 @@ class UjianController extends Controller
      */
     public function show(string $id)
     {
-        return $this->ujianRepositories->show($id);
+        return $this->eloquentExamRepositories->show($id, $this->controller);
     }
 
     /**
@@ -43,7 +44,7 @@ class UjianController extends Controller
     public function update(UjianRequest $ujianRequest, string $id)
     {
         $materi = $ujianRequest->validated();
-        $materi = $this->ujianRepositories->update($ujianRequest->safe()->only(['title', 'question', 'point', 'option', 'phase', 'kategori_materi_id', 'batch']), $id);
+        $materi = $this->eloquentExamRepositories->update($ujianRequest->safe()->only(['title', 'question', 'point', 'option', 'phase', 'kategori_materi_id', 'batch']), $id, $this->controller);
         return $materi;
     }
 
@@ -52,6 +53,6 @@ class UjianController extends Controller
      */
     public function destroy(string $id)
     {
-        return $this->ujianRepositories->delete($id);
+        return $this->eloquentExamRepositories->delete($id, $this->controller);
     }
 }
