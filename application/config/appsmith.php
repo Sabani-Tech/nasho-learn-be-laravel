@@ -77,7 +77,7 @@ return [
                 ]
             ],
             [
-                "id" => 1,
+                "id" => 2,
                 "fullname" => "Muh Syamsul Marif",
                 "username" => "samsul",
                 "email" => "samsul@gmail.com",
