@@ -9,11 +9,12 @@ use Illuminate\Http\Request;
 class ResultExamAndQuisController
 {
     public function __construct(
-        private EloquentResultExamAndQuisRepositories $eloquentResultExamAndQuisRepositories
+        private EloquentResultExamAndQuisRepositories $eloquentResultExamAndQuisRepositories,
+        private Controller $controller,
     ) {}
 
     public function index(Request $request)
     {
-        return $this->eloquentResultExamAndQuisRepositories->Index($request);
+        return $this->eloquentResultExamAndQuisRepositories->Index($request, $this->controller);
     }
 }
