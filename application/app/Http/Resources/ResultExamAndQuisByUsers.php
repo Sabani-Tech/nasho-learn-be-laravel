@@ -24,19 +24,17 @@ class ResultExamAndQuisByUsers extends JsonResource
             ->where('users_id', $this->id)
             ->exists()
         ) {
-            //quis by on batch 1
+            //quis by on batch
             /**
-             * loop pertama untuk list materi by batch 1
+             * loop pertama untuk list materi by batch
              * loop kedua show penilaian quis by users,batch and materi_id
              */
             if (DB::table('quis_answer')->where([
                 ['users_id', '=', $this->id],
-                ['batch', '=', 1],
             ])->exists()) {
                 foreach (
                     DB::table('quis_answer')->where([
                         ['users_id', '=', $this->id],
-                        ['batch', '=', 1],
                     ])->get() as $key => $value
                 ) {
                     array_push($quis_collect, $value->materi_id);
@@ -47,147 +45,33 @@ class ResultExamAndQuisByUsers extends JsonResource
                     $quis_data = array(
                         "title" => DB::table('materi')->whereId(DB::table('quis_answer')->where([
                             ['users_id', '=', $this->id],
-                            ['batch', '=', 1],
                             ['materi_id', '=', $value],
                         ])->first()->materi_id)->first()->judul,
                         "passed" => (int) DB::table('quis_answer')->where([
                             ['users_id', '=', $this->id],
-                            ['batch', '=', 1],
                             ['materi_id', '=', $value],
                         ])->sum('point') >= 100 ? true : false,
                         "score" => (int) DB::table('quis_answer')->where([
                             ['users_id', '=', $this->id],
-                            ['batch', '=', 1],
                             ['materi_id', '=', $value],
                         ])->sum('point'),
                         "right_answer" => (int) DB::table('quis_answer')->where([
                             ['users_id', '=', $this->id],
-                            ['batch', '=', 1],
                             ['point', '=', 20],
                             ['materi_id', '=', $value],
                         ])->get()->count(),
                         "wrong_answer" => (int) DB::table('quis_answer')->where([
                             ['users_id', '=', $this->id],
-                            ['batch', '=', 1],
                             ['point', '=', 0],
                             ['materi_id', '=', $value],
                         ])->get()->count(),
-                        "batch" => 1,
+                        "batch" => DB::table('quis_answer')
+                            ->wheremateri_id($value)
+                            ->first()->batch,
                         "point_right_answer" => 20,
-                        "total_soal" => 5,
-                        "passing_grade" => 100,
-                    );
-                    array_push($quis_show, $quis_data);
-                }
-            }
-
-            //quis by on batch 2
-            /**
-             * loop pertama untuk list materi by batch 2
-             * loop kedua show penilaian quis by users,batch and materi_id
-             */
-            if (DB::table('quis_answer')->where([
-                ['users_id', '=', $this->id],
-                ['batch', '=', 2],
-            ])->exists()) {
-                foreach (
-                    DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 2],
-                    ])->get() as $key => $value
-                ) {
-                    array_push($quis_collect, $value->materi_id);
-                }
-
-                $quis_collect = array_unique($quis_collect);
-                foreach ($quis_collect as $key => $value) {
-                    $quis_data = array(
-                        "title" => DB::table('materi')->whereId(DB::table('quis_answer')->where([
-                            ['users_id', '=', $this->id],
-                            ['batch', '=', 2],
-                            ['materi_id', '=', $value],
-                        ])->first()->materi_id)->first()->judul,
-                        "passed" => (int) DB::table('quis_answer')->where([
-                            ['users_id', '=', $this->id],
-                            ['batch', '=', 2],
-                            ['materi_id', '=', $value],
-                        ])->sum('point') >= 100 ? true : false,
-                        "score" => (int) DB::table('quis_answer')->where([
-                            ['users_id', '=', $this->id],
-                            ['batch', '=', 2],
-                            ['materi_id', '=', $value],
-                        ])->sum('point'),
-                        "right_answer" => (int) DB::table('quis_answer')->where([
-                            ['users_id', '=', $this->id],
-                            ['batch', '=', 2],
-                            ['point', '=', 20],
-                            ['materi_id', '=', $value],
-                        ])->get()->count(),
-                        "wrong_answer" => (int) DB::table('quis_answer')->where([
-                            ['users_id', '=', $this->id],
-                            ['batch', '=', 2],
-                            ['point', '=', 0],
-                            ['materi_id', '=', $value],
-                        ])->get()->count(),
-                        "batch" => 2,
-                        "point_right_answer" => 20,
-                        "total_soal" => 5,
-                        "passing_grade" => 100,
-                    );
-                    array_push($quis_show, $quis_data);
-                }
-            }
-
-            //quis by on batch 3
-            /**
-             * loop pertama untuk list materi by batch 3
-             * loop kedua show penilaian quis by users,batch and materi_id
-             */
-            if (DB::table('quis_answer')->where([
-                ['users_id', '=', $this->id],
-                ['batch', '=', 3],
-            ])->exists()) {
-                foreach (
-                    DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 3],
-                    ])->get() as $key => $value
-                ) {
-                    array_push($quis_collect, $value->materi_id);
-                }
-
-                $quis_collect = array_unique($quis_collect);
-                foreach ($quis_collect as $key => $value) {
-                    $quis_data = array(
-                        "title" => DB::table('materi')->whereId(DB::table('quis_answer')->where([
-                            ['users_id', '=', $this->id],
-                            ['batch', '=', 3],
-                            ['materi_id', '=', $value],
-                        ])->first()->materi_id)->first()->judul,
-                        "passed" => (int) DB::table('quis_answer')->where([
-                            ['users_id', '=', $this->id],
-                            ['batch', '=', 3],
-                            ['materi_id', '=', $value],
-                        ])->sum('point') >= 100 ? true : false,
-                        "score" => (int) DB::table('quis_answer')->where([
-                            ['users_id', '=', $this->id],
-                            ['batch', '=', 3],
-                            ['materi_id', '=', $value],
-                        ])->sum('point'),
-                        "right_answer" => (int) DB::table('quis_answer')->where([
-                            ['users_id', '=', $this->id],
-                            ['batch', '=', 3],
-                            ['point', '=', 20],
-                            ['materi_id', '=', $value],
-                        ])->get()->count(),
-                        "wrong_answer" => (int) DB::table('quis_answer')->where([
-                            ['users_id', '=', $this->id],
-                            ['batch', '=', 3],
-                            ['point', '=', 0],
-                            ['materi_id', '=', $value],
-                        ])->get()->count(),
-                        "batch" => 3,
-                        "point_right_answer" => 20,
+                        "category" => DB::table('kategori_materi')->whereId(DB::table('quis_answer')
+                            ->wheremateri_id($value)
+                            ->first()->kategori_materi_id)->first()->jenis,
                         "total_soal" => 5,
                         "passing_grade" => 100,
                     );
