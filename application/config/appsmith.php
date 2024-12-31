@@ -11,37 +11,79 @@ return [
                 "username" => "laura",
                 "email" => "laura@gmail.com",
                 "quis" => [
-                    "passed" => false,
-                    "score" => 40,
-                    "right_answer" => 2,
-                    "wrong_answer" => 3,
-                    "batch" => 1,
-                    "point_right_answer" => 20,
-                    "total_soal" => 5,
-                    "passing_grade" => 100
+                    [
+                        "title" => "ISIM MAUSHUL",
+                        "passed" => false,
+                        "score" => 40,
+                        "right_answer" => 2,
+                        "wrong_answer" => 3,
+                        "batch" => 1,
+                        "point_right_answer" => 20,
+                        "category" => "Nahwu",
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ],
+                    [
+                        "title" => "ISIM BERDASARKAN GENDER",
+                        "passed" => false,
+                        "score" => 20,
+                        "right_answer" => 1,
+                        "wrong_answer" => 4,
+                        "batch" => 2,
+                        "point_right_answer" => 20,
+                        "category" => "Nahwu",
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ],
+                    [
+                        "title" => "TASHRIF LUGHOWI",
+                        "passed" => false,
+                        "score" => 20,
+                        "right_answer" => 1,
+                        "wrong_answer" => 4,
+                        "batch" => 3,
+                        "point_right_answer" => 20,
+                        "category" => "Sharaf",
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ],
+                    [
+                        "title" => "KAANA DAN SAUDARINYA",
+                        "passed" => true,
+                        "score" => 100,
+                        "right_answer" => 5,
+                        "wrong_answer" => 0,
+                        "batch" => 2,
+                        "point_right_answer" => 20,
+                        "category" => "Nahwu",
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ]
                 ],
                 "exam" => [
                     [
-                        "phase1" => [
-                            "passed" => false,
-                            "score" => 50,
-                            "right_answer" => 5,
-                            "wrong_answer" => 5,
-                            "batch" => 1,
-                            "point_right_answer" => 10,
-                            "total_soal" => 10,
-                            "passing_grade" => 60
-                        ],
-                        "phase2" => [
-                            "passed" => false,
-                            "score" => 50,
-                            "right_answer" => 5,
-                            "wrong_answer" => 5,
-                            "batch" => 1,
-                            "point_right_answer" => 10,
-                            "total_soal" => 10,
-                            "passing_grade" => 60
-                        ]
+                        "category" => "Nahwu",
+                        "passed" => false,
+                        "score" => 50,
+                        "right_answer" => 5,
+                        "wrong_answer" => 5,
+                        "batch" => 1,
+                        "point_right_answer" => 10,
+                        "total_soal" => 10,
+                        "passing_grade" => 60,
+                        "phase" => 1
+                    ],
+                    [
+                        "category" => "Shorof",
+                        "passed" => false,
+                        "score" => 50,
+                        "right_answer" => 5,
+                        "wrong_answer" => 5,
+                        "batch" => 1,
+                        "point_right_answer" => 10,
+                        "total_soal" => 10,
+                        "passing_grade" => 60,
+                        "phase" => 2
                     ]
                 ]
             ],
@@ -51,37 +93,79 @@ return [
                 "username" => "samsul",
                 "email" => "samsul@gmail.com",
                 "quis" => [
-                    "passed" => false,
-                    "score" => 40,
-                    "right_answer" => 2,
-                    "wrong_answer" => 3,
-                    "batch" => 1,
-                    "point_right_answer" => 20,
-                    "total_soal" => 5,
-                    "passing_grade" => 100
+                    [
+                        "title" => "ISIM MAUSHUL",
+                        "passed" => false,
+                        "score" => 40,
+                        "right_answer" => 2,
+                        "wrong_answer" => 3,
+                        "batch" => 1,
+                        "point_right_answer" => 20,
+                        "category" => "Nahwu",
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ],
+                    [
+                        "title" => "ISIM BERDASARKAN GENDER",
+                        "passed" => false,
+                        "score" => 20,
+                        "right_answer" => 1,
+                        "wrong_answer" => 4,
+                        "batch" => 2,
+                        "point_right_answer" => 20,
+                        "category" => "Nahwu",
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ],
+                    [
+                        "title" => "TASHRIF LUGHOWI",
+                        "passed" => false,
+                        "score" => 20,
+                        "right_answer" => 1,
+                        "wrong_answer" => 4,
+                        "batch" => 3,
+                        "point_right_answer" => 20,
+                        "category" => "Sharaf",
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ],
+                    [
+                        "title" => "KAANA DAN SAUDARINYA",
+                        "passed" => true,
+                        "score" => 100,
+                        "right_answer" => 5,
+                        "wrong_answer" => 0,
+                        "batch" => 2,
+                        "point_right_answer" => 20,
+                        "category" => "Nahwu",
+                        "total_soal" => 5,
+                        "passing_grade" => 100
+                    ]
                 ],
                 "exam" => [
                     [
-                        "phase1" => [
-                            "passed" => false,
-                            "score" => 50,
-                            "right_answer" => 5,
-                            "wrong_answer" => 5,
-                            "batch" => 1,
-                            "point_right_answer" => 10,
-                            "total_soal" => 10,
-                            "passing_grade" => 60
-                        ],
-                        "phase2" => [
-                            "passed" => false,
-                            "score" => 50,
-                            "right_answer" => 5,
-                            "wrong_answer" => 5,
-                            "batch" => 1,
-                            "point_right_answer" => 10,
-                            "total_soal" => 10,
-                            "passing_grade" => 60
-                        ]
+                        "category" => "Nahwu",
+                        "passed" => false,
+                        "score" => 50,
+                        "right_answer" => 5,
+                        "wrong_answer" => 5,
+                        "batch" => 1,
+                        "point_right_answer" => 10,
+                        "total_soal" => 10,
+                        "passing_grade" => 60,
+                        "phase" => 1
+                    ],
+                    [
+                        "category" => "Shorof",
+                        "passed" => false,
+                        "score" => 50,
+                        "right_answer" => 5,
+                        "wrong_answer" => 5,
+                        "batch" => 1,
+                        "point_right_answer" => 10,
+                        "total_soal" => 10,
+                        "passing_grade" => 60,
+                        "phase" => 2
                     ]
                 ]
             ]

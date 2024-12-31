@@ -59,26 +59,28 @@
             ],
             "exam": [
                 {
-                    "phase1": {
-                        "passed": false,
-                        "score": 50,
-                        "right_answer": 5,
-                        "wrong_answer": 5,
-                        "batch": 1,
-                        "point_right_answer": 10,
-                        "total_soal": 10,
-                        "passing_grade": 60
-                    },
-                    "phase2": {
-                        "passed": false,
-                        "score": 50,
-                        "right_answer": 5,
-                        "wrong_answer": 5,
-                        "batch": 1,
-                        "point_right_answer": 10,
-                        "total_soal": 10,
-                        "passing_grade": 60
-                    }
+                    "category": "Nahwu",
+                    "passed": false,
+                    "score": 50,
+                    "right_answer": 5,
+                    "wrong_answer": 5,
+                    "batch": 1,
+                    "point_right_answer": 10,
+                    "total_soal": 10,
+                    "passing_grade": 60,
+                    "phase": 1
+                },
+                {
+                    "category": "Shorof",
+                    "passed": false,
+                    "score": 50,
+                    "right_answer": 5,
+                    "wrong_answer": 5,
+                    "batch": 1,
+                    "point_right_answer": 10,
+                    "total_soal": 10,
+                    "passing_grade": 60,
+                    "phase": 2
                 }
             ]
         },
@@ -139,26 +141,28 @@
             ],
             "exam": [
                 {
-                    "phase1": {
-                        "passed": false,
-                        "score": 50,
-                        "right_answer": 5,
-                        "wrong_answer": 5,
-                        "batch": 1,
-                        "point_right_answer": 10,
-                        "total_soal": 10,
-                        "passing_grade": 60
-                    },
-                    "phase2": {
-                        "passed": false,
-                        "score": 50,
-                        "right_answer": 5,
-                        "wrong_answer": 5,
-                        "batch": 1,
-                        "point_right_answer": 10,
-                        "total_soal": 10,
-                        "passing_grade": 60
-                    }
+                    "category": "Nahwu",
+                    "passed": false,
+                    "score": 50,
+                    "right_answer": 5,
+                    "wrong_answer": 5,
+                    "batch": 1,
+                    "point_right_answer": 10,
+                    "total_soal": 10,
+                    "passing_grade": 60,
+                    "phase": 1
+                },
+                {
+                    "category": "Shorof",
+                    "passed": false,
+                    "score": 50,
+                    "right_answer": 5,
+                    "wrong_answer": 5,
+                    "batch": 1,
+                    "point_right_answer": 10,
+                    "total_soal": 10,
+                    "passing_grade": 60,
+                    "phase": 2
                 }
             ]
         }
