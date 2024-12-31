@@ -16,107 +16,48 @@ class ResultExamAndQuisByUsers extends JsonResource
     public function toArray(Request $request): array
     {
         //collect data
-        $quis_collect = []; //quis
-        $exam_collect = []; //exam
+        $quis_collect = '';
 
         //conditional list result quis by on batch from user
         if (DB::table('quis_answer')
             ->where('users_id', $this->id)
             ->exists()
         ) {
-            if (
-                DB::table('quis_answer')
-                ->where('users_id', $this->id)
-                ->first()->batch == 1
-            ) {
-                $quis = array(
-                    "passed" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 1],
-                    ])->sum('point') >= 100 ? true : false,
-                    "score" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 1],
-                    ])->sum('point'),
-                    "right_answer" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 1],
-                        ['point', '=', 20],
-                    ])->get()->count(),
-                    "wrong_answer" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 1],
-                        ['point', '=', 0],
-                    ])->get()->count(),
-                    "batch" => 1,
-                    "point_right_answer" => 20,
-                    "total_soal" => 5,
-                    "passing_grade" => 100,
-                );
-                array_push($quis_collect, $quis);
-            }
-            if (
-                DB::table('quis_answer')
-                ->where('users_id', $this->id)
-                ->first()->batch == 2
-            ) {
-                $quis = array(
-                    "passed" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 2],
-                    ])->sum('point') >= 100 ? true : false,
-                    "score" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 2],
-                    ])->sum('point'),
-                    "right_answer" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 2],
-                        ['point', '=', 20],
-                    ])->get()->count(),
-                    "wrong_answer" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 2],
-                        ['point', '=', 0],
-                    ])->get()->count(),
-                    "batch" => 2,
-                    "point_right_answer" => 20,
-                    "total_soal" => 5,
-                    "passing_grade" => 100,
-                );
-                array_push($quis_collect, $quis);
-            }
-            if (
-                DB::table('quis_answer')
-                ->where('users_id', $this->id)
-                ->first()->batch == 3
-            ) {
-                $quis = array(
-                    "passed" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 3],
-                    ])->sum('point') >= 100 ? true : false,
-                    "score" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 3],
-                    ])->sum('point'),
-                    "right_answer" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 3],
-                        ['point', '=', 20],
-                    ])->get()->count(),
-                    "wrong_answer" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['batch', '=', 3],
-                        ['point', '=', 0],
-                    ])->get()->count(),
-                    "batch" => 3,
-                    "point_right_answer" => 20,
-                    "total_soal" => 5,
-                    "passing_grade" => 100,
-                );
-                array_push($quis_collect, $quis);
-            }
+            $quis = array(
+                "passed" => (int) DB::table('quis_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['batch', '=', DB::table('quis_answer')
+                        ->where('users_id', $this->id)
+                        ->first()->batch],
+                ])->sum('point') >= 100 ? true : false,
+                "score" => (int) DB::table('quis_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['batch', '=', DB::table('quis_answer')
+                        ->where('users_id', $this->id)
+                        ->first()->batch],
+                ])->sum('point'),
+                "right_answer" => (int) DB::table('quis_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['batch', '=', DB::table('quis_answer')
+                        ->where('users_id', $this->id)
+                        ->first()->batch],
+                    ['point', '=', 20],
+                ])->get()->count(),
+                "wrong_answer" => (int) DB::table('quis_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['batch', '=', DB::table('quis_answer')
+                        ->where('users_id', $this->id)
+                        ->first()->batch],
+                    ['point', '=', 0],
+                ])->get()->count(),
+                "batch" => DB::table('quis_answer')
+                    ->where('users_id', $this->id)
+                    ->first()->batch,
+                "point_right_answer" => 20,
+                "total_soal" => 5,
+                "passing_grade" => 100,
+            );
+            $quis_collect = $quis;
         }
 
         //mock response
