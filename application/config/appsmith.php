@@ -10,7 +10,7 @@ return [
                 "fullname" => "Laura Amelia",
                 "username" => "laura",
                 "email" => "laura@gmail.com",
-                "quis" => [
+                "quis_list" => [
                     [
                         "title" => "ISIM MAUSHUL",
                         "passed" => false,
@@ -60,7 +60,7 @@ return [
                         "passing_grade" => 100
                     ]
                 ],
-                "exam" => [
+                "exam_list" => [
                     [
                         "category" => "Nahwu",
                         "passed" => false,
@@ -85,14 +85,16 @@ return [
                         "passing_grade" => 60,
                         "phase" => 2
                     ]
-                ]
+                ],
+                "quis_status" => true,
+                "exam_status" => true
             ],
             [
                 "id" => 1,
                 "fullname" => "Muh Syamsul Marif",
                 "username" => "samsul",
                 "email" => "samsul@gmail.com",
-                "quis" => [
+                "quis_list" => [
                     [
                         "title" => "ISIM MAUSHUL",
                         "passed" => false,
@@ -142,7 +144,7 @@ return [
                         "passing_grade" => 100
                     ]
                 ],
-                "exam" => [
+                "exam_list" => [
                     [
                         "category" => "Nahwu",
                         "passed" => false,
@@ -167,7 +169,9 @@ return [
                         "passing_grade" => 60,
                         "phase" => 2
                     ]
-                ]
+                ],
+                "quis_status" => false,
+                "exam_status" => false
             ]
         ]
     ]
