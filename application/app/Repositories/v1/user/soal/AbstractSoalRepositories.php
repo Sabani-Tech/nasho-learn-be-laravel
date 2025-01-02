@@ -30,5 +30,5 @@ abstract class AbstractSoalRepositories
     /**
      * @var string CONSTANT_STATUS_UNLOCK_EXAM2 this exam1 status true if passed exam2
      */
-    protected const CONSTANT_STATUS_UNLOCK_EXAM2 = 'true';
+    protected const CONSTANT_STATUS_UNLOCK_EXAM2 = 'Exam2';
 }
