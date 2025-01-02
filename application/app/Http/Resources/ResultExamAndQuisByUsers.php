@@ -27,176 +27,175 @@ class ResultExamAndQuisByUsers extends JsonResource
         $exam_collect_phase2 = [];
         $exam_show_phase2 = [];
 
-        //conditional result quis by on batch from user
-        if (DB::table('quis_answer')
-            ->where('users_id', $this->id)
-            ->exists()
-        ) {
-            //quis by on batch
-            /**
-             * loop pertama untuk list materi by batch
-             * loop kedua show penilaian quis by users,batch and materi_id
-             */
 
-            foreach (
-                DB::table('quis_answer')
-                    ->where('users_id', '=', $this->id)
-                    ->get() as $key => $value
-            ) {
-                array_push($quis_collect, $value->materi_id);
-            }
-            $quis_collect = array_unique($quis_collect);
-            foreach ($quis_collect as $key => $value) {
-                $quis_data = array(
-                    "title" => DB::table('materi')->whereId(DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['materi_id', '=', $value],
-                    ])->first()->materi_id)->first()->judul,
-                    "passed" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['materi_id', '=', $value],
-                    ])->sum('point') >= 100 ? true : false,
-                    "score" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['materi_id', '=', $value],
-                    ])->sum('point'),
-                    "right_answer" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['point', '=', 20],
-                        ['materi_id', '=', $value],
-                    ])->get()->count(),
-                    "wrong_answer" => (int) DB::table('quis_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['point', '=', 0],
-                        ['materi_id', '=', $value],
-                    ])->get()->count(),
-                    "batch" => DB::table('quis_answer')
-                        ->wheremateri_id($value)
-                        ->first()->batch,
-                    "point_right_answer" => 20,
-                    "category" => DB::table('kategori_materi')->whereId(DB::table('quis_answer')
-                        ->wheremateri_id($value)
-                        ->first()->kategori_materi_id)->first()->jenis,
-                    "total_soal" => 5,
-                    "passing_grade" => 100,
-                );
-                array_push($quis_show, $quis_data);
-            }
+        //quis by on batch
+        /**
+         * loop pertama untuk list materi by batch
+         * loop kedua show penilaian quis by users,batch and materi_id
+         */
+
+        foreach (
+            DB::table('quis_answer')
+                ->where('users_id', '=', $this->id)
+                ->get() as $key => $value
+        ) {
+            array_push($quis_collect, $value->materi_id);
+        }
+        $quis_collect = array_unique($quis_collect);
+        foreach ($quis_collect as $key => $value) {
+            $quis_data = array(
+                "title" => DB::table('materi')->whereId(DB::table('quis_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['materi_id', '=', $value],
+                ])->first()->materi_id)->first()->judul,
+                "passed" => (int) DB::table('quis_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['materi_id', '=', $value],
+                ])->sum('point') >= 100 ? true : false,
+                "score" => (int) DB::table('quis_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['materi_id', '=', $value],
+                ])->sum('point'),
+                "right_answer" => (int) DB::table('quis_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['point', '=', 20],
+                    ['materi_id', '=', $value],
+                ])->get()->count(),
+                "wrong_answer" => (int) DB::table('quis_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['point', '=', 0],
+                    ['materi_id', '=', $value],
+                ])->get()->count(),
+                "batch" => DB::table('quis_answer')
+                    ->wheremateri_id($value)
+                    ->first()->batch,
+                "point_right_answer" => 20,
+                "category" => DB::table('kategori_materi')->whereId(DB::table('quis_answer')
+                    ->wheremateri_id($value)
+                    ->first()->kategori_materi_id)->first()->jenis,
+                "total_soal" => 5,
+                "passing_grade" => 100,
+            );
+            array_push($quis_show, $quis_data);
         }
 
 
-        //conditional result exam by on phase 1 from user
-        if (DB::table('exam_answer')
-            ->where('users_id', '=', $this->id)
-            ->exists()
-        ) {
-            //exam on phase 1
-            /**
-             * loop pertama untuk list category_materi by phase1
-             * loop kedua show penilaian exam by phase1,users and category_materi
-             */
-            foreach (
-                DB::table('exam_answer')
-                    ->where('users_id', '=', $this->id)
-                    ->get() as $key => $value
-            ) {
-                array_push($exam_collect_phase1, $value->kategori_materi_id);
-            }
-            $exam_collect_phase1 = array_unique($exam_collect_phase1);
-            foreach ($exam_collect_phase1 as $key => $value) {
-                $exam_data_phase1 = array(
-                    "title" => DB::table('kategori_materi')->whereId(DB::table('exam_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['kategori_materi_id', '=', $value],
-                        ['phase', '=', 1]
-                    ])->first()->kategori_materi_id)->first()->jenis,
-                    "passed" => (int) DB::table('exam_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['kategori_materi_id', '=', $value],
-                        ['phase', '=', 1]
-                    ])->sum('point') >= 60 ? true : false,
-                    "score" => (int) DB::table('exam_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['kategori_materi_id', '=', $value],
-                        ['phase', '=', 1]
-                    ])->sum('point'),
-                    "right_answer" => (int) DB::table('exam_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['point', '=', 10],
-                        ['kategori_materi_id', '=', $value],
-                        ['phase', '=', 1]
-                    ])->get()->count(),
-                    "wrong_answer" => (int) DB::table('exam_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['point', '=', 0],
-                        ['kategori_materi_id', '=', $value],
-                        ['phase', '=', 1]
-                    ])->get()->count(),
-                    "batch" => DB::table('exam_answer')
-                        ->where([
-                            ['kategori_materi_id', '=', $value],
-                            ['phase', '=', 1],
-                        ])->first()->batch,
-                    "point_right_answer" => 10,
-                    "total_soal" => 10,
-                    "passing_grade" => 60,
-                );
-                array_push($exam_show_phase1, $exam_data_phase1);
-            }
 
-            //exam on phase 2
-            /**
-             * loop pertama untuk list category_materi by phase2
-             * loop kedua show penilaian exam by phase2,users and category_materi
-             */
-            foreach (
-                DB::table('exam_answer')
-                    ->where('users_id', '=', $this->id)
-                    ->get() as $key => $value
-            ) {
-                array_push($exam_collect_phase2, $value->kategori_materi_id);
-            }
-            $exam_collect_phase2 = array_unique($exam_collect_phase2);
-            foreach ($exam_collect_phase2 as $key => $value) {
-                $exam_data_phase2 = array(
-                    "title" => DB::table('kategori_materi')->whereId(DB::table('exam_answer')->where([
-                        ['users_id', '=', $this->id],
+
+        //exam on phase 1
+        /**
+         * loop pertama untuk list category_materi by phase1
+         * loop kedua show penilaian exam by phase1,users and category_materi
+         */
+        foreach (
+            DB::table('exam_answer')
+                // ->where('users_id', '=', $this->id)
+                ->where([
+                    ['users_id', '=', $this->id],
+                    ['phase', '=', 1],
+                ])
+                ->get() as $key => $value
+        ) {
+            array_push($exam_collect_phase1, $value->kategori_materi_id);
+        }
+        $exam_collect_phase1 = array_unique($exam_collect_phase1);
+        foreach ($exam_collect_phase1 as $key => $value) {
+            $exam_data_phase1 = array(
+                "title" => DB::table('kategori_materi')->whereId(DB::table('exam_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['kategori_materi_id', '=', $value],
+                    ['phase', '=', 1]
+                ])->first()->kategori_materi_id)->first()->jenis,
+                "passed" => (int) DB::table('exam_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['kategori_materi_id', '=', $value],
+                    ['phase', '=', 1]
+                ])->sum('point') >= 60 ? true : false,
+                "score" => (int) DB::table('exam_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['kategori_materi_id', '=', $value],
+                    ['phase', '=', 1]
+                ])->sum('point'),
+                "right_answer" => (int) DB::table('exam_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['point', '=', 10],
+                    ['kategori_materi_id', '=', $value],
+                    ['phase', '=', 1]
+                ])->get()->count(),
+                "wrong_answer" => (int) DB::table('exam_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['point', '=', 0],
+                    ['kategori_materi_id', '=', $value],
+                    ['phase', '=', 1]
+                ])->get()->count(),
+                "batch" => DB::table('exam_answer')
+                    ->where([
                         ['kategori_materi_id', '=', $value],
-                        ['phase', '=', 2]
-                    ])->first()->kategori_materi_id)->first()->jenis,
-                    "passed" => (int) DB::table('exam_answer')->where([
-                        ['users_id', '=', $this->id],
+                        ['phase', '=', 1],
+                    ])->first()->batch,
+                "point_right_answer" => 10,
+                "total_soal" => 10,
+                "passing_grade" => 60,
+            );
+            array_push($exam_show_phase1, $exam_data_phase1);
+        }
+
+        //exam on phase 2
+        /**
+         * loop pertama untuk list category_materi by phase2
+         * loop kedua show penilaian exam by phase2,users and category_materi
+         */
+        foreach (
+            DB::table('exam_answer')
+                // ->where('users_id', '=', $this->id)
+                ->where([
+                    ['users_id', '=', $this->id],
+                    ['phase', '=', 2],
+                ])
+                ->get() as $key => $value
+        ) {
+            array_push($exam_collect_phase2, $value->kategori_materi_id);
+        }
+        $exam_collect_phase2 = array_unique($exam_collect_phase2);
+        foreach ($exam_collect_phase2 as $key => $value) {
+            $exam_data_phase2 = array(
+                "title" => DB::table('kategori_materi')->whereId(DB::table('exam_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['kategori_materi_id', '=', $value],
+                    ['phase', '=', 2]
+                ])->first()->kategori_materi_id)->first()->jenis,
+                "passed" => (int) DB::table('exam_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['kategori_materi_id', '=', $value],
+                    ['phase', '=', 2]
+                ])->sum('point') >= 60 ? true : false,
+                "score" => (int) DB::table('exam_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['kategori_materi_id', '=', $value],
+                    ['phase', '=', 2]
+                ])->sum('point'),
+                "right_answer" => (int) DB::table('exam_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['point', '=', 10],
+                    ['kategori_materi_id', '=', $value],
+                    ['phase', '=', 2]
+                ])->get()->count(),
+                "wrong_answer" => (int) DB::table('exam_answer')->where([
+                    ['users_id', '=', $this->id],
+                    ['point', '=', 0],
+                    ['kategori_materi_id', '=', $value],
+                    ['phase', '=', 2]
+                ])->get()->count(),
+                "batch" => DB::table('exam_answer')
+                    ->where([
                         ['kategori_materi_id', '=', $value],
-                        ['phase', '=', 2]
-                    ])->sum('point') >= 60 ? true : false,
-                    "score" => (int) DB::table('exam_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['kategori_materi_id', '=', $value],
-                        ['phase', '=', 2]
-                    ])->sum('point'),
-                    "right_answer" => (int) DB::table('exam_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['point', '=', 10],
-                        ['kategori_materi_id', '=', $value],
-                        ['phase', '=', 2]
-                    ])->get()->count(),
-                    "wrong_answer" => (int) DB::table('exam_answer')->where([
-                        ['users_id', '=', $this->id],
-                        ['point', '=', 0],
-                        ['kategori_materi_id', '=', $value],
-                        ['phase', '=', 2]
-                    ])->get()->count(),
-                    "batch" => DB::table('exam_answer')
-                        ->where([
-                            ['kategori_materi_id', '=', $value],
-                            ['phase', '=', 2],
-                        ])->first()->batch,
-                    "point_right_answer" => 10,
-                    "total_soal" => 10,
-                    "passing_grade" => 60,
-                );
-                array_push($exam_show_phase2, $exam_data_phase2);
-            }
+                        ['phase', '=', 2],
+                    ])->first()->batch,
+                "point_right_answer" => 10,
+                "total_soal" => 10,
+                "passing_grade" => 60,
+            );
+            array_push($exam_show_phase2, $exam_data_phase2);
         }
 
 
