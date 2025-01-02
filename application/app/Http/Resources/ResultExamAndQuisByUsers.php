@@ -41,7 +41,6 @@ class ResultExamAndQuisByUsers extends JsonResource
             ) {
                 array_push($quis_collect, $value->materi_id);
             }
-
             $quis_collect = array_unique($quis_collect);
             foreach ($quis_collect as $key => $value) {
                 $quis_data = array(
@@ -84,20 +83,61 @@ class ResultExamAndQuisByUsers extends JsonResource
 
         //conditional result exam by on batch from user
         if (DB::table('exam_answer')
-            ->where('users_id')
+            ->where('users_id', '=', $this->id)
             ->exists()
         ) {
             //exam on batch
             /**
-             * loop pertama untuk list category by batch
-             * loop kedua show penilaian exam by users,batch and category
+             * loop pertama untuk list category_materi by batch
+             * loop kedua show penilaian exam by users,batch and category_materi
              */
             foreach (
                 DB::table('exam_answer')
                     ->where('users_id', '=', $this->id)
                     ->get() as $key => $value
             ) {
-                array_push($exam_collect, $value);
+                array_push($exam_collect, $value->kategori_materi_id);
+            }
+            $exam_collect = array_unique($exam_collect);
+            foreach ($exam_collect as $key => $value) {
+                $exam_data = array(
+                    "title" => DB::table('kategori_materi')->whereId(DB::table('exam_answer')->where([
+                        ['users_id', '=', $this->id],
+                        ['kategori_materi_id', '=', $value],
+                        ['phase', '=', 1]
+                    ])->first()->kategori_materi_id)->first()->jenis,
+                    "passed" => (int) DB::table('exam_answer')->where([
+                        ['users_id', '=', $this->id],
+                        ['kategori_materi_id', '=', $value],
+                        ['phase', '=', 1]
+                    ])->sum('point') >= 60 ? true : false,
+                    "score" => (int) DB::table('exam_answer')->where([
+                        ['users_id', '=', $this->id],
+                        ['kategori_materi_id', '=', $value],
+                        ['phase', '=', 1]
+                    ])->sum('point'),
+                    "right_answer" => (int) DB::table('exam_answer')->where([
+                        ['users_id', '=', $this->id],
+                        ['point', '=', 10],
+                        ['kategori_materi_id', '=', $value],
+                        ['phase', '=', 1]
+                    ])->get()->count(),
+                    "wrong_answer" => (int) DB::table('exam_answer')->where([
+                        ['users_id', '=', $this->id],
+                        ['point', '=', 0],
+                        ['kategori_materi_id', '=', $value],
+                        ['phase', '=', 1]
+                    ])->get()->count(),
+                    "batch" => DB::table('exam_answer')
+                        ->where([
+                            ['kategori_materi_id', '=', $value],
+                            ['phase', '=', 1],
+                        ])->first()->batch,
+                    "point_right_answer" => 10,
+                    "total_soal" => 10,
+                    "passing_grade" => 60,
+                );
+                array_push($exam_show, $exam_data);
             }
         }
 
@@ -114,7 +154,7 @@ class ResultExamAndQuisByUsers extends JsonResource
             'created_at' => date_format($this->created_at, 'Y-m-d H:i:s'),
             'updated_at' => date_format($this->updated_at, 'Y-m-d H:i:s'),
             'quis' => $quis_show,
-            'exam' => [],
+            'exam' => $exam_show,
         ];
     }
 }
