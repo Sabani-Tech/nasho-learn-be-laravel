@@ -61,29 +61,42 @@ return [
                     ]
                 ],
                 "exam_list" => [
-                    [
-                        "category" => "Nahwu",
-                        "passed" => false,
-                        "score" => 50,
-                        "right_answer" => 5,
-                        "wrong_answer" => 5,
-                        "batch" => 1,
-                        "point_right_answer" => 10,
-                        "total_soal" => 10,
-                        "passing_grade" => 60,
-                        "phase" => 1
+                    "phase1" => [
+                        [
+                            "title" => "Nahwu",
+                            "passed" => true,
+                            "score" => 70,
+                            "right_answer" => 7,
+                            "wrong_answer" => 3,
+                            "batch" => 1,
+                            "point_right_answer" => 10,
+                            "total_soal" => 10,
+                            "passing_grade" => 60
+                        ],
+                        [
+                            "title" => "Sharaf",
+                            "passed" => true,
+                            "score" => 100,
+                            "right_answer" => 10,
+                            "wrong_answer" => 0,
+                            "batch" => 2,
+                            "point_right_answer" => 10,
+                            "total_soal" => 10,
+                            "passing_grade" => 60
+                        ]
                     ],
-                    [
-                        "category" => "Shorof",
-                        "passed" => false,
-                        "score" => 50,
-                        "right_answer" => 5,
-                        "wrong_answer" => 5,
-                        "batch" => 1,
-                        "point_right_answer" => 10,
-                        "total_soal" => 10,
-                        "passing_grade" => 60,
-                        "phase" => 2
+                    "phase2" => [
+                        [
+                            "title" => "Nahwu",
+                            "passed" => true,
+                            "score" => 80,
+                            "right_answer" => 8,
+                            "wrong_answer" => 2,
+                            "batch" => 1,
+                            "point_right_answer" => 10,
+                            "total_soal" => 10,
+                            "passing_grade" => 60
+                        ]
                     ]
                 ],
                 "quis_status" => true,
@@ -145,29 +158,42 @@ return [
                     ]
                 ],
                 "exam_list" => [
-                    [
-                        "category" => "Nahwu",
-                        "passed" => false,
-                        "score" => 50,
-                        "right_answer" => 5,
-                        "wrong_answer" => 5,
-                        "batch" => 1,
-                        "point_right_answer" => 10,
-                        "total_soal" => 10,
-                        "passing_grade" => 60,
-                        "phase" => 1
+                    "phase1" => [
+                        [
+                            "title" => "Nahwu",
+                            "passed" => true,
+                            "score" => 70,
+                            "right_answer" => 7,
+                            "wrong_answer" => 3,
+                            "batch" => 1,
+                            "point_right_answer" => 10,
+                            "total_soal" => 10,
+                            "passing_grade" => 60
+                        ],
+                        [
+                            "title" => "Sharaf",
+                            "passed" => true,
+                            "score" => 100,
+                            "right_answer" => 10,
+                            "wrong_answer" => 0,
+                            "batch" => 2,
+                            "point_right_answer" => 10,
+                            "total_soal" => 10,
+                            "passing_grade" => 60
+                        ]
                     ],
-                    [
-                        "category" => "Shorof",
-                        "passed" => false,
-                        "score" => 50,
-                        "right_answer" => 5,
-                        "wrong_answer" => 5,
-                        "batch" => 1,
-                        "point_right_answer" => 10,
-                        "total_soal" => 10,
-                        "passing_grade" => 60,
-                        "phase" => 2
+                    "phase2" => [
+                        [
+                            "title" => "Nahwu",
+                            "passed" => true,
+                            "score" => 80,
+                            "right_answer" => 8,
+                            "wrong_answer" => 2,
+                            "batch" => 1,
+                            "point_right_answer" => 10,
+                            "total_soal" => 10,
+                            "passing_grade" => 60
+                        ]
                     ]
                 ],
                 "quis_status" => false,
