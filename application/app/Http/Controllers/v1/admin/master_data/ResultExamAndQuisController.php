@@ -10,11 +10,11 @@ class ResultExamAndQuisController
 {
     public function __construct(
         private EloquentResultExamAndQuisRepositories $eloquentResultExamAndQuisRepositories,
-        private Controller $controller,
     ) {}
 
     public function index(Request $request)
     {
-        return $this->eloquentResultExamAndQuisRepositories->Index($request, $this->controller);
+        $QUERY_REQUEST_FILTER = $request->query('nama_lengkap'); //query only for filter(search) nama lengkap
+        return $this->eloquentResultExamAndQuisRepositories->Index($QUERY_REQUEST_FILTER, $request);
     }
 }
