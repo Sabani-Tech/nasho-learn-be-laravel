@@ -2,32 +2,14 @@
 
 namespace App\Repositories\v1\user\soal;
 
-use App\Models\QuisModel;
-use App\Models\UjianModel;
-use App\Models\ExamAnswerModel;
-use App\Models\QuisAnswerModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\PembahasanExamResource;
 use App\Http\Resources\PembahasanQuisResource;
 
-enum Status: string
-{
-    case exam2 = 'true';
-    case exam1 = 'true';
-    case statusExam1 = 'Exam2';
-}
 //Repositories
-class EloquentSoalRepositories implements SoalRepositories
+class EloquentSoalRepositories extends AbstractSoalRepositories implements SoalRepositories
 {
-    private $quis_model, $ujian_model, $quis_answer_model, $exam_answer_model;
-    public function __construct()
-    {
-        $this->quis_model = new QuisModel();
-        $this->ujian_model = new UjianModel();
-        $this->quis_answer_model = new QuisAnswerModel();
-        $this->exam_answer_model = new ExamAnswerModel();
-    }
     public function Quis($category_id, $materi_id, $response)
     {
         if (!$this->HandleValidateQuisCategoryById($category_id)) {
@@ -327,24 +309,24 @@ class EloquentSoalRepositories implements SoalRepositories
 
     private function HandleUpdateExamAndStatusAfterSubmitExamIfPassedPhase1($category_id)
     {
-        return DB::table('kategori_materi_detail')
+        return $this->category_materi_detail
             ->where([
                 ['users_id', '=', Auth::guard('api')->user()->id],
                 ['kategori_materi_id', '=', $category_id],
             ])->update([
-                'exam1' => Status::exam1, //uts nya lulus
-                'status' => Status::statusExam1, // langsung membuka ujian untuk tahap uas
+                'exam1' => static::CONSTANT_EXAM1_STATUS, //uts nya lulus
+                'status' => static::CONSTANT_STATUS_UNLOCK_EXAM2, // langsung membuka ujian untuk tahap uas
             ]);
     }
 
     private function HandleUpdateExamAndStatusAfterSubmitExamIfPassedPhase2($category_id)
     {
-        return DB::table('kategori_materi_detail')
+        return $this->category_materi_detail
             ->where([
                 ['users_id', '=', Auth::guard('api')->user()->id],
                 ['kategori_materi_id', '=', $category_id],
             ])->update([
-                'exam2' => Status::exam2, // uas nya lulus
+                'exam2' => static::CONSTANT_EXAM2_STATUS, // uas nya lulus
             ]);
     }
 }
