@@ -89,7 +89,6 @@ class ResultExamAndQuisByUsers extends JsonResource
          */
         foreach (
             DB::table('exam_answer')
-                // ->where('users_id', '=', $this->id)
                 ->where([
                     ['users_id', '=', $this->id],
                     ['phase', '=', 1],
@@ -147,7 +146,6 @@ class ResultExamAndQuisByUsers extends JsonResource
          */
         foreach (
             DB::table('exam_answer')
-                // ->where('users_id', '=', $this->id)
                 ->where([
                     ['users_id', '=', $this->id],
                     ['phase', '=', 2],
