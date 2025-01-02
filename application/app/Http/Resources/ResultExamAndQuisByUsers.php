@@ -210,11 +210,17 @@ class ResultExamAndQuisByUsers extends JsonResource
                 ->first(),
             'created_at' => date_format($this->created_at, 'Y-m-d H:i:s'),
             'updated_at' => date_format($this->updated_at, 'Y-m-d H:i:s'),
-            'quis' => $quis_show,
-            'exam' => [
+            'quis_list' => $quis_show,
+            'exam_list' => [
                 'phase1' => $exam_show_phase1,
                 'phase2' => $exam_show_phase2,
-            ]
+            ],
+            'quis_status' => DB::table('quis_answer')
+                ->where('users_id', '=', $this->id)
+                ->first() ? true : false,
+            'exam_status' => DB::table('exam_answer')
+                ->where('users_id', '=', $this->id)
+                ->first() ? true : false,
         ];
     }
 }
