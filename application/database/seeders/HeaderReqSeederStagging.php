@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class HeaderReqSeeder extends Seeder
+class HeaderReqSeederStagging extends Seeder
 {
     /**
      * Run the database seeds.
