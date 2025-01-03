@@ -144,7 +144,7 @@ class EloquentSoalRepositories extends AbstractSoalRepositories implements SoalR
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
                 ['users_id', '=', Auth::guard('api')->user()->id],
-            ])->sum('point') < 100 ? false : true,
+            ])->sum('point') < 80 ? false : true,
             'correct_count' => $this->quis_answer_model->where([
                 ['kategori_materi_id', '=', $category_id],
                 ['materi_id', '=', $materi_id],
@@ -163,7 +163,7 @@ class EloquentSoalRepositories extends AbstractSoalRepositories implements SoalR
                 ['users_id', '=', Auth::guard('api')->user()->id],
             ])->sum('point'),
             'total_score' => 100,
-            'title' => DB::table('materi')
+            'title' => $this->materi
                 ->whereId($materi_id)
                 ->first()
                 ->judul,
@@ -300,7 +300,7 @@ class EloquentSoalRepositories extends AbstractSoalRepositories implements SoalR
                 ['users_id', '=', Auth::guard('api')->user()->id],
             ])->sum('point'),
             'total_score' => 100,
-            'title' => DB::table('kategori_materi')
+            'title' => $this->category_materi
                 ->whereId($category_id)
                 ->first()
                 ->jenis,
