@@ -34,8 +34,8 @@ class AdminMiddleware extends Controller
 
             $Platform = DB::table('request_header')->where('platform', $request->header('X-PLATFORM-NASHO'))->first()->platform;
             if (
-                $Platform != 'web' &&
-                $Platform != 'internal-tools'
+                $Platform != config('header.admin_platform') &&
+                $Platform != config('header.internal_tools_platform')
             ) {
                 return $this->error_response('wrong platform', 401, true, 'Hint:use admin platfrom cause that is admin roles', env('APP_ENV'));
             }

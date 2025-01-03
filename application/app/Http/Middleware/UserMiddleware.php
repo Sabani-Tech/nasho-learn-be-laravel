@@ -35,7 +35,7 @@ class UserMiddleware extends Controller
             if (
                 DB::table('request_header')
                 ->where('platform', $request->header('X-PLATFORM-NASHO'))
-                ->first()->platform != 'mobile'
+                ->first()->platform != config('header.mobile_platform')
             ) {
                 return $this->error_response('wrong platform', 401, true, 'Hint:use mobile platfrom cause that is user roles', env('APP_ENV'));
             }
