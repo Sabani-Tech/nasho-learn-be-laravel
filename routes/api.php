@@ -36,12 +36,9 @@ function handle_builder_response($data, $message, $status_code = 200)
 //mapping data user and token base on user
 function handle_mapping_user_by_token($user, $token)
 {
-    return array(
-        'id' => $user->id,
-        'name' => $user->name,
-        'email' => $user->email,
-        'token' => $token,
-    );
+    $res = $user;
+    $res['token'] = $token;
+    return $res;
 }
 
 //setter for set personal access token for user
