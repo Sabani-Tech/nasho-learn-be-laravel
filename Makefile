@@ -7,6 +7,9 @@ docker-nasho-stop:
 docker-nasho-container:
 	docker compose ps
 
+docker-nasho-images:
+	docker image ls
+
 docker-nasho-restart:
 	docker compose restart
 
