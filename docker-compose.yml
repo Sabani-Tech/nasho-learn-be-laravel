@@ -1,0 +1,70 @@
+version: "1"
+services:
+  app:
+    build:
+      args:
+        user: nasholearn
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: nasholearn
+    container_name: nasholearn-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - db
+    networks:
+      - nasholearn
+
+  db:
+    image: mysql:8.0
+    container_name: nasholearn-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: nasho_learn
+      MYSQL_ROOT_PASSWORD: FGFkCx4gpFzjrhJeCRri
+      MYSQL_PASSWORD: FGFkCx4gpFzjrhJeCRri
+      MYSQL_USER: nasholearn
+      SERVICE_TAGS: production
+      SERVICE_NAME: mysql
+    volumes:
+      - ./nasho-compose/mysql:/docker-entrypoint-initdb.d
+      - ./nasho-compose/mysql/logs:/var/log/mysql
+      - ./nasho-compose/mysql/data:/var/lib/mysql
+    networks:
+      - nasholearn
+
+  nginx:
+    image: nginx:alpine
+    container_name: nasholearn-nginx
+    restart: unless-stopped
+    ports:
+      - 7075:80
+    volumes:
+      - ./:/var/www
+      - ./nasho-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - nasholearn
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: nasholearn-phpmyadmin
+    ports:
+        - 7000:80
+    links:
+        - db
+    restart: unless-stopped
+    environment:
+        PMA_HOST: db
+        PMA_USER: nasholearn
+        PMA_PASSWORD: FGFkCx4gpFzjrhJeCRri
+        PMA_PORT: 3306
+        PMA_ARBITRARY: 1
+    networks:
+        - nasholearn
+
+networks:
+  nasholearn:
+    driver: bridge
