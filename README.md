@@ -24,10 +24,6 @@ php artisan migrate:rollback
 
 ## Start With Local Development Server
 
-```Bash
-php -S localhost:8000 -t public || php artisan serve
-```
-
 ```bash
 php "-S localhost:{port} -t public"     # Menjalankan project dengan mengkonfigurasi port secara custom
 php "artisan serve"      # Menjalankan project dengan port bawaan yaitu 8000
