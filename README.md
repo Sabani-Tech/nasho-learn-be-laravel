@@ -26,8 +26,8 @@ php artisan migrate:rollback
 
 ```bash
 php "-S localhost:{port} -t public"     # Menjalankan project dengan mengkonfigurasi port secara custom
-php "artisan serve"      # Menjalankan project dengan port bawaan yaitu 8000
-make "nasho-serve" #menjalankan project dengan menggunakan shell script
+php "artisan serve"                     # Menjalankan project dengan port bawaan yaitu 8000
+make "nasho-serve"                      # Menjalankan project dengan menggunakan shell script
 ```
 
 ## Base URL
