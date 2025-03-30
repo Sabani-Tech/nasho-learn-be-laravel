@@ -12,13 +12,13 @@ aktifkan require module php yang dibutukan untuk menjalankan framework tersebut,
 composer install
 ```
 
-# Start Local Development Server Ngandre API
+## Start Local Development Server Ngandre API
 
 ```Bash
 php -S localhost:8000 -t public || php artisan serve
 ```
 
-# migrate table db
+## migrate table db
 
 ```Bash
 php artisan migrate
@@ -28,7 +28,7 @@ php artisan migrate:refresh
 php artisan migrate:rollback
 ```
 
-# Base URL
+## Base URL
 
 ```bash
 #baseUrl
@@ -37,7 +37,7 @@ localhost:8000 -> sesuaikan dengan base url kalian
 v1
 ```
 
-# Endpoint Auth API
+## Endpoint Auth API
 
 ```Bash
 
@@ -51,7 +51,7 @@ v1
 
 ```
 
-# Endpoint Profile API
+## Endpoint Profile API
 
 ```Bash
 
@@ -60,7 +60,7 @@ v1
 
 ```
 
-# Endpoint API USER
+## Endpoint API USER
 
 ```Bash
 #category and materi
@@ -82,7 +82,7 @@ v1
 
 ```
 
-# Access Ke Endpoint API Yang Menggunakan Session
+## Access Ke Endpoint API Yang Menggunakan Session
 
 <h5>jika ingin mengakses api yang menggunakan session, maka anda harus mengirimkan 5 buah object/param seperti dibawah ini, kirim ketiga buah object tersebut melalui request header</h5>
 
