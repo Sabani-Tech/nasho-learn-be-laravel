@@ -22,10 +22,16 @@ php artisan migrate:refresh
 php artisan migrate:rollback
 ```
 
-## Start Local Development Server Ngandre API
+## Start With Local Development Server
 
 ```Bash
 php -S localhost:8000 -t public || php artisan serve
+```
+
+```bash
+php "-S localhost:{port} -t public"     # Menjalankan project dengan mengkonfigurasi port secara custom
+php "artisan serve"      # Menjalankan project dengan port bawaan yaitu 8000
+make "nasho-serve" #menjalankan project dengan menggunakan shell script
 ```
 
 ## Base URL
