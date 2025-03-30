@@ -6,27 +6,33 @@
 aktifkan require module php yang dibutukan untuk menjalankan framework tersebut, beberapa modul yang di harus di aktifkan ialah pdo_mysqli, mysqli, xml  dan mbstring 
 </h5>
 
-## composer run
+## Composer Install: install dependancy project
 
 ```Bash
 composer install
 ```
 
-## migrate table db
+## Run Migration
 
-```Bash
-php artisan migrate
-# migrate refresh ketika ada update/perubahan schema column table
-php artisan migrate:refresh
-# jika ingin rollback table nya jalan kan perintah di bawah ini
-php artisan migrate:rollback
+```bash
+#basic command with php artisans
+php "artisan migrate"                   # migrate semua schema table
+php "artisan migrate:refresh"           # refresh semua schema table
+php "artisan migrate:rollback"          # menarik kembali semua schema table
+
+#command with makefile
+make "nasho-migrate"                    # perintah migrate semua schema table
+make "nasho-refresh"                    # perintah refresh semua schema table dan menjalankan semua seeder
 ```
 
 ## Start With Local Development Server
 
 ```bash
+#basic command with php run to project
 php "-S localhost:{port} -t public"     # Menjalankan project dengan mengkonfigurasi port secara custom
 php "artisan serve"                     # Menjalankan project dengan port bawaan yaitu 8000
+
+#command with makefile
 make "nasho-serve"                      # Menjalankan project dengan menggunakan shell script
 ```
 
