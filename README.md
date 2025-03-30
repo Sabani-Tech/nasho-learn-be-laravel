@@ -6,7 +6,7 @@
 aktifkan require module php yang dibutukan untuk menjalankan framework tersebut, beberapa modul yang di harus di aktifkan ialah pdo_mysqli, mysqli, xml  dan mbstring 
 </h5>
 
-## Composer Install: install dependancy project
+## Composer Install: add dependancy project
 
 ```Bash
 composer install
