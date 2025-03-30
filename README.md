@@ -88,7 +88,7 @@ v1
 
 <h5>Object param yang dikirim lewat request header:</h5>
 
--   **`Accept`** Tipe data yang di terima oleh API
+-   **`Accept`** Tipe data yang di terima oleh API, type berupa: application/json
 -   -**`Authorization`** Token yang di terima oleh API, jenis token berupa bearer dengan format JWT
 -   **`X-PLATFORM-NASHO`** Platform yang di terima oleh API untuk key untuk jenis platform terdiri atas 2 yaitu: mobile and web
 -   **`X-VERSION-NASHO`** Version yang di terima oleh API untuk version dimulai dari: 1.0
