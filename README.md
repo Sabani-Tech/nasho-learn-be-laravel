@@ -12,12 +12,6 @@ aktifkan require module php yang dibutukan untuk menjalankan framework tersebut,
 composer install
 ```
 
-## Start Local Development Server Ngandre API
-
-```Bash
-php -S localhost:8000 -t public || php artisan serve
-```
-
 ## migrate table db
 
 ```Bash
@@ -26,6 +20,12 @@ php artisan migrate
 php artisan migrate:refresh
 # jika ingin rollback table nya jalan kan perintah di bawah ini
 php artisan migrate:rollback
+```
+
+## Start Local Development Server Ngandre API
+
+```Bash
+php -S localhost:8000 -t public || php artisan serve
 ```
 
 ## Base URL
