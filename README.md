@@ -88,11 +88,11 @@ v1
 
 <h5>Object param yang dikirim lewat request header:</h5>
 
--   **`_columns_`** Prints a two column output from a key/value pair
--   -**`_printFuncStack_`** Prints the function stack in use. Used for debugging, and error reporting
--   **`_alert_`** Performs alerting functions including writing to a log file and printing to screen
--   **`_centerOutput_`** Prints text in the center of the terminal window
--   **`_setColors_`** Sets color constants for alerting (**Note:** Colors default to a dark theme.)
+-   **`Accept`** Tipe data yang di terima oleh API
+-   -**`Authorization`** Token yang di terima oleh API, jenis token berupa bearer dengan format JWT
+-   **`X-PLATFORM-NASHO`** Platform yang di terima oleh API untuk key untuk jenis platform terdiri atas 2 yaitu: mobile and web
+-   **`X-VERSION-NASHO`** Version yang di terima oleh API untuk version dimulai dari: 1.0
+-   **`X-CLIENT-KEY-NASHO`** Client key yang di terima oleh API,client key akan digenerate otomatis berdasarkan dari platform yang digunakan
 
 ```JSON
 {
