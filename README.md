@@ -86,7 +86,13 @@ v1
 
 <h5>jika ingin mengakses api yang menggunakan session, maka anda harus mengirimkan 5 buah object/param seperti dibawah ini, kirim ketiga buah object tersebut melalui request header</h5>
 
-<h5>Object param yang dikirim lewat request header</h5>
+<h5>Object param yang dikirim lewat request header:</h5>
+
+-   **`_columns_`** Prints a two column output from a key/value pair
+-   -**`_printFuncStack_`** Prints the function stack in use. Used for debugging, and error reporting
+-   **`_alert_`** Performs alerting functions including writing to a log file and printing to screen
+-   **`_centerOutput_`** Prints text in the center of the terminal window
+-   **`_setColors_`** Sets color constants for alerting (**Note:** Colors default to a dark theme.)
 
 ```JSON
 {
